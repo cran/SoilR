@@ -26,7 +26,7 @@ ParallelModel=structure(function
       tn=50
       timestep=(t_end-t_start)/tn 
       t=seq(t_start,t_end,timestep) 
-      k=TimeMap.new(t_start,t_end,function(times){c(0.5,0.2,0.3)})
+      k=TimeMap.new(t_start,t_end,function(times){c(-0.5,-0.2,-0.3)})
       c0=c(1, 2, 3)
       #constant inputrates
       inputrates=TimeMap.new(
@@ -51,7 +51,7 @@ ParallelModel=structure(function
 	 lty=c(lt1,lt2,lt3),
 	 col=c(col1,col2,col3)
       )
-      Y=getRelease(mod)
+      Y=getAccumulatedRelease(mod)
       plot(t,Y[,1],type="l",lty=lt1,col=col1,ylab="C release",xlab="Time") 
       lines(t,Y[,2],lt2,type="l",lty=lt2,col=col2) 
       lines(t,Y[,3],type="l",lty=lt3,col=col3) 

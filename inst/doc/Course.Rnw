@@ -1,0 +1,499 @@
+\documentclass[a4paper]{article}
+%\documentclass[gmd]{copernicus}
+%\documentclass[article,nojss]{jss}
+%\VignetteIndexEntry{TimeMap GeneralModel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add-on packages and fonts
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{Sweave}
+\usepackage{color}
+\usepackage[round]{natbib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%\newcommand{\R}{\proglang{R }}
+\newcommand{\R}{\textsf{R }}
+\newcommand{\SoilR}{\texttt{SoilR }}
+\newcommand{\FME}{\texttt{FME }}
+\newcommand{\GeneralModel}{\texttt{GeneralModel}}
+\newcommand{\Model}{\texttt{Model}}
+\newcommand{\TimeMap}{\texttt{TimeMap}}
+\newcommand{\codestyle}[1]{{\texttt{#1}}}
+\newcommand{\figref}[1]{Fig: \ref{#1}}
+
+
+\title{Estimating Parameters of Compartment Models in \SoilR: }
+%\Plaintitle{Implementing Compartment Models in \SoilR}
+
+%\keywords{organic matter decomposition, compartment models, 
+%          linear dynamical systems}
+
+\author{Markus M\"uller\thanks{mamueller@bgc-jena.mpg.de} \ 
+     and Carlos A. Sierra\thanks{csierra@bgc-jena.mpg.de} \\ 
+         Max Planck Institute for \\
+         Biogeochemistry }
+
+
+\begin{document}
+\maketitle
+\SweaveOpts{engine=R,eps=FALSE}
+\SweaveOpts{keep.source=TRUE}
+
+\abstract{
+The objective of this vignette is to provide an example to use \SoilR s possibilities to interface with package \FME  
+in order to estimate parameters of soil models using real 
+data.
+To this end we set us the following task.
+We assume an experiment yielding a  combination of $^{14}C$ and $C$ data.
+Our objective is to find a mathematical model for the decomposition of soil organic matter which has to fulfill the following requirements.
+\begin{enumerate}
+    \item It can reproduce the data.
+    \item Its  parameters can be determined by the data with sufficient accuracy.
+\end{enumerate}
+We will not explain \FME functionality here but strongly recommend to read the excellent vignette for package \FME.
+Instead we focus on the application to \SoilR models. 
+It is however not necessary to read any other \SoilR vignette before this one.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Assume the  following data having been measured. 
+\begin{enumerate}
+    \item
+        The over all respiration $^{14}C/C$ ratio at some few points in time
+    \item
+        Time series of the $C$ concentration of two pools
+    \item
+        Time series of the sum of the $C$ input rates of to the two pools
+    \item
+        A time series of the atmospheric  $^{14}C/C$ fraction
+\end{enumerate}
+The example data are provided as part of the package  the  \SoilR.
+Uncommenting the following code shows all datasets that come with the package.
+<<echo=F,print=FALSE>>=
+library(SoilR)
+@
+<<echo=true,print=FALSE>>=
+#library(SoilR)
+#data(package="SoilR")
+@
+We load the following:
+<<echo=true,print=FALSE>>=
+data(CourseExample_R14)
+data(C14Atm_NH)
+@
+The following code to plot the data is part of the example belonging to the help of this dataset.
+
+\begin{figure}
+<<echo=T,fig=T,print=FALSE>>=
+     library(ggplot2)
+     data(CourseExample_R14)
+     lty1=1
+     lty2=2
+     c1="pool 1"
+     c2="pool 2"
+     yl=max(DataC[,"C1"],DataC[,"C2"])
+     ym=min(DataC[,"C1"],DataC[,"C2"])
+     
+     p <- ggplot(data.frame(DataC))
+     p <- p+geom_point(aes(x=time,y=C1,col=c1)) 
+     p <- p+geom_errorbar(aes(x=time,ymin=C1-sd,ymax=C1+sd,col=c1))
+     p <- p+geom_point(aes(x=time,y=C2,col=c2)) 
+     p <- p+geom_errorbar(aes(x=time,ymin=C2-sd,ymax=C2+sd,col=c2))
+     p <- p+scale_y_continuous(name="C content of the pools")
+     p <- p+opts(legend.title=theme_blank())
+     p
+@
+\end{figure}
+
+\begin{figure}
+<<echo=T,fig=T,print=FALSE>>=
+     yl=max(DataR14[,"R14t"])
+     ym=min(DataR14[,"R14t"])
+     limits<- aes(ymax = R14t + sd, ymin=R14t - sd)
+     p <- ggplot(data.frame(DataR14), aes(colour=c(1), y=R14t, x=time))
+     p <- p + geom_point() + geom_errorbar(limits, width=0.2)
+     p <- p + geom_pointrange(limits)
+     p <- p+scale_y_continuous(name="14C fraction of the Respiration")
+     p <- p + opts(legend.title=theme_blank())
+     p
+@
+\end{figure}
+
+\begin{figure}
+<<echo=T,fig=T,print=FALSE>>=
+     p <- ggplot(DataI)
+     p <- p+geom_point(aes(x=time,y=In,col="inputrate ")) 
+     p <- p+scale_y_continuous(name="sum of input/y")
+     p <- p+opts(legend.title=theme_blank())
+     p
+@
+\end{figure}
+
+\begin{figure}
+<<echo=T,fig=T,print=FALSE>>=
+     p <- ggplot(C14Atm_NH)
+     p <- p+geom_point(aes(x=YEAR,y=Atmosphere,col="14C/C")) 
+     p <- p+scale_y_continuous(name="atmospheric 14C fraction")
+     p <- p+opts(legend.title=theme_blank())
+     p
+@
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Available Models}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SoilR provides a very general approach to models for Soil organic matter decomposition and can therefore be used for a wide range of different models. 
+Many - especially those that are frequently used in the literature - have been implemented on top of the general framework making them even easier to use. 
+To see what is in the package uncomment the following:
+<<echo=true,print=true>>=
+#?Models
+@
+Which will show up all the currently available functions for the construction of models.
+In our case we look for those which start with \codestyle{Twop..} which abbreviates \emph{two pool} and end with \codestyle{..14} which marks the $^{14}C$ model constructors but also may consider more general cases.
+The candidates thus are: 
+\begin{enumerate}
+        \item
+        TwopParallelModel14
+        \item
+        TwopSeriesModel14
+        \item
+        TwopFeedbackModel14
+        \item
+        GeneralModel14
+\end{enumerate}
+A priori all these could be able to \emph{reproduce} the data, which is our first request. 
+A closer look at the help pages of these candidates reveals that the number of parameters 
+to choose increases from top to bottom. Thus the difficulty to \emph{constrain} the parameters will
+increase also. 
+It is convenient to start with the \codestyle{twopParallelModel14} 
+and assume only the two decay constants of the pools as variable parameters. 
+As we proceed we can allow more parameters to be varied to model the given data better.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Synthesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Our first aim is to reproduce a synthetic dataset as function of the parameters to be determined.
+In a second step we have to provide a measure for the misfit between the synthetically produced data 
+and the real data, 
+which will be computed by a \emph{cost} function.
+Then we have to try different combinations of the free parameters in order to minimize the cost.
+The \FME package will be very useful for steps two and three, while we will use \SoilR for the first step:
+A look at the help page of \codestyle{twopParallelModel14} shows which arguments we have to provide. 
+We start with those that we consider fixed. 
+\begin{itemize}
+    \item 
+        We begin with the times where we want to compute the solution.
+        Since we want to compare the output to the real data later it is sensible to compute values 
+        at least for the times given in our dataset. 
+<<echo=true,print=False>>=
+library("SoilR")
+library("FME")
+t_start=1978
+t_end=2008
+#t_start=t_end-30
+indices=(C14Atm_NH$YEAR>=t_start & C14Atm_NH$YEAR < t_end)
+time=C14Atm_NH$YEAR[indices]
+@
+    \item
+We proceed with the initial values. 
+which we can extract them from the data.
+<<echo=true,print=T>>=
+C0=as.numeric(DataC[1,c("C1","C2")])
+@
+    \item
+        The next item is the inputrate which is part of the data set and can be passed directly.
+    \item
+        Parameter $\gamma$ will is regarded as constant. 
+<<echo=true,print=F>>=
+gam=0.6
+@
+    \item
+    $\xi$ could be used to describe the influence of temperature and moisture as function of time on the decomposition but is regarded constant in this case.
+<<echo=true,print=F>>=
+xi=1
+@
+    \item
+C14Atm\_NH can be used directly as an argument for the parameter
+\codestyle{FcAtm}.
+    \item
+To show that we use the decay constant for $^{14}C$ the unit compatible with our time unit  we compute it here from the half-live given in years.
+\SoilR would use the same value as default, so this preparation is really needed only if you decide to use another unit for time measurement.
+<<echo=true,print=T>>=
+th=5730
+#note that k_14 is negative and has the unit y^-1
+k_14=log(0.5)/th 
+@
+\end{itemize}
+The remaining part of the model construction we wrap into a function that depends on the 
+unknown parameters $k_1$ and $k_2$ and the mysterious parameter \codestyle{pass} only.
+The \codestyle{pass} argument requires some explanation. It only makes sense in view of the future use of our small function with \FME.
+The reason is this:
+If you create a model in \SoilR the package will by default execute an number of tests on the given arguments to prevent the unintentional creation of models that are biologically not meaningful.
+Unfortunately \FME s abstract algorithms do not care about biologically meaningful parameter combinations and would cause \SoilR to exit with an error if by chance such a combination occurs.
+It might for instance happen that during the fitting procedure \FME tries a positive $k$ to fit the data, which would mean \emph{creation} of organic matter instead of \emph{decomposition}. 
+The interface of \codestyle{modFit} provides only one possibility 
+to avoid this situation by setting appropriate upper and lower bounds for parameters. 
+This would do the job with this simple example but not for all cases. 
+\emph{For those cases only} we introduce the \codestyle{pass} facility used as a last resort 
+to switch off the checking at model creation.
+If we do so we have to check the estimated parameters afterwards without this flag.
+We will do so at the end of this example.
+For the moment note, that we allow for an additional argument to turn of the internal checking by setting \codestyle{pass=TRUE}. 
+<<echo=true,print=F>>=
+pf<-function(ks,pass=FALSE){
+    mod=TwopParallelModel14(
+            time,
+            ks,
+            C0,
+            In=DataI,
+            gam=gam,
+            xi=xi,
+            FcAtm=C14Atm_NH,
+            lambda=k_14,
+            pass=pass
+    ) 
+    Cs=getC(mod)
+    R14t=getTotalReleaseFluxC14CRatio(mod)
+    return(data.frame(time=time,R14t=R14t,C1=Cs[,1],C2=Cs[,2]))
+}
+@
+
+%<<echo=False,print=False>>=
+%##################################################
+%# this invisible section is used to create a new dataset
+% t_end=2008
+% t_start=t_end-30
+% data(C14Atm_NH)
+% indices=(C14Atm_NH$YEAR>=t_start & C14Atm_NH$YEAR < t_end)
+% time=C14Atm_NH$YEAR[indices]
+% C0=c(0.5,0.5) 
+% 
+% l=length(time)
+% iC=seq(1,l,4)
+% In=rep(0.05,length(iC))
+% stdIn=0.05*max(In)
+% errIn=rnorm(sd=stdIn,n=length(In))
+% DataI <- data.frame(
+%     time=time[iC],
+%     In  =  In+errIn
+%     #,
+%     #sd=stdIn
+% )
+% pars=c(k1=-0.3,k2=-0.5)
+% Df=pf(pars)
+% #Now we first select a view points, disturb the data and plot it \figref{fig:distdata}. 
+% iR14=seq(1,l,8)
+% #iR14=c(1,l)
+% stdC=0.2*max(Df$C1)
+% std14=0.2*max(Df$R14t)
+% errR14=rnorm(sd=std14,n=length(iR14))
+% errC1=rnorm(sd=stdC,n=length(iC))
+% errC2=rnorm(sd=stdC,n=length(iC))
+% DataR14 <- data.frame(
+%     time=time[iR14],
+%     R14t=Df$R14t[iR14]+errR14,
+%     sd=std14
+%     )
+% DataC <- data.frame(
+%     time=time[iC],
+%     C1  =  Df$C1[iC]+errC1,
+%     C2  =  Df$C2[iC]+errC2,
+%     sd=stdC
+% )
+% #the next line has to be commented out for the real vignette
+% datadir="/home/mm/SoilR/RPackages/SoilR/pkg/data/"
+% save(DataR14,DataC,DataI,file=paste(datadir,"CourseExample_R14",".rda",sep=""),ascii=TRUE)
+% save(DataR14,file=paste(datadir,"DataR14",".rda",sep=""),ascii=TRUE)
+% save(DataC,file=paste(datadir,"DataC",".rda",sep=""),ascii=TRUE)
+% save(DataI,file=paste(datadir,"DataI",".rda",sep=""),ascii=TRUE)
+%@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We produce a dataset arbitrarily chosen parameters $k_1$ and $k_2$  and plot it together with the data:
+\begin{figure}[h]
+\label{fig:distdata3}
+<<echo=T,fig=TRUE,print=F>>= 
+pars=c(k1=-0.1,k2=-0.2)
+Df=pf(pars)
+c1="black"; c2="red";lty1=1;lty2=1
+plot(DataC[,"time"],
+     DataC[,"C1"],
+     col=c1,lty=lty1,
+     xlab="time",
+     ylab="C content of the pools"
+)
+points(
+       DataC[,"time"],
+       DataC[,"C2"],
+       col=c2,
+       lty=lty2
+)
+lines(Df$time,Df$C1,col=c1,lty=lty1)
+lines(Df$time,Df$C2,col=c2,lty=lty2)
+legend(x=1950,
+       y=0.3,
+       legend=c("C content of pool 1","C content of pool 2"),
+       bg="white",
+       col=c(c1,c2),lty=c(lty1,lty2))
+@
+\caption{The output for the C stock of a model with arbitrarily chosen parameters $k_1$ and $k_2$ together with the (measured) data}
+\end{figure}
+\begin{figure}
+<<fig=TRUE>>= 
+plot(DataR14[,"time"],DataR14[,"R14t"],lty=1,col=c1)
+lines(Df$time,Df$R14t,col=c1,lty=lty1)
+@
+\caption{The output for the $^{14}C$ fraction of the respiration of a model with arbitrarily chosen parameters $k_1$ and $k_2$ together with the (measured) data}.
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+
+To give \FME a tool to measure the quality of a parameter combination we 
+a cost function that weights the error. 
+Since in this example we deal
+with two different kinds of data which firstly have different units and secondly have a different
+number of data points we have to invest some time for thought here.  
+\begin{enumerate}
+    \item
+        We apply \FME s \codestyle{modCost} twice, the first time on data arguments only but the
+second time with the additional argument of the first cost function.
+This expresses the fact that we treat errors of different observables differently. 
+    \item
+  The weighing is done by dividing the residuals by the error which is done for two reasons firstly to get a dimensionless result and secondly to reduce the influence of uncertain values.  The errors are assumed to be in  column with name "sd" of the measured dataset.  
+    \item
+        We could suppress the domination of the one value for $^{14}C/C$ ratio by the  more frequent C
+        measurements by rescaling the cost according to the number of data points, which could be done with
+        the \codestyle{scaleVar} argument.
+\end{enumerate}
+
+\begin{figure}
+%<<echo=true,print=False,fig=TRUE>>=
+<<echo=true,print=False,fig=TRUE>>=
+    DfCost <- function(pars){
+        Df <- pf(pars,pass=TRUE)
+        Ccost=modCost(
+                    model=Df,
+                    obs=DataC,
+                    err="sd"
+                    #,scaleVar=TRUE
+                    )
+        return(
+               modCost(
+                       model=Df,
+                       obs=DataR14,
+                       err="sd",
+                       #,scaleVar=TRUE
+                       cost=Ccost)
+               )
+    }
+    plot(DfCost(pars),xlab="time")
+@
+    \caption{The (error) weighted residuals.}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+Since we now have a measure for the cost we can use a lot of \FME functionality e.g. determine how sensitive this cost is to changes in our parameters, which helps us to detect unidentifiable parameters. 
+To do so we  create the sensitivity functions.
+We also can estimate the approximate linear dependence (collinearity) of the two parameters which reveals parameters that have similar effect on the output and are hard to identify simultaneously. 
+All this is \FME functionality an described in much more detail by \FME s vignettes. 
+\begin{figure}
+<<echo=true,print=FALSE,fig=TRUE>>=
+Sfun <- sensFun(DfCost,pars)
+summary(Sfun)
+plot(Sfun,which=c("R14t","C1","C2"),xlab="time",lwd=2)
+@
+    \caption{The plot shows the the sensitivity functions of all three observables on both parameters.
+    The result is an extreme case and shows that in a parallel model the C stock of pool 1 does not depend on $k_2$ and vice versa, while the overall respiration naturally depends on both variables}
+\end{figure}
+
+\begin{figure}
+<<echo=true,print=FALSE,fig=TRUE>>=
+pairs(Sfun,which=c("R14t","C1","C2"),col=c("green","blue","red"))
+@
+    \caption{The pairs plot summarizes the dependency of the sensitivity function of all three observables on both parameters. It would also reveal collinearity if the points of different colors were showing a similar pattern which they fortunately do not in this example.
+    The alignment of the blue and red clouds to the axis expresses the same lesson that we learnt from the plot of the sensitivity functions: In a parallel model the  C stock of pool 1 does not depend on $k_2$ and vice versa}
+\end{figure}
+%\clearpage
+We can estimate the collinearity explicitly: 
+<<echo=true,print=true>>=
+ident <- collin(Sfun,parset=c("k1","k2"))
+@
+
+Finally we fit the parameter to the data. 
+Before we do so we always have to think about how to prevent the creation of invalid models.
+The only way provided by \codestyle{modFit} is to constrain parameter ranges by upper and lower bounds. 
+If this will constrain \FME 's guesses to the reasonable parameter values depends on our cleverness in choosing the right parameter set to be estimated but is sometimes not possible. 
+However to give the FME algorithms the freedom to (temporarily) test even (biologically) unreasonable values we deliberately disabled \SoilR's checks during the creation of models in the cost function.
+To demonstrate that with \codestyle{pass} set to true the parameter estimation works even for biologically meaningless parameters we deliberately choose a positive start value for one of the decay constants and also a to large parameter range to include this value. (For a valid model both decay constants would have to be smaller than zero since positive values do not refer to decomposition but "growth".) 
+\begin{figure}
+<<echo=true,print=FALSE,fig=TRUE>>=
+    Fit <- modFit(f=DfCost,upper=c(0.2,0),p=c(0.1,-0.1))
+    print(Fit$par) 
+    plot(Fit)
+    summary(Fit)
+@
+    \caption{The plot shows how the residuals have been minimized by the fitting procedure and 
+    can be used to inspect convergence of the algorithm}
+\end{figure}
+We compare the fitted curve to the curve resulting from the values that were used to create the example dataset in the first place. 
+To this end we create again the model with the estimated parameter values, this time without the \codestyle{pass} argument to use \SoilR's checks.
+So we are sure that the best numerical Fit is also biologically possible.
+\begin{figure}
+<<echo=true,print=FALSE,fig=TRUE>>=
+#pars=c(k1=-0.6,k2=-0.2)
+Dfinal=pf(Fit$par)
+    plot(Df$time,Df$C1,type="l",lty=lty1,
+         ylim=c(min(Df[,c("C1","C2")]),max(Df[,c("C1","C2")])),
+         col=c1)
+    lines(Df$time,Df$C2,lty=lty1,col=c2)
+    lines(Dfinal$time,Dfinal$C1,lty=lty2,col=c1)
+    lines(Dfinal$time,Dfinal$C2,lty=lty2,col=c2)
+@
+\end{figure}
+\begin{figure}
+<<echo=true,print=FALSE,fig=TRUE>>=
+    plot(Df$time,Df$R14t,type="l",lty=lty1,col=c1)
+    lines(Dfinal$time,Dfinal$R14t,lty=lty2,col=c2)
+@
+\end{figure}
+% begin Bayesian part
+Usually we are not only interested in the best fitting parameters, but rather in the distribution of the parameters. We can estimate it with a Monte Carlo Markov Chain method witch is also part of FME.  
+Once again we refer to the \FME vignette for details.
+\begin{figure}
+<<echo=true,print=false,fig=true>>=
+    #var0 <- Fit$var_ms_unweighted
+    #cov0 <- summary(Fit)$cov.scaled#*2.4^2/5
+    #p=Fit$par
+    niter=500
+    t1=Sys.time()
+    MCMC  <- modMCMC(f=DfCost,niter=niter,p=Fit$par)
+    t2=Sys.time()
+
+    print(t1-t2)
+    summary(MCMC)
+    plot(MCMC, Full = TRUE)
+@
+    \caption{The plot shows the accepted values for each parameter. It can be used to identify situations where there is doubt if the collected values represent the equilibrium distribution of the chain}
+\end{figure}
+\begin{figure}
+<<echo=true,print=false,fig=true>>=
+    sR=sensRange(func=pf, parInput=MCMC$par)
+    plot(summary(sR)
+         ,xlab="Years"
+     )
+@
+    \caption{The plot shows the range for the model output based on the estimated 
+    distribution of the parameters }
+\end{figure}
+
+\begin{figure}
+<<echo=true,print=false,fig=true>>=
+    pairs(MCMC, nsample = niter/4)
+@
+    \caption{This plot is the analogon of the pairs plot for the sensitivity}  
+\end{figure}
+
+
+\clearpage
+%\bibliographystyle{abbrvnat}
+\bibliography{../../../../../doc/SoilRv1/SoilR.bib}
+\end{document}

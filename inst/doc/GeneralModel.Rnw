@@ -3,7 +3,7 @@
 %\VignetteIndexEntry{TimeMap GeneralModel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add-on packages and fonts
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{Sweave}
@@ -24,7 +24,7 @@
 %\keywords{organic matter decomposition, compartment models, 
 %          linear dynamical systems}
 
-\author{Markus Müller\thanks{mamueller@bgc-jena.mpg.de} \ 
+\author{Markus M\"uller\thanks{mamueller@bgc-jena.mpg.de} \ 
      and Carlos A. Sierra\thanks{csierra@bgc-jena.mpg.de} \\ 
          Max Planck Institute for \\
          Biogeochemistry }
@@ -114,7 +114,7 @@ inconsistent model.
 <<>>=
 n=3;
 t_start=1;t_end=2
-At=TimeMap.new(
+At=new("DecompositionOperator",
   t_start,
   t_end,
   function(t0){
@@ -131,7 +131,7 @@ a function of time. We also choose the simplest
 possible case, which is a constant function of time
 producing a value of 0.05 .  
 <<>>= 
-inputFluxes=TimeMap.new(
+inputFluxes=new("TimeMap",
     t_start,
     t_end,
     function(t0){matrix(nrow=3,ncol=1,c(0.05,0,0))}
@@ -220,7 +220,7 @@ Y_rf=getReleaseFlux(mod)
 Similarly, it is possible to ask the \Model \ object for the accumulated release of
 carbon.  
 <<>>= 
-Y_r=getRelease(mod) 
+Y_r=getAccumulatedRelease(mod) 
 @
 %\begin{figure}
 \begin{center} 
@@ -314,7 +314,7 @@ A_0=matrix(nrow=n,ncol=n,byrow=TRUE,
      0.1, -0.7,    0,   
      0,    1/2,   -0.5)
 )
-A_t=TimeMap.new(
+A_t=new("DecompositionOperator",
   t_start,
   t_end,
   function(t0){xi(t0)*A_0}
@@ -334,7 +334,7 @@ inputFluxes=function(t0){
            )
     )
 }
-inputFluxes_tm=TimeMap.new(
+inputFluxes_tm=new("TimeMap",
     t_start,
     t_end,
     inputFluxes

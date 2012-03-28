@@ -11,7 +11,7 @@ fT.Standcarb<-structure(
      Q10=2      ##<< A scalar. Temperature coefficient Q10.
      )
    {
-     exp(-(Temp/(Topt+Tlag))^Tshape)*Q10^((Temp-10)/10)
+     exp(-1*(Temp/(Topt+Tlag))^Tshape)*Q10^((Temp-10)/10)
       ### A scalar or a vector containing the effects of temperature on decomposition rates (unitless).
     }
     ,

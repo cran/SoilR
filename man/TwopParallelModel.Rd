@@ -3,7 +3,8 @@
 \title{Implementation of a two pool model with parallel structure}
 \description{This function creates a model for two independent (parallel) pools. 
 It is a wrapper for the more general function \code{\link{ParallelModel}} that can handle an arbitrary number of pools.}
-\usage{TwopParallelModel(t, ks, C0, In, gam, xi = 1, solver = deSolve.lsoda.wrapper)}
+\usage{TwopParallelModel(t, ks, C0, In, gam, xi = 1, solver = deSolve.lsoda.wrapper, 
+    pass = FALSE)}
 \arguments{
   \item{t}{A vector containing the points in time where the solution is sought.}
   \item{ks}{A vector of length 2 containing the decomposition rates for the 2 pools.}
@@ -12,6 +13,7 @@ It is a wrapper for the more general function \code{\link{ParallelModel}} that c
   \item{gam}{A scalar representing the partitioning coefficient, i.e. the proportion from the total amount of inputs that goes to pool 1.}
   \item{xi}{A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates.}
   \item{solver}{A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.}
+  \item{pass}{Forces the constructor to create the model even if it is invalid}
 }
 
 \value{A Model Object that can be further queried }

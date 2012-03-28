@@ -16,7 +16,7 @@ fW.Standcarb<-structure(
       IncreaseRate=3/MoistMin  ##<< a parameter determining the point at which the matric limitation ends
       MatricLimit=(1-exp(-IncreaseRate*(Moist+MatricLag)))^MatricShape
       
-      DiffuseLimit=exp(-(Moist/(MoistMax+DiffuseLag))^DiffuseShape)
+      DiffuseLimit=exp(-1*(Moist/(MoistMax+DiffuseLag))^DiffuseShape)
       
       MoistDecayIndex=MatricLimit*DiffuseLimit
       

@@ -3,6 +3,7 @@
 \docType{class}
 \alias{TimeMap-class}
 \alias{TimeMap}
+\alias{as.character,TimeMap-method}
 \alias{getFunctionDefinition,TimeMap-method}
 \alias{getTimeRange,TimeMap-method}
 \alias{initialize,TimeMap-method}
@@ -15,10 +16,12 @@
     \item{\code{starttime}:}{Object of class \code{"numeric"}}
     \item{\code{endtime}:}{Object of class \code{"numeric"}}
     \item{\code{map}:}{Object of class \code{"function"}}
+    \item{\code{lag}:}{Object of class \code{"numeric"}}
   }
 }
 \section{Methods}{
   \describe{
+    \item{as.character}{\code{signature(x = "TimeMap")}: ... }
     \item{getFunctionDefinition}{\code{signature(object = "TimeMap")}: ... }
     \item{getTimeRange}{\code{signature(object = "TimeMap")}: ... }
     \item{initialize}{\code{signature(.Object = "TimeMap")}: ... }

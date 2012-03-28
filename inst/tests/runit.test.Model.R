@@ -56,10 +56,7 @@ test.correctnessOfModel.impossibleCoefficients=function(){
         )
       }
     )
-
-   res=correctnessOfModel(t,A,I)
-   target=FALSE
-   checkEquals(target, res, "correctnessOfModel should have returned FALSE because the matrix values indicate unbiological behavior (ruwsum should be smaller than zero), but has not")
+   checkException(new("Model",t,A,c(0,0,0),I), "correctnessOfModel should have returned FALSE because the matrix values indicate unbiological behavior (ruwsum should be smaller than zero), but has not")
 }
 test.correctnessOfModel.impossibleTimeRanges=function(){
    mess="correctnessOfModel should have returned FALSE, but has not"
@@ -93,8 +90,8 @@ test.correctnessOfModel.impossibleTimeRanges=function(){
         )
       }
     )
-   res=correctnessOfModel(t,A,I)
-   checkEquals(FALSE, res,mess)
+   
+   checkException(new("Model",t,A,c(0,0,0),I),mess)
    #now we do the same to the InputFluxes(t) while A(t) is correct 
    A=TimeMap.new(
       t_start,
@@ -116,10 +113,8 @@ test.correctnessOfModel.impossibleTimeRanges=function(){
         )
       }
     )
-   res=correctnessOfModel(t,A,I)
-   print("res=")
-   print(res)
-   checkEquals(FALSE, res,mess)
+   checkException(new("Model",t,A,c(0,0,0),I),mess)
+
    #we create an A(t) with sensible coeficients 
    #but where the time range ends to early 
 
@@ -143,8 +138,7 @@ test.correctnessOfModel.impossibleTimeRanges=function(){
         )
       }
     )
-   res=correctnessOfModel(t,A,I)
-   checkEquals(FALSE, res,mess)
+   checkException(new("Model",t,A,c(0,0,0),I),mess)
    #now we do the same to the InputFluxes(t) while A(t) is correct 
    A=TimeMap.new(
       t_start,
@@ -166,10 +160,7 @@ test.correctnessOfModel.impossibleTimeRanges=function(){
         )
       }
     )
-   res=correctnessOfModel(t,A,I)
-   print("res=")
-   print(res)
-   checkEquals(FALSE, res,mess)
+   checkException(new("Model",t,A,c(0,0,0),I),mess)
 }
 test.correctnessOfModel.correctModel=function(){
    t_start=0 
@@ -196,8 +187,8 @@ test.correctnessOfModel.correctModel=function(){
        )
      }
   )
-  res=correctnessOfModel(t,A,I)
-  target=TRUE
-  checkEquals(target, res, "correctnessOfModel should have returned TRUE because the model was correct, but has not")
-
+  res=new("Model",t,A,c(0,0,0),I)
+  print(class(res))
+  target="Model"
+  #checkEquals(target, class(res), "correctnessOfModel should have returned TRUE because the model was correct, but has not")
 }

@@ -3,8 +3,8 @@
 \docType{class}
 \alias{Model-class}
 \alias{Model}
+\alias{getAccumulatedRelease,Model-method}
 \alias{getC,Model-method}
-\alias{getRelease,Model-method}
 \alias{getReleaseFlux,Model-method}
 \alias{getTimes,Model-method}
 \alias{initialize,Model-method}
@@ -23,8 +23,8 @@
 }
 \section{Methods}{
   \describe{
+    \item{getAccumulatedRelease}{\code{signature(object = "Model")}: ... }
     \item{getC}{\code{signature(object = "Model")}: ... }
-    \item{getRelease}{\code{signature(object = "Model")}: ... }
     \item{getReleaseFlux}{\code{signature(object = "Model")}: ... }
     \item{getTimes}{\code{signature(object = "Model")}: ... }
     \item{initialize}{\code{signature(.Object = "Model")}: ... }

@@ -33,7 +33,7 @@ In = 30
 Ex=OnepModel(t,k,C0,In)
 Ct=getC(Ex)
 Rt=getReleaseFlux(Ex)
-Rc=getRelease(Ex)
+Rc=getAccumulatedRelease(Ex)
 
 plot(t,Ct,type="l",ylab="Carbon stocks (arbitrary units)",xlab="Time (arbitrary units)",lwd=2) 
 

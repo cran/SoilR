@@ -7,5 +7,10 @@ exportPattern(".")
 # Import all packages listed as Imports or Depends
 import(
   deSolve,
-  methods
+  methods,
+  hash,
+  FME,
+  MASS,
+  lattice,
+  ggplot2
 )

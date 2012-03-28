@@ -32,7 +32,7 @@ RothCModel<-structure(
           inputFluxes=TimeMap.new(
             t_start,
             t_end,
-            function(t){matrix(nrow=3,ncol=1,c(inputFlux(t)*(DR/(DR+1)),inputFlux(t)*(1/(DR+1)),0,0,0))}
+            function(t){matrix(nrow=5,ncol=1,c(inputFlux(t)*(DR/(DR+1)),inputFlux(t)*(1/(DR+1)),0,0,0))}
           )
         }
 
