@@ -17,6 +17,8 @@ An example data set for parameter estimation
   }
 }
 \examples{
+\dontrun{
+#requires package ggplot2
 library(ggplot2)
 data(CourseExample_R14)
 lty1=1
@@ -41,6 +43,6 @@ limits<- aes(ymax = R14t + sd, ymin=R14t - sd)
 p <- ggplot(data.frame(DataR14), aes(colour=c(1), y=R14t, x=time))
 p + geom_point() + geom_errorbar(limits, width=0.2)
 p + geom_pointrange(limits)
-
+}
 }
 \keyword{datasets}

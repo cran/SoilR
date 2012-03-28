@@ -13,9 +13,12 @@ An example data set for parameter estimation
   \describe{
     \item{\code{time}}{the year of the measurement}
     \item{\code{In}}{sum of inputrates of both pools}
+    \item{\code{sd}}{error}
   }
 }
 \examples{
+\dontrun{
+#requires package ggplot2
 library(ggplot2)
 data(CourseExample_R14)
 c1="pool 1"
@@ -44,6 +47,6 @@ p <- p+geom_point(aes(x=time,y=In,col="inputrate "))
 p <- p+scale_y_continuous(name="sum of input/y")
 p <- p+opts(legend.title=theme_blank())
 p
-
+}
 }
 \keyword{datasets}

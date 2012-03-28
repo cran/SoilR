@@ -19,7 +19,8 @@ TwopParallelModel14<-structure(
       t_stop=max(t)
       if(length(ks)!=2) stop("ks must be of length = 2")
       if(length(C0)!=2) stop("the vector with initial conditions must be of length = 2")
- 
+      if(gam > 1 | gam < 0) stop("The the partitioning coefficient gam is outside the interval [0,1]")
+      
       if(length(In)==1) inputrates=new("TimeMap",
         t_start,
         t_stop,

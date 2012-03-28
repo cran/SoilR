@@ -18,6 +18,7 @@ An example data set for parameter estimation
   }
 }
 \examples{
+\dontrun{
 library(ggplot2)
 data(CourseExample_R14)
 lty1=1
@@ -33,6 +34,6 @@ p <- p+geom_errorbar(aes(x=time,ymin=C1-sd,ymax=C1+sd,col=c1))
 p <- p+geom_point(aes(x=time,y=C2,col=c2)) 
 p <- p+geom_errorbar(aes(x=time,ymin=C2-sd,ymax=C2+sd,col=c2))
 p <- p+scale_y_continuous(name="C content of the pools")
-
+}
 }
 \keyword{datasets}

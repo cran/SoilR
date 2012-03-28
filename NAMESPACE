@@ -11,6 +11,5 @@ import(
   hash,
   FME,
   MASS,
-  lattice,
-  ggplot2
+  lattice
 )

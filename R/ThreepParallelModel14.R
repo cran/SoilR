@@ -19,6 +19,8 @@ ThreepParallelModel14<-structure(
     t_stop=max(t)
     if(length(ks)!=3) stop("ks must be of length = 3")
     if(length(C0)!=3) stop("the vector with initial conditions must be of length = 3")
+    if((gam1+gam2)^2 > 1) stop("The sum of the partitioning coefficients gam is outside the interval [0,1]")
+    if(gam1 < 0 | gam2 < 0) stop("Partitioning coefficients gam must be positive")
     
     if(length(In)==1) inputrates=new("TimeMap",
                                      t_start,
