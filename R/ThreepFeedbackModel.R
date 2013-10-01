@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 ThreepFeedbackModel<-structure(
     function #Implementation of a three pool model with feedback structure
     ### This function creates a model for three pools connected with feedback. It is a wrapper for the more general function \code{\link{GeneralModel}}.
@@ -10,7 +12,8 @@ ThreepFeedbackModel<-structure(
       C0,	##<< A vector containing the initial concentrations for the 3 pools. The length of this vector is 3
       In,     ##<< A data.frame object specifying the amount of litter inputs by time. 
       xi=1,  ##<< A scalar or data.frame object specifying the external (environmental and/or edaphic) effects on decomposition rates.
-      solver=deSolve.lsoda.wrapper  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      solver=deSolve.lsoda.wrapper,  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      pass=FALSE  ##<< if TRUE forces the constructor to create the model even if it is invalid 
     )	
     { 
       t_start=min(t)
@@ -41,14 +44,17 @@ ThreepFeedbackModel<-structure(
       A[3,2]=a32
       A[2,3]=a23
       
-      if(length(xi)==1) fX=function(t){xi}
+      if(length(xi)==1){
+	fX=function(t){xi}
+	Af=TimeMap.new(t_start,t_end,function(t) fX(t)*A)
+	}
       if(class(xi)=="data.frame"){
-        X=xi[,1]
-        Y=xi[,2]
+	X=xi[,1]
+      	Y=xi[,2]
         fX=splinefun(X,Y)
+	Af=TimeMap.new(min(X),max(X),function(t) fX(t)*A)
        }
-      Af=TimeMap.new(t_start,t_end,function(t) fX(t)*A)
-      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes)
+      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solver,pass)
      return(Mod)
 ### A Model Object that can be further queried 
       ##seealso<< \code{\link{ThreepParallelModel}}, \code{\link{ThreepSeriesModel}}
@@ -71,17 +77,50 @@ ThreepFeedbackModel<-structure(
       Ct=getC(Ex1)
       Rt=getReleaseFlux(Ex1)
       
-      plot(t,rowSums(Ct),type="l",ylab="Carbon stocks (arbitrary units)",xlab="Time (arbitrary units)",lwd=2,ylim=c(0,sum(Ct[51,]))) 
+      plot(
+        t,
+        rowSums(Ct),
+        type="l",
+        ylab="Carbon stocks (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2,
+        ylim=c(0,sum(Ct[51,]))
+      ) 
       lines(t,Ct[,1],col=2)
       lines(t,Ct[,2],col=4)
       lines(t,Ct[,3],col=3)
-      legend("topleft",c("Total C","C in pool 1", "C in pool 2","C in pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend(
+        "topleft",
+        c("Total C","C in pool 1", "C in pool 2","C in pool 3"),
+        lty=c(1,1,1,1),
+        col=c(1,2,4,3),
+        lwd=c(2,1,1,1),
+        bty="n"
+      )
 
-      plot(t,rowSums(Rt),type="l",ylab="Carbon released (arbitrary units)",xlab="Time (arbitrary units)",lwd=2,ylim=c(0,sum(Rt[51,]))) 
+      plot(
+        t,
+        rowSums(Rt),
+        type="l",
+        ylab="Carbon released (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2,
+        ylim=c(0,sum(Rt[51,]))
+      ) 
       lines(t,Rt[,1],col=2)
       lines(t,Rt[,2],col=4)
       lines(t,Rt[,3],col=3)
-      legend("topleft",c("Total C release","C release from pool 1", "C release from pool 2","C release from pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend(
+        "topleft",
+        c("Total C release",
+        "C release from pool 1",
+        "C release from pool 2",
+        "C release from pool 3"),
+        lty=c(1,1,1,1),
+        col=c(1,2,4,3),
+        lwd=c(2,1,1,1),
+        bty="n"
+      )
       
       Inr=data.frame(t,Random.inputs=rnorm(length(t),50,10))
       plot(Inr,type="l")
@@ -90,16 +129,36 @@ ThreepFeedbackModel<-structure(
       Ctr=getC(Ex2)
       Rtr=getReleaseFlux(Ex2)
       
-      plot(t,rowSums(Ctr),type="l",ylab="Carbon stocks (arbitrary units)",xlab="Time (arbitrary units)",lwd=2,ylim=c(0,sum(Ctr[51,]))) 
+      plot(
+        t,
+        rowSums(Ctr),
+        type="l",
+        ylab="Carbon stocks (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2,
+        ylim=c(0,sum(Ctr[51,]))
+      ) 
       lines(t,Ctr[,1],col=2)
       lines(t,Ctr[,2],col=4)
       lines(t,Ctr[,3],col=3)
-      legend("topright",c("Total C","C in pool 1", "C in pool 2","C in pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend("topright",c("Total C","C in pool 1", "C in pool 2","C in pool 3"),
+             lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
 
-      plot(t,rowSums(Rtr),type="l",ylab="Carbon released (arbitrary units)",xlab="Time (arbitrary units)",lwd=2,ylim=c(0,sum(Rtr[51,]))) 
+      plot(t,rowSums(Rtr),type="l",ylab="Carbon released (arbitrary units)",
+           xlab="Time (arbitrary units)",lwd=2,ylim=c(0,sum(Rtr[51,]))) 
       lines(t,Rtr[,1],col=2)
       lines(t,Rtr[,2],col=4)
       lines(t,Rtr[,3],col=3)
-      legend("topright",c("Total C release","C release from pool 1", "C release from pool 2","C release from pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend(
+        "topright",
+        c("Total C release",
+          "C release from pool 1",
+          "C release from pool 2",
+          "C release from pool 3"
+        ),
+        lty=c(1,1,1,1),
+        col=c(1,2,4,3),
+        lwd=c(2,1,1,1),
+        bty="n")
 }
 )

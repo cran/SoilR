@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 library("RUnit")
 c2f <- function(c) return(9/5 * c + 32)
 

@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 test.TimeMap=function(){
    tstart=0
    tend=0

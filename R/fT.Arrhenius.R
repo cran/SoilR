@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.Arrhenius<-structure(
   function #Effects of temperature on decomposition rates according the Arrhenius equation
     ### Calculates the effects of temperature on decomposition rates according to the Arrhenius equation.

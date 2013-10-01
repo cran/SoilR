@@ -5,17 +5,18 @@
 It is one of the constructors of class Model14 which is a subclass of Model
 It will be used by some more specialized wrapper functions like for instance but can also be used directly. It is in fact the most
 versatile interface to produce instances of class Model14. }
-\usage{GeneralModel_14(t, A, ivList, inputFluxes, Fc, di = -0.0001209681, 
+\usage{GeneralModel_14(t, A, ivList, initialValF, inputFluxes, Fc, di = -0.0001209681, 
     solverfunc = deSolve.lsoda.wrapper, pass = FALSE)}
 \arguments{
   \item{t}{A vector containing the points in time where the solution is sought.}
   \item{A}{A DecompositionOperator object consisting of  a matrix valued function describing the whole model decay rates for the n pools, connection and feedback coefficients as functions of time and a time range for which this function is valid. The size of the quadtratic matric must be equal to the number of pools. The time range must cover the times given in the first argument.}
-  \item{ivList}{A vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools and thus equal to the length of k. This is checked by the function \code{\link{correctnessOfModel}}.}
+  \item{ivList}{A vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools and thus equal to the length of k. This is checked by an internal function.}
+  \item{initialValF}{An object of class SoilR.F0 containing a vector with the initial values of the radiocarbon fraction for each pool and a format string describing in which format the values are given.}
   \item{inputFluxes}{A TimeMap object consisting of a vector valued function describing the inputs to the pools as funtions of time \code{\link{TimeMap.new}}.}
   \item{Fc}{A TimeMap object consisting of  a function describing the fraction of C_14 in per mille.}
   \item{di}{
 }
-  \item{solverfunc}{The function used by to actually solve the ODE system. This can be \code{\link{SoilR.euler}} or \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface.}
+  \item{solverfunc}{The function used by to actually solve the ODE system. This can be \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface.}
   \item{pass}{if TRUE Forces the constructor to create the model even if it is invalid}
 }
 
@@ -46,6 +47,7 @@ At=new(Class="DecompositionOperator",
 ) 
  
 c0=c(100, 100, 100)
+F0=SoilR.F0.new(c(0,10,10),"Delta14C")
 #constant inputrate
 inputFluxes=new(
   "TimeMap",
@@ -54,18 +56,17 @@ inputFluxes=new(
   function(t0){matrix(nrow=n,ncol=1,c(10,10,10))}
 ) 
 # we have a dataframe representing the C_14 fraction 
-# note that the time unit is in years.
+# note that the time unit is in years and the fraction is given in
+# the Absolute Fraction Modern format.
 # This means that all the other data provided are assumed to have the same value
 # This is especially true for the decay constants to be specified later
-data(C14Atm_NH)
-Fc=TimeMap.from.Dataframe(C14Atm_NH)
-#Fc=TimeMap.from.Dataframe(C14Atm_NH)
+Fc=FcAtm.from.Dataframe(C14Atm_NH,format="Delta14C")
 # add the C14 decay to the matrix which is done by a diagonal matrix which does not vary over time
 # we assume a half life th=5730 years
 th=5730
 k=log(0.5)/th #note that k is negative and has the unit y^-1
 
-mod=GeneralModel_14(t,At,c0,inputFluxes,Fc,k)
+mod=GeneralModel_14(t,At,c0,F0,inputFluxes,Fc,k)
 #start plots
 par(mfrow=c(3,2))
    lt1=1;  lt2=2; lt3=3 
@@ -101,7 +102,7 @@ par(mfrow=c(3,2))
    )
    #now plot the C14 Fraction in the atmosphere and compute the C14/C fraction of in the Soil 
 
-   FC14=getSoilC14Fraction(mod)
+   FC14=getF14(mod)
    plot(C14Atm_NH, type="l",xlim=c(1960,2010))
    lines(t,FC14[,1],lty=lt1,col=col1) 
    lines(t,FC14[,2],lt2,type="l",lty=lt2,col=col2) 
@@ -116,13 +117,30 @@ par(mfrow=c(3,2))
     
 #now compute the release flux
    Rt=getReleaseFlux(mod)
-   plot(t,Rt[,1],type="l",lty=lt1,col=col1,ylab="C Release Flux (arbitrary units)",xlab="Time",ylim=c(0,50)) 
+   plot(
+     t,
+     Rt[,1],
+     type="l",
+     lty=lt1,
+     col=col1,
+     ylab="C Release Flux (arbitrary units)",
+     xlab="Time",
+     ylim=c(0,50)
+   ) 
    lines(t,Rt[,2],lt2,type="l",lty=lt2,col=col2) 
    lines(t,Rt[,3],type="l",lty=lt3,col=col3) 
    legend("topleft",c("RF1","RF2","RF3"),lty=c(lt1,lt2,lt3),col=c(col1,col2,col3))
    #now compute the c14 release flux
    R14t=getReleaseFlux14(mod)/1000
-   plot(t,R14t[,1],type="l",lty=lt1,col=col1,ylab="C14 Release Flux (arbitrary units)",xlab="Time") 
+   plot(
+     t,
+     R14t[,1],
+     type="l",
+     lty=lt1,
+     col=col1,
+     ylab="C14 Release Flux (arbitrary units)",
+     xlab="Time"
+   ) 
    lines(t,R14t[,2],lt2,type="l",lty=lt2,col=col2) 
    lines(t,R14t[,3],type="l",lty=lt3,col=col3) 
    legend("topleft",c(
@@ -132,12 +150,18 @@ par(mfrow=c(3,2))
                     )
    ,lty=c(lt1,lt2,lt3),col=c(col1,col2,col3))
 
-R14m=getTotalReleaseFluxC14CRatio(mod)
-C14m=getTotalC14CRatio(mod)
+R14m=getF14R(mod)
+C14m=getF14C(mod)
 plot(C14Atm_NH, type="l",xlim=c(1960,2010),col=4)
 lines(t,C14m) 
 lines(t,R14m,col=2) 
-legend("topright",c("Atmosphere","Mean SOM-14C","Mean Release 14C"),lty=rep(1,3),col=c(4,1,2),bty="n")
+legend(
+  "topright",
+  c("Atmosphere","Mean SOM-14C","Mean Release 14C"),
+  lty=rep(1,3),
+  col=c(4,1,2),
+  bty="n"
+)
 
 par(mfrow=c(1,1))
 

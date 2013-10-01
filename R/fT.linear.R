@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.linear<-structure(
   function #Effects of temperature on decomposition rates according to a linear model
     ### Calculates the effects of temperature on decomposition rates according to a linear model.

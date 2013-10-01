@@ -22,5 +22,7 @@ in The potential of U.S. grazing lands to sequester carbon and mitigate the gree
 PPT=seq(0,1500,by=10)
 PET=rep(1500,length(PPT))
 PPT.PET=fW.Century(PPT,PET)
-plot(PPT/PET,PPT.PET, ylab="f(PPT, PET) (unitless)", main="Effects of precipitation and potential evapotranspiration on decomposition rates")
+plot(PPT/PET,PPT.PET, 
+     ylab="f(PPT, PET) (unitless)", 
+     main="Effects of precipitation and potential evapotranspiration on decomposition rates")
 }

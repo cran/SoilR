@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 NpYdot=function
 ### All the ode solvers need to be able to compute the derivative y'=y'(y,t) for all possible values of y and t.
 ### This funtion is used to create such a function suitable for the use by the odesolvers available in the package.  (\code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.)

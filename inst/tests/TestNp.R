@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 TestNp=function(){
    require(RUnit)
    t_start=0 

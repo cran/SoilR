@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 GeneralModel_14=structure(function #The most general costructor for class Model14
 ### The function creates a numerical model  for n arbitrarily connected pools.
 ### It is one of the constructors of class Model14 which is a subclass of Model
@@ -6,11 +8,12 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
 
 (t,	##<< A vector containing the points in time where the solution is sought.
  A,	##<< A DecompositionOperator object consisting of  a matrix valued function describing the whole model decay rates for the n pools, connection and feedback coefficients as functions of time and a time range for which this function is valid. The size of the quadtratic matric must be equal to the number of pools. The time range must cover the times given in the first argument. 
- ivList,##<< A vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools and thus equal to the length of k. This is checked by the function \code{\link{correctnessOfModel}}.
+ ivList,##<< A vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools and thus equal to the length of k. This is checked by an internal function.
+ initialValF, ##<< An object of class SoilR.F0 containing a vector with the initial values of the radiocarbon fraction for each pool and a format string describing in which format the values are given.
  inputFluxes, ##<< A TimeMap object consisting of a vector valued function describing the inputs to the pools as funtions of time \code{\link{TimeMap.new}}.
  Fc,##<< A TimeMap object consisting of  a function describing the fraction of C_14 in per mille.
  di=-0.0001209681, ## << the rate at which C_14 decays radioactivly. If you don't provide a value here we assume the following value: k=-0.0001209681 y^-1 . This has the side effect that all your time related data are treated as if the time unit was year. Thus beside time itself it also  affects decay rates the inputrates and the output of 
- solverfunc=deSolve.lsoda.wrapper,		##<< The function used by to actually solve the ODE system. This can be \code{\link{SoilR.euler}} or \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface. 
+ solverfunc=deSolve.lsoda.wrapper,		##<< The function used by to actually solve the ODE system. This can be \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface. 
  pass=FALSE  ##<< if TRUE Forces the constructor to create the model even if it is invalid 
  )
 {
@@ -20,7 +23,7 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
    #   print("error,  dimensions of ivList and A must be compatible")
    #   }
    #obj=new(Class="Model",t,A,ivList,inputFluxes,solverfunc)
-   obj=new(Class="Model_14",t,A,ivList,inputFluxes,Fc,di,solverfunc,pass=pass)
+   obj=new(Class="Model_14",t,A,ivList, initialValF,inputFluxes,Fc,di,solverfunc,pass=pass)
    return(obj)
    ### A model object that can be further queried. 
    ##seealso<< \code{\link{Model}} 
@@ -45,6 +48,7 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
       ) 
        
       c0=c(100, 100, 100)
+      F0=SoilR.F0.new(c(0,10,10),"Delta14C")
       #constant inputrate
       inputFluxes=new(
         "TimeMap",
@@ -53,18 +57,17 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
         function(t0){matrix(nrow=n,ncol=1,c(10,10,10))}
       ) 
       # we have a dataframe representing the C_14 fraction 
-      # note that the time unit is in years.
+      # note that the time unit is in years and the fraction is given in
+      # the Absolute Fraction Modern format.
       # This means that all the other data provided are assumed to have the same value
       # This is especially true for the decay constants to be specified later
-      data(C14Atm_NH)
-      Fc=TimeMap.from.Dataframe(C14Atm_NH)
-      #Fc=TimeMap.from.Dataframe(C14Atm_NH)
+      Fc=FcAtm.from.Dataframe(C14Atm_NH,format="Delta14C")
       # add the C14 decay to the matrix which is done by a diagonal matrix which does not vary over time
       # we assume a half life th=5730 years
       th=5730
       k=log(0.5)/th #note that k is negative and has the unit y^-1
 
-      mod=GeneralModel_14(t,At,c0,inputFluxes,Fc,k)
+      mod=GeneralModel_14(t,At,c0,F0,inputFluxes,Fc,k)
       #start plots
       par(mfrow=c(3,2))
          lt1=1;  lt2=2; lt3=3 
@@ -100,7 +103,7 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
          )
          #now plot the C14 Fraction in the atmosphere and compute the C14/C fraction of in the Soil 
 
-         FC14=getSoilC14Fraction(mod)
+         FC14=getF14(mod)
          plot(C14Atm_NH, type="l",xlim=c(1960,2010))
          lines(t,FC14[,1],lty=lt1,col=col1) 
          lines(t,FC14[,2],lt2,type="l",lty=lt2,col=col2) 
@@ -115,13 +118,30 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
     
       #now compute the release flux
          Rt=getReleaseFlux(mod)
-         plot(t,Rt[,1],type="l",lty=lt1,col=col1,ylab="C Release Flux (arbitrary units)",xlab="Time",ylim=c(0,50)) 
+         plot(
+           t,
+           Rt[,1],
+           type="l",
+           lty=lt1,
+           col=col1,
+           ylab="C Release Flux (arbitrary units)",
+           xlab="Time",
+           ylim=c(0,50)
+         ) 
          lines(t,Rt[,2],lt2,type="l",lty=lt2,col=col2) 
          lines(t,Rt[,3],type="l",lty=lt3,col=col3) 
          legend("topleft",c("RF1","RF2","RF3"),lty=c(lt1,lt2,lt3),col=c(col1,col2,col3))
          #now compute the c14 release flux
          R14t=getReleaseFlux14(mod)/1000
-         plot(t,R14t[,1],type="l",lty=lt1,col=col1,ylab="C14 Release Flux (arbitrary units)",xlab="Time") 
+         plot(
+           t,
+           R14t[,1],
+           type="l",
+           lty=lt1,
+           col=col1,
+           ylab="C14 Release Flux (arbitrary units)",
+           xlab="Time"
+         ) 
          lines(t,R14t[,2],lt2,type="l",lty=lt2,col=col2) 
          lines(t,R14t[,3],type="l",lty=lt3,col=col3) 
          legend("topleft",c(
@@ -131,12 +151,18 @@ GeneralModel_14=structure(function #The most general costructor for class Model1
                           )
          ,lty=c(lt1,lt2,lt3),col=c(col1,col2,col3))
 
-      R14m=getTotalReleaseFluxC14CRatio(mod)
-      C14m=getTotalC14CRatio(mod)
+      R14m=getF14R(mod)
+      C14m=getF14C(mod)
       plot(C14Atm_NH, type="l",xlim=c(1960,2010),col=4)
       lines(t,C14m) 
       lines(t,R14m,col=2) 
-      legend("topright",c("Atmosphere","Mean SOM-14C","Mean Release 14C"),lty=rep(1,3),col=c(4,1,2),bty="n")
+      legend(
+        "topright",
+        c("Atmosphere","Mean SOM-14C","Mean Release 14C"),
+        lty=rep(1,3),
+        col=c(4,1,2),
+        bty="n"
+      )
       
       par(mfrow=c(1,1))
 

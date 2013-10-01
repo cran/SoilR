@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 require(RUnit)
 test.OnepModel=function(){
    attr(OnepModel,"ex")()
@@ -26,8 +28,11 @@ test.ParallelModel=function(){
 test.GeneralModel=function(){
   attr(GeneralModel,"ex")()
 }
-test.ICBMModle=function(){
+test.ICBMModel=function(){
   attr(ICBMModel,"ex")()
+}
+test.RothCModel=function(){
+  attr(RothCModel,"ex")()
 }
 test.correctnessOfModel.impossibleCoefficients=function(){
    t_start=0 

@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.Demeter<-structure(
   function #effects of temperature on decomposition rates according to the DEMETER model
     ### Calculates the effects of temperature on decomposition rates according to the DEMETER model.

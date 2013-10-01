@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fW.RothC<- structure(
     function #Effects of moisture on decomposition rates according to the RothC model
         ###Calculates the effects of moisture (precipitation and pan evaporation) on decomposition rates according to the RothC model.
@@ -30,7 +32,8 @@ fW.RothC<- structure(
  
      b=ifelse(Acc.TSMD > 0.444*Max.TSMD,1,(0.2+0.8*((Max.TSMD-Acc.TSMD)/(Max.TSMD-0.444*Max.TSMD))))
      return(data.frame(Acc.TSMD,b))
-     ### A data.frame with accumulated top soil moisture deficit (Acc.TSMD) and the rate modifying factor b. 
+     ### A data.frame with accumulated top soil moisture deficit 
+     ### (Acc.TSMD) and the rate modifying factor b. 
      }
      ,
     ex=function(){
@@ -38,7 +41,8 @@ fW.RothC<- structure(
        E=c(8,10,27,49,83,99,103,91,69,34,16,8)  #Monthly open pan evaporation (mm)
        
        Rothamsted=fW.RothC(P,E)
-       data.frame(month.name,P,E,0.75*E,P-0.75*E,Rothamsted)  # This reproduces Table 1 in the RothC documentation (Coleman and Jenkinson 1999)
+       data.frame(month.name,P,E,0.75*E,P-0.75*E,Rothamsted)  
+       # This reproduces Table 1 in the RothC documentation (Coleman and Jenkinson 1999)
        
     }        
 )

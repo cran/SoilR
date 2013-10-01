@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 TwopParallelAnalytical<-structure(function
 ### The function computes the solution for two independent (parallel) pools analytically
 (

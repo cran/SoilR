@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 TwopFeedbackModel<-structure(
     function #Implementation of a two pool model with feedback structure
     ### This function creates a model for two pools connected with feedback. It is a wrapper for the more general function \code{\link{GeneralModel}}.
@@ -8,7 +10,8 @@ TwopFeedbackModel<-structure(
       C0,	##<< A vector of length 2 containing the initial amount of carbon for the 2 pools.
       In,     ##<< A data.frame object specifying the amount of litter inputs by time. 
       xi=1,  ##<< A scalar or data.frame object specifying the external (environmental and/or edaphic) effects on decomposition rates.
-      solver=deSolve.lsoda.wrapper  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      solver=deSolve.lsoda.wrapper,  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      pass=FALSE  ##<< if TRUE forces the constructor to create the model even if it is invalid 
     )	
     { 
       t_start=min(t)
@@ -28,8 +31,8 @@ TwopFeedbackModel<-structure(
          y=In[,2]  
          inputFlux=splinefun(x,y)
          inputFluxes=TimeMap.new(
-            t_start,
-            t_end,
+            min(x),
+            max(x),
             function(t){matrix(nrow=2,ncol=1,c(inputFlux(t),0))}
          )
         }
@@ -48,7 +51,7 @@ TwopFeedbackModel<-structure(
         t_end,
         function(t){fX(t)*A}
       )
-      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes)
+      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solver,pass)
      return(Mod)
 ### A Model Object that can be further queried 
       ##seealso<< \code{\link{TwopParallelModel}}, \code{\link{TwopSeriesModel}} 

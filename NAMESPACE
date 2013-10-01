@@ -1,15 +1,80 @@
-# Default NAMESPACE created by R
-# Remove the previous line if you edit this file
-
-# Export all names
-exportPattern(".")
-
-# Import all packages listed as Imports or Depends
-import(
-  deSolve,
-  methods,
-  hash,
-  FME,
-  MASS,
-  lattice
+importFrom(parallel,mclapply,mcmapply,detectCores)
+importFrom(deSolve,lsoda)
+import(methods)
+export(
+AbsoluteFractionModern_from_Delta14C,
+Delta14C_from_AbsoluteFractionModern,
+FcAtm.from.Dataframe,
+GaudinskiModel14,
+GeneralModel,
+GeneralModel_14,
+ICBMModel,
+OnepModel,
+OnepModel14,
+ParallelModel,
+RespirationCoefficients,
+RothCModel,
+SoilR.F0.new,
+ThreepFeedbackModel,
+ThreepFeedbackModel14,
+ThreepParallelModel,
+ThreepParallelModel14,
+ThreepSeriesModel,
+ThreepSeriesModel14,
+TimeMap.from.Dataframe,
+TimeMap.new,
+TwopFeedbackModel,
+TwopFeedbackModel14,
+TwopParallelModel,
+TwopParallelModel14,
+TwopSeriesModel,
+TwopSeriesModel14,
+fT.Arrhenius,
+fT.Century1,
+fT.Century2,
+fT.Daycent1,
+fT.Daycent2,
+fT.Demeter,
+fT.KB,
+fT.LandT,
+fT.Q10,
+fT.RothC,
+fT.Standcarb,
+fT.linear,
+fW.Candy,
+fW.Century,
+fW.Daycent1,
+fW.Daycent2,
+fW.Demeter,
+fW.Gompertz,
+fW.Moyano,
+fW.RothC,
+fW.Skopp,
+fW.Standcarb,
+linesCPool,
+plotC14Pool,
+plotCPool,
+print,
+plot,
+summary,
+getAccumulatedRelease,
+getC,
+getC14,
+getF14,
+getF14C,
+getF14R,
+getFunctionDefinition,
+getReleaseFlux,
+getReleaseFlux14,
+getTimeRange,
+getTimes,
+as.character,
+deSolve.lsoda.wrapper
+)
+exportClasses(
+Model,
+Model_14,
+TimeMap
+)
+exportMethods(
 )

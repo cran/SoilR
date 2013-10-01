@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 ##########################################################
 setClass(# decomposition operator 
     Class="InputFlux",
@@ -13,4 +15,3 @@ setMethod(
         Object <- callNextMethod(.Object,starttime,endtime,map)
      }
 )
-##########################################################

@@ -1,7 +1,7 @@
 \name{TimeMap.new}
 \alias{TimeMap.new}
-\title{TimeMap new}
-\description{This function is the basic constructor of the class TimeMap.}
+\title{basic constructor of the class TimeMap.}
+\description{A TimeMap is nothing more than an usual R-function of one argument augmented by the lower and upper boundary of the interval where it is defined.}
 \usage{TimeMap.new(t_start, t_end, f)}
 \arguments{
   \item{t_start}{A number marking the begin of the time domain where the function is valid}

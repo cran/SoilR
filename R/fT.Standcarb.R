@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.Standcarb<-structure(
   function #effects of temperature on decomposition rates according to the StandCarb model
     ### Calculates the effects of temperature on decomposition rates according to the StandCarb model.

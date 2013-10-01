@@ -1,9 +1,8 @@
 #!/usr/bin/Rscript
+# vim:set ff=unix expandtab ts=2 sw=2:
 source("prolog.R")
 alltests <- defineTestSuite(
    name="allTests",
-   #dirs = file.path(.path.package(package="SoilR"),
-   #"tests"),
    dirs=".",
    testFileRegexp = "^runit.+\\.[rR]",
    testFuncRegexp = "^test.+",

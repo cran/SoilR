@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 test.checkSizes_AunequalV=function(){
    t_start=0 
    t_end=10 

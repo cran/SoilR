@@ -3,10 +3,10 @@
 \docType{class}
 \alias{TimeMap-class}
 \alias{TimeMap}
-\alias{as.character,TimeMap-method}
-\alias{getFunctionDefinition,TimeMap-method}
-\alias{getTimeRange,TimeMap-method}
-\alias{initialize,TimeMap-method}
+%% \alias{as.character}
+%% \alias{getFunctionDefinition}
+%% \alias{getTimeRange}
+%% \alias{initialize}
 
 \title{TimeMap S4 class}
 \description{defines a (time dependent) mapping including the function definition and the ### domain where the function is well define.  This can be used to avoid interpolations out of range when mixing different time dependent data sets}
@@ -24,7 +24,6 @@
     \item{as.character}{\code{signature(x = "TimeMap")}: ... }
     \item{getFunctionDefinition}{\code{signature(object = "TimeMap")}: ... }
     \item{getTimeRange}{\code{signature(object = "TimeMap")}: ... }
-    \item{initialize}{\code{signature(.Object = "TimeMap")}: ... }
 	 }
 }
 

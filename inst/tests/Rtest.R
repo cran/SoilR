@@ -1,13 +1,18 @@
 #!/usr/bin/Rscript
+# vim:set ff=unix expandtab ts=2 sw=2:
 source("prolog.R")
-#attr(GeneralModel_14,"ex")()
-#Res=runTestFile("runit.test.Model.R")
-#Res=runTestFile("runit.manuell.Manzoni.TwopFeedback.R")
-#Res=runTestFile("runit.automatic.Manzoni.op.R")
-#Res=unTestFile("runit.test.FEM.R")
-#Res=runTestFile("runit.test.checkSizes.R")
-Res=runTestFile("runit.manuel.help.R")
-printTextProtocol(Res)
-ef=getErrors(Res)
+alltests <- defineTestSuite(
+   name="allTests",
+   dirs=".",
+   testFileRegexp = "^runit.ThreepFeedback_MCSim.R",
+  # testFileRegexp = "^runit.check.pass.R",
+   #testFileRegexp = "^runit.testNumberOfPools+\\.[rR]",
+   testFuncRegexp = "^test.+",
+)
+
+testResult <- runTestSuite(alltests)
+printTextProtocol(testResult)
+#produce exitstatus ne 0 for buildbot to notice
+ef=getErrors(testResult)
 n=ef$nErr+ef$nFail
 if (n>0) {stop(1)}

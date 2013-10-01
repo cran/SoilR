@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 # vim: set expandtab ts=4
 HIV_R <-function
 ### a test function to be put somewhere else soon

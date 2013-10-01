@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fW.Daycent2<-structure(
   function ##Effects of moisture on decomposition rates according to the DAYCENT model
     ### Calculates the effects of volumetric water content on decomposition rates according to the Daycent/Century models.

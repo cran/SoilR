@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 # This test function is automatically produced by the python script:/home/mm/SoilR/RPackages/SoilR/pkg/inst/tests/Rexample.py
 test.op=function(){
    require(RUnit)
@@ -57,7 +59,7 @@ meanTransitTime=1/k1
    lt1=2
    lt2=4
    pdf(file="runit.automatic.op.pdf",paper="a4")
-   m=matrix(c(1,2,3),3,1,byrow=TRUE)
+   m=matrix(c(1,2,3,4),4,1,byrow=TRUE)
    layout(m)
    plot(t,Y[,1],type="l",lty=lt1,col=1,ylab="Concentrations",xlab="Time")
    lines(t,Yode[,1],type="l",lty=lt2,col=1)

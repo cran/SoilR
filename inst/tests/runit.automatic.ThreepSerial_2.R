@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 # This test function is automatically produced by the python script:/home/mm/SoilR/RPackages/SoilR/pkg/inst/tests/Rexample.py
 test.ThreepSerial_2=function(){
    require(RUnit)
@@ -8,7 +10,7 @@ test.ThreepSerial_2=function(){
    print(tol)
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
-   A=new("DecompositionOperator",t_start,t_end,function(t){matrix(
+   A=new("DecompositionOperator",t_start,Inf,function(t){matrix(
      nrow=3,
      ncol=3,
      c(
@@ -52,7 +54,7 @@ test.ThreepSerial_2=function(){
    lt1=2
    lt2=4
    pdf(file="runit.automatic.ThreepSerial_2.pdf",paper="a4")
-   m=matrix(c(1,2),2,1,byrow=TRUE)
+   m=matrix(c(1,2,3,4),4,1,byrow=TRUE)
    layout(m)
    plot(t,Y[,1],type="l",lty=lt1,col=1,ylab="Concentrations",xlab="Time")
    lines(t,Yode[,1],type="l",lty=lt2,col=1)

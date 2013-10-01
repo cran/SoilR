@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fW.Demeter<-structure(
   function #Effects of moisture on decomposition rates according to the DEMETER model
     ### Calculates the effects of soil moisture on decomposition rates according to the DEMETER model.

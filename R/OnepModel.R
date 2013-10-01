@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 OnepModel<-structure(
     function #Implementation of a one pool model 
     ### This function creates a model for one pool. It is a wrapper for the more general function \code{\link{GeneralModel}}.
@@ -6,7 +8,8 @@ OnepModel<-structure(
       C0,	##<< A scalar containing the initial amount of carbon in the pool.
       In,     ##<< A scalar or a data.frame object specifying the amount of litter inputs by time. 
       xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-      solver=deSolve.lsoda.wrapper  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      solver=deSolve.lsoda.wrapper,  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      pass=FALSE  ##<< if TRUE forces the constructor to create the model even if it is invalid 
     )	
     { 
       t_start=min(t)
@@ -23,14 +26,18 @@ OnepModel<-structure(
         )
       }
       if(class(In)=="data.frame"){
+         print("blubberer")
+	 print(class(In))
          x=In[,1]  
+	 print(min(x))
          y=In[,2]  
          inputFlux=splinefun(x,y)
           inputFluxes=TimeMap.new(
-            t_start,
-            t_end,
+            min(x),
+            max(x),
             function(t){matrix(nrow=1,ncol=1,inputFlux(t))}
           )
+	  print(inputFluxes)
         }
       A=-1*abs(matrix(k,1,1))
       
@@ -45,7 +52,7 @@ OnepModel<-structure(
         t_end,
         function(t){fX(t)*A}
       )
-      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes)
+      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solver,pass)
      return(Mod)
 ### A Model Object that can be further queried 
       ##seealso<< \code{\link{TwopParallelModel}},\code{\link{TwopFeedbackModel}} 
@@ -67,11 +74,32 @@ OnepModel<-structure(
       Rt=getReleaseFlux(Ex)
       Rc=getAccumulatedRelease(Ex)
       
-      plot(t,Ct,type="l",ylab="Carbon stocks (arbitrary units)",xlab="Time (arbitrary units)",lwd=2) 
+      plot(
+        t,
+        Ct,
+        type="l",
+        ylab="Carbon stocks (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2
+      ) 
       
-      plot(t,Rt,type="l",ylab="Carbon released (arbitrary units)",xlab="Time (arbitrary units)",lwd=2) 
+      plot(
+        t,
+        Rt,
+        type="l",
+        ylab="Carbon released (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2
+      ) 
       
-      plot(t,Rc,type="l",ylab="Cummulative carbon released (arbitrary units)",xlab="Time (arbitrary units)",lwd=2) 
+      plot(
+        t,
+        Rc,
+        type="l",
+        ylab="Cummulative carbon released (arbitrary units)",
+        xlab="Time (arbitrary units)",
+        lwd=2
+      ) 
 
 }
 )

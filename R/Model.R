@@ -1,4 +1,6 @@
-correctnessOfModel=function
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
+correctnessOfModel=function #check for unreasonable input parameters
 ### The parameters used by the function \code{\link{GeneralModel}} in SoilR have a biological meaning, and therefore cannot be arbitrary.
 ### This functions tests some of the obvious constraints of the general model. 
 ### Up to now these are:
@@ -98,6 +100,7 @@ setClass(# Model
 )
 
 
+#########################################################
 setMethod(
     f="initialize",
     signature="Model",
@@ -137,36 +140,68 @@ setMethod(
         return(.Object)
     }
 )
-##defining Constructors
-##The constructors are defined in seperate files which end with Model
-
-setGeneric ( # This function 
-   name= "getTimes",
-   def=function(# access to the time values the model solution is sougth for 
-    ### This functions extracts the times argument
-	object
-	){standardGeneric("getTimes")}
+#########################################################
+setMethod(
+   f= "plot",
+      signature(x="Model"),
+      definition=function(x){
+      ### This function is a stub
+      # It only starts the thing ...    
+      plot(getTimes(x),getC(x)[,1])
+   }
 )
+#########################################################
+setMethod(
+   f= "print",
+      signature(x="Model"),
+      definition=function(x){
+      ### This function is a stub
+      # It only starts the thing ...    
+      print("Hi there I am the method print for model objects. Change me if you can")
+      print(getC(x)[,1])
+   }
+)
+#########################################################
+setMethod(
+   f= "summary",
+      signature(object="Model"),
+      definition=function(object){
+      ### This function is a stub
+      # It only starts the thing ...    
+      print("Hi there, I am the method summarize for model objects. 
+            I summarize everything....")
+      print(getC(object)[,1])
+   }
+)
+#########################################################
+setMethod(
+   f= "show",
+      signature(object="Model"),
+      definition=function(object){
+      ### This function is a stub
+      # It only starts the thing ...    
+      print("Hi there I am the method show for model objects")
+      print(getC(object)[,1])
+   }
+)
+
+#########################################################
 setMethod(
    f= "getTimes",
       signature= "Model",
       definition=function(object){
       ### This functions extracts the times argument from an argument of class Model
-      return(object@times)
+         times=matrix(ncol=1,object@times)
+         colnames(times)="times"
+      return(times)
    }
 )
-setGeneric ( # This function 
-   name= "getC",
-   def=function(# access to the C content of the pools 
-    ### This function computes the value for C (mass or concentration ) as function of time
-	object
-	){standardGeneric("getC")}
-)
+#########################################################
 setMethod(
    f= "getC",
       signature= "Model",
       definition=function(object){
-      ### This function computes the value for C (mass or concentration ) as function of time
+      ### This function computes the value for C 
       ns=length(object@initialValues)
       Atm=object@mat
       #print(Atm)
@@ -179,18 +214,15 @@ setMethod(
       #print(ydot)
       sVmat=matrix(object@initialValues,nrow=ns,ncol=1)
       Y=solver(object@times,ydot,sVmat,object@solverfunc) 
+      
       #print(Y)
       ### A matrix. Every column represents a pool and every row a point in time
+      f=function(i){paste("C",i,sep="")}
+      #colnames(Y)=sapply((1:ncol(Y)),f)
       return(Y)
    }
 )
-setGeneric ( # This function 
-   name= "getReleaseFlux",
-   def=function(# access to the C content of the pools 
-   ### This function computes the overall  carbon release of the given model as funtion of time 
-	object
-	){standardGeneric("getReleaseFlux")}
-)
+#########################################################
 setMethod(
    f= "getReleaseFlux",
       signature= "Model",
@@ -211,21 +243,16 @@ setMethod(
       #print(dim(r))
       R=r*C
       ### A matrix. Every column represents a pool and every row a point in time
+      f=function(i){paste("ReleaseFlux",i,sep="")}
+      #colnames(R)=sapply((1:ncol(R)),f)
       return(R)
    }
 )
-setGeneric ( # This function 
-   name= "getAccumulatedRelease",
-   def=function(# access to the C content of the pools 
-   ### This function computes the overall  carbon release of the given model as funtion of time 
-	object
-	){standardGeneric("getAccumulatedRelease")}
-)
+#########################################################
 setMethod(
    f= "getAccumulatedRelease",
       signature= "Model",
       definition=function(object){
-      ### This function integrates the release Flux over time
       times=object@times
       R=getReleaseFlux(object)
       n=ncol(R)
@@ -257,8 +284,40 @@ setMethod(
       }
       sVmat=matrix(0,nrow=n,ncol=1)
       Y=solver(object@times,rdot,sVmat,object@solverfunc)
-      #### A matrix. Every column represents a pool and every row a point in time
+      f=function(i){paste("AccumulatedRelease",i,sep="")}
+      #colnames(Y)=sapply((1:ncol(Y)),f)
       return(Y)
    }
 )
-##########################################################
+# overload the [] operator
+#########################################################
+setMethod("[",signature(x="Model",i="character"), #since [] is a already defined generic the names of the arguments are not arbitrary 
+        definition=function(x,i){
+            getSingleCol=function(slot_name){
+                res=""
+                #print(paste(sep="",">",slot_name,"<"))
+                if(slot_name=="times"){ res=getTimes(x)}
+                if(slot_name=="C"){ res=getC(x)}
+                if(slot_name=="ReleaseFlux"){ res=getReleaseFlux(x)}
+                if(slot_name=="AccumulatedRelease"){ res=getAccumulatedRelease(x)}
+                #if(res==""){stop(paste("The slot",slot_name,"is not defined"))}
+                return(res)
+            }
+            n=length(i)
+            df=getSingleCol(i[1])
+            if (n>1){
+                for (k in 2:n){
+                    df=cbind(df,getSingleCol(i[k]))
+                }
+            }
+            return(df)
+        }
+)
+# overload the $ operator
+#########################################################
+setMethod("$",signature(x="Model"), #since $ is a already defined generic the names of the arguments are not arbitrary 
+        definition=function(x,name){
+            return(x[name])
+        }
+)
+

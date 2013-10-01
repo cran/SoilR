@@ -17,5 +17,7 @@ Modeling soil CO2 emissions from ecosystems, Biogeochemistry, 73(1), 71-91.}
 
 \examples{
 Temperature=0:50
-plot(Temperature,fT.Daycent2(Temperature),type="l",ylab="f(T) (unitless)",main="Effects of temperature on decomposition rates according to the DAYCENT model")
+plot(Temperature,fT.Daycent2(Temperature),type="l",
+     ylab="f(T) (unitless)",
+     main="Effects of temperature on decomposition rates according to the DAYCENT model")
 }

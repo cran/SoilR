@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.Century2<-structure(
   function #Effects of temperature on decomposition rates according the the CENTURY model
     ### Calculates the effects of temperature on decomposition rates according to the CENTURY model.
@@ -14,6 +16,8 @@ fT.Century2<-structure(
     ,
     ex=function(){
       Temperature=0:50
-      plot(Temperature,fT.Century2(Temperature),type="l",ylab="f(T) (unitless)",main="Effects of temperature on decomposition rates according to the Century model")
+      plot(Temperature,fT.Century2(Temperature),type="l",
+           ylab="f(T) (unitless)",
+           main="Effects of temperature on decomposition rates according to the Century model")
     }
 )

@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 ThreepParallelModel=structure(
       function #Implementation of a three pool model with parallel structure
         ### The function creates a model for three independent (parallel) pools. It is a wrapper for the more general function
@@ -5,12 +7,13 @@ ThreepParallelModel=structure(
       (
        t,	##<< A vector containing the points in time where the solution is sought.
        ks,  ##<< A vector of length 3 containing the decomposition rates for the 3 pools. 
-       C0,	##<< A vector of length 2 containing the initial amount of carbon for the 2 pools.
+       C0,	##<< A vector of length 3 containing the initial amount of carbon for the 3 pools.
        In,     ##<< A scalar or a data.frame object specifying the amount of litter inputs by time.
        gam1,   ##<< A scalar representing the partitioning coefficient, i.e. the proportion from the total amount of inputs that goes to pool 1.
        gam2,   ##<< A scalar representing the partitioning coefficient, i.e. the proportion from the total amount of inputs that goes to pool 2.
        xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-       solver=deSolve.lsoda.wrapper 	##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+       solver=deSolve.lsoda.wrapper, 	##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+       pass=FALSE
       )
       {
         t_start=min(t)
@@ -30,8 +33,8 @@ ThreepParallelModel=structure(
          y=In[,2]  
          inputrate=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
          inputrates_tm=TimeMap.new(
-            t_start,
-            t_end,
+            min(x),
+            max(x),
             function(t){matrix(nrow=3,ncol=1,c(gam1*inputrate(t),gam2*inputrate(t),(1-gam1-gam2)*inputrate(t)))}
          )
         }
@@ -45,7 +48,7 @@ ThreepParallelModel=structure(
       
       coeffs_tm=TimeMap.new(min(t),max(t),function(times){fX(t)*(-1*abs(ks))})  
         
-     res=ParallelModel(t,coeffs_tm,startvalues=C0,inputrates_tm,solver)
+     res=ParallelModel(t,coeffs_tm,startvalues=C0,inputrates_tm,solver,pass=pass)
    ### A  Model Object that can be further queried
    ##seealso<< \code{\link{TwopParallelModel}} and \code{\link{ParallelModel}} 
 }
@@ -57,21 +60,27 @@ ex=function(){
       timestep=(t_end-t_start)/tn 
       t=seq(t_start,t_end,timestep) 
 
-      Ex=ThreepParallelModel(t,ks=c(k1=0.5,k2=0.2,k3=0.1),C0=c(c10=100, c20=150,c30=50),In=20,gam1=0.7,gam2=0.1,xi=0.5)
+      Ex=ThreepParallelModel(t,ks=c(k1=0.5,k2=0.2,k3=0.1),
+                             C0=c(c10=100, c20=150,c30=50),In=20,gam1=0.7,gam2=0.1,xi=0.5)
       Ct=getC(Ex)
 
-      plot(t,rowSums(Ct),type="l",lwd=2,ylab="Carbon stocks (arbitrary units)",xlab="Time",ylim=c(0,sum(Ct[1,]))) 
+      plot(t,rowSums(Ct),type="l",lwd=2,
+           ylab="Carbon stocks (arbitrary units)",xlab="Time",ylim=c(0,sum(Ct[1,]))) 
       lines(t,Ct[,1],col=2)
       lines(t,Ct[,2],col=4)
       lines(t,Ct[,3],col=3)
-      legend("topright",c("Total C","C in pool 1", "C in pool 2","C in pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend("topright",c("Total C","C in pool 1", "C in pool 2","C in pool 3"),
+             lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
       
       Rt=getReleaseFlux(Ex)
-      plot(t,rowSums(Rt),type="l",ylab="Carbon released (arbitrary units)",xlab="Time",lwd=2,ylim=c(0,sum(Rt[1,]))) 
+      plot(t,rowSums(Rt),type="l",ylab="Carbon released (arbitrary units)",
+           xlab="Time",lwd=2,ylim=c(0,sum(Rt[1,]))) 
       lines(t,Rt[,1],col=2)
       lines(t,Rt[,2],col=4)
       lines(t,Rt[,3],col=3)
-      legend("topright",c("Total C release","C release from pool 1", "C release from pool 2","C release from pool 3"),lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
+      legend("topright",c("Total C release","C release from pool 1",
+             "C release from pool 2","C release from pool 3"),
+              lty=c(1,1,1,1),col=c(1,2,4,3),lwd=c(2,1,1,1),bty="n")
 }
 )       
 

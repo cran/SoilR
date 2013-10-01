@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 SoilR.euler=function
 ### This function can solve arbitrary first order ode systems with the euler forward 
 ### method and an

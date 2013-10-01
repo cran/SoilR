@@ -1,7 +1,7 @@
 \name{getTimes}
 \alias{getTimes}
-\title{access to the time values the model solution is sougth for }
-\description{This functions extracts the times argument}
+\title{extract the times argumen}
+\description{This functions extracts the times argument from an argument of class NlModel}
 \usage{getTimes(object)}
 \arguments{
   \item{object}{

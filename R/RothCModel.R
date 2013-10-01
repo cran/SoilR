@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 RothCModel<-structure(
     function #Implementation of the RothCModel
     ### This function implements the RothC model of Jenkinson et al. It is a wrapper for the more general function \code{\link{GeneralModel}}.
@@ -10,7 +12,8 @@ RothCModel<-structure(
       DR=1.44, ##<< A scalar representing the ratio of decomposable plant material to resistant plant material (DPM/RPM).
       clay=23.4, ##<< Percent clay in mineral soil. 
       xi=1,  ##<< A scalar or data.frame object specifying the external (environmental and/or edaphic) effects on decomposition rates.
-      solver=deSolve.lsoda.wrapper  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      solver=deSolve.lsoda.wrapper,  ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
+      pass=FALSE  ##<< if TRUE forces the constructor to create the model even if it is invalid 
     )	
     { 
       t_start=min(t)
@@ -30,8 +33,8 @@ RothCModel<-structure(
          y=In[,2]  
          inputFlux=splinefun(x,y)
           inputFluxes=TimeMap.new(
-            t_start,
-            t_end,
+            min(x),
+            max(x),
             function(t){matrix(nrow=5,ncol=1,c(inputFlux(t)*(DR/(DR+1)),inputFlux(t)*(1/(DR+1)),0,0,0))}
           )
         }
@@ -58,7 +61,7 @@ RothCModel<-structure(
             t_end,
             function(t){fX(t)*A}
       )
-      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes)
+      Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solverfunc=solver,pass=pass)
      return(Mod)
 ### A Model Object that can be further queried 
       ##seealso<< \code{\link{ICBMModel}} 
@@ -70,13 +73,36 @@ RothCModel<-structure(
       Ct=getC(Ex)
       Rt=getReleaseFlux(Ex)
       
-     plot(t,Ct[,1],type="l",col=1, ylim=c(0,25),ylab=expression(paste("Carbon stores (Mg C", ha^-1,")")),xlab="Time (years)",lwd=2) 
+     plot(
+       t,
+       Ct[,1],
+       type="l",
+       col=1,
+        ylim=c(0,25),
+       ylab=expression(paste("Carbon stores (Mg C", ha^-1,")")),
+       xlab="Time (years)",
+       lwd=2
+     ) 
      lines(t,Ct[,2],col=2,lwd=2,lty=2) 
      lines(t,Ct[,3],col=3,lwd=2,lty=3)
      lines(t,Ct[,4],col=4,lwd=2,lty=4)
      lines(t,Ct[,5],col=5,lwd=2,lty=5)
      lines(t,rowSums(Ct),lwd=2)
-     legend("topright",c("Pool 1, DPM", "Pool 2, RPM",  "Pool 3, BIO","Pool 4, HUM","Pool 5, IOM","Total Carbon"),lty=c(1:5,1),lwd=rep(2,5),col=c(1,2,3,4,5,"black"),bty="n")
+     legend(
+        "topright",
+        c(
+          "Pool 1, DPM",
+          "Pool 2, RPM",
+          "Pool 3, BIO",
+          "Pool 4, HUM",
+          "Pool 5, IOM",
+          "Total Carbon"
+        ),
+        lty=c(1:5,1),
+        lwd=rep(2,5),
+        col=c(1,2,3,4,5,"black")
+        ,bty="n"
+    )
 
      plot(t,Rt[,1],type="l",ylim=c(0,2),ylab="Respiration (Mg C ha-1 yr-1)",xlab="Time") 
      lines(t,Rt[,2],col=2) 
@@ -84,7 +110,20 @@ RothCModel<-structure(
      lines(t,Rt[,4],col=4) 
      lines(t,Rt[,5],col=5) 
      lines(t,rowSums(Rt),lwd=2) 
-     legend("topright",c("Pool 1, DPM", "Pool 2, RPM",  "Pool 3, BIO","Pool 4, HUM","Pool 5, IOM","Total Respiration"),lty=c(1,1,1,1,1,1),lwd=c(1,1,1,1,1,2),col=c(1,2,3,4,5,1),bty="n")
+     legend(
+        "topright",
+        c("Pool 1, DPM", 
+          "Pool 2, RPM",
+          "Pool 3, BIO",
+          "Pool 4, HUM",
+          "Pool 5, IOM",
+          "Total Respiration"
+        ), 
+        lty=c(1,1,1,1,1,1),
+        lwd=c(1, 1,1,1,1,2),
+        col=c(1,2,3,4,5,1),
+        bty="n"
+      )
 
 }
 )

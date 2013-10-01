@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 #!/usr/bin/Rscript
 # vim: set expandtab ts=4
 require(RUnit)

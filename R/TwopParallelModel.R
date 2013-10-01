@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 TwopParallelModel<-structure(
     function #Implementation of a two pool model with parallel structure
     ### This function creates a model for two independent (parallel) pools. 
@@ -28,8 +30,8 @@ TwopParallelModel<-structure(
          y=In[,2]  
          inputrate=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
          inputrates=TimeMap.new(
-            t_start,
-            t_stop,
+            min(x),
+            max(x),
             function(t){
                 matrix(nrow=2,ncol=1,
                     c(
@@ -53,7 +55,7 @@ TwopParallelModel<-structure(
         t_stop,
         function(times){fX(t)*(-1*abs(ks))}
       )
-      res=ParallelModel(t,coeffs,startvalues=C0,inputrates,solver)
+      res=ParallelModel(t,coeffs,startvalues=C0,inputrates,solver,pass=pass)
       ### A Model Object that can be further queried 
       ##seealso<< \code{\link{ThreepParallelModel}} 
     }
@@ -68,16 +70,20 @@ TwopParallelModel<-structure(
       Ex=TwopParallelModel(t,ks=c(k1=0.5,k2=0.2),C0=c(c10=100, c20=150),In=10,gam=0.7,xi=0.5)
       Ct=getC(Ex)
 
-      plot(t,rowSums(Ct),type="l",lwd=2,ylab="Carbon stocks (arbitrary units)",xlab="Time",ylim=c(0,sum(Ct[1,]))) 
+      plot(t,rowSums(Ct),type="l",lwd=2,
+           ylab="Carbon stocks (arbitrary units)",xlab="Time",ylim=c(0,sum(Ct[1,]))) 
       lines(t,Ct[,1],col=2)
       lines(t,Ct[,2],col=4)
-      legend("topright",c("Total C","C in pool 1", "C in pool 2"),lty=c(1,1,1),col=c(1,2,4),lwd=c(2,1,1),bty="n")
+      legend("topright",c("Total C","C in pool 1", "C in pool 2"),
+             lty=c(1,1,1),col=c(1,2,4),lwd=c(2,1,1),bty="n")
       
       Rt=getReleaseFlux(Ex)
-      plot(t,rowSums(Rt),type="l",ylab="Carbon released (arbitrary units)",xlab="Time",lwd=2,ylim=c(0,sum(Rt[1,]))) 
+      plot(t,rowSums(Rt),type="l",ylab="Carbon released (arbitrary units)",
+           xlab="Time",lwd=2,ylim=c(0,sum(Rt[1,]))) 
       lines(t,Rt[,1],col=2)
       lines(t,Rt[,2],col=4) 
-      legend("topleft",c("Total C release","C release from pool 1", "C release from pool 2"),lty=c(1,1,1),col=c(1,2,4),lwd=c(2,1,1),bty="n")
+      legend("topleft",c("Total C release","C release from pool 1", "C release from pool 2"),
+             lty=c(1,1,1),col=c(1,2,4),lwd=c(2,1,1),bty="n")
 
 }
 )

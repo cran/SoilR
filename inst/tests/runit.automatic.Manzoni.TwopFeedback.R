@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 # This test function is automatically produced by the python script:/home/mm/SoilR/RPackages/SoilR/pkg/inst/tests/Rexample.py
 test.TwopFeedback=function(){
    require(RUnit)
@@ -30,10 +32,10 @@ test.TwopFeedback=function(){
      )
    ))})
    Y=matrix(ncol=2,nrow=length(t))
-   Y[,1]=c1*(-4*(-sqrt(7)/4 + 1/4)*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) - 4*(-1/4 + 4*(-1/4 + sqrt(7)/4)*(-sqrt(7)/4 + 1/4)/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1)) + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) - 16*(-1/4 + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7) + 1)*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)))
-   Y[,2]=c1*((-sqrt(7)/4 + 1/4)*exp(t*(-3/20 - sqrt(7)/20))/(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1) + (-1/4 + 4*(-1/4 + sqrt(7)/4)*(-sqrt(7)/4 + 1/4)/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))) + c2*(exp(t*(-3/20 - sqrt(7)/20))/(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1) + 4*(-1/4 + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)))
+   Y[,1]=c1*(4*exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 4*(-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1)) + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 16*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7) + 1)*(-sqrt(7)/3 + 7/3)))
+   Y[,2]=c1*(-exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(-sqrt(7)/3 + 7/3)) + (-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))) + c2*(exp(t*(-3/20 - sqrt(7)/20))/(-sqrt(7)/3 + 7/3) + 4*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)))
    R=matrix(ncol=2,nrow=length(t))
-   R[,1]=c1*(-4*(-sqrt(7)/4 + 1/4)*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) - 4*(-1/4 + 4*(-1/4 + sqrt(7)/4)*(-sqrt(7)/4 + 1/4)/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1))/40 + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)) - 16*(-1/4 + sqrt(7)/4)*exp(t*(-3/20 + sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7) + 1)*(4*(-1/4 + sqrt(7)/4)/(1 + sqrt(7)) + 1)))/40
+   R[,1]=c1*(4*exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 4*(-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1))/40 + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 16*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7) + 1)*(-sqrt(7)/3 + 7/3)))/40
    R[,2]=0
 meanTransitTime=(k1*(-r + 1) + k2)/(k1*k2*r)
    mod=GeneralModel(
@@ -67,7 +69,7 @@ meanTransitTime=(k1*(-r + 1) + k2)/(k1*k2*r)
    lt1=2
    lt2=4
    pdf(file="runit.automatic.TwopFeedback.pdf",paper="a4")
-   m=matrix(c(1,2,3),3,1,byrow=TRUE)
+   m=matrix(c(1,2,3,4),4,1,byrow=TRUE)
    layout(m)
    plot(t,Y[,1],type="l",lty=lt1,col=1,ylab="Concentrations",xlab="Time")
    lines(t,Yode[,1],type="l",lty=lt2,col=1)

@@ -7,13 +7,14 @@
 \details{
 \tabular{ll}{Package: \tab SoilR\cr
 Title: \tab Models of Soil Organic Matter Decomposition\cr
-Version: \tab 1.0-1\cr
-Date: \tab 2012-03-28\cr
+Version: \tab 1.0-7\cr
+Date: \tab 2013-09-31\cr
 Author: \tab Carlos A. Sierra <csierra@bgc-jena.mpg.de>, Markus Mueller <mamueller@bgc-jena.mpg.de>\cr
 Maintainer: \tab Markus Mueller <mamueller@bgc-jena.mpg.de>\cr
 License: \tab GPL-3\cr
-Depends: \tab deSolve,methods,hash,FME,MASS,lattice,ggplot2\cr
-encodign: \tab utf8\cr}
+Depends: \tab deSolve,methods\cr
+Suggests: \tab FME,lattice,MASS\cr
+LazyData: \tab TRUE\cr}
 }
 \author{Carlos A. Sierra <csierra@bgc-jena.mpg.de>, Markus Mueller <mamueller@bgc-jena.mpg.de>}
 

@@ -22,6 +22,8 @@ class Rexample(object):
         self.iv=iv
         self.inputrates=inputrates
         self.trunk="runit.automatic."+name
+        #compute the solution
+	self.analyticCandResp()
 
     def analyticCandResp(self):
         inputrates=self.inputrates
@@ -103,7 +105,7 @@ class Rexample(object):
    lt1=2\n\
    lt2=4\n\
    pdf(file=\""+graphicsFileName+"\",paper=\"a4\")\n\
-   m=matrix(c(1,2,3),3,1,byrow=TRUE)\n\
+   m=matrix(c(1,2,3,4),4,1,byrow=TRUE)\n\
    layout(m)\n"
         return(Text)
 ####################################################################################################    
@@ -204,8 +206,6 @@ test."+self.name+"=function(){\n\
    require(RUnit)\n"
 
         Text+=self.setUpVars()\
-        #conpute the solutions
-        self.analyticCandResp()
         
         Text+=self.sols()\
                 +self.setUpModel()\

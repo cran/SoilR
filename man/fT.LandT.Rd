@@ -17,6 +17,8 @@ Functional Ecology, 8(3), 315-323.}
 
 \examples{
 Temperature=0:50
-plot(Temperature,fT.LandT(Temperature),type="l",ylab="f(T) (unitless)", 
-     main="Effects of temperature on decomposition rates according to the Lloyd and Taylor function")
+plot(Temperature,fT.LandT(Temperature),type="l",
+     ylab="f(T) (unitless)", 
+     main="Effects of temperature on decomposition 
+     rates according to the Lloyd and Taylor function")
 }

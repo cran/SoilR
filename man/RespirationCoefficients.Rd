@@ -1,6 +1,6 @@
 \name{RespirationCoefficients}
 \alias{RespirationCoefficients}
-\title{RespirationCoefficients}
+\title{helper function to compute respiration coefficients}
 \description{This function computes the respiration coefficients as function of time for all pools
 according to the given matrix A}
 \usage{RespirationCoefficients(A)}

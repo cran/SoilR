@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 fT.Daycent2<-structure(
   function #Effects of temperature on decomposition rates according to the DAYCENT model
     ### Calculates the effects of temperature on decomposition rates according to the Daycent/Century models.
@@ -12,6 +14,8 @@ fT.Daycent2<-structure(
     ,
     ex=function(){
       Temperature=0:50
-      plot(Temperature,fT.Daycent2(Temperature),type="l",ylab="f(T) (unitless)",main="Effects of temperature on decomposition rates according to the DAYCENT model")
+      plot(Temperature,fT.Daycent2(Temperature),type="l",
+           ylab="f(T) (unitless)",
+           main="Effects of temperature on decomposition rates according to the DAYCENT model")
     }
 )

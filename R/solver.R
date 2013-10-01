@@ -1,3 +1,5 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
 solver=function
 ### This function applies one of its arguments (which is an ode solver) to its other arguments, the righthand side of an ode system and a vector of the initial values and the times where a value is sought.
 ### Its main purpose is to provide a very easy and flexible interface to the toplevel functions that use it.
