@@ -5,6 +5,7 @@ RothCModel<-structure(
     ### This function implements the RothC model of Jenkinson et al. It is a wrapper for the more general function \code{\link{GeneralModel}}.
     ##references<< Jenkinson, D. S., S. P. S. Andrew, J. M. Lynch, M. J. Goss, and P. B. Tinker. 1990. The Turnover of Organic Carbon and Nitrogen in Soil. 
     ##Philosophical Transactions: Biological Sciences 329:361-368.
+    ##Sierra, C.A., M. Mueller, S.E. Trumbore. 2012. Models of soil organic matter decomposition: the SoilR package version 1.0. Geoscientific Model Development 5, 1045-1060.
     (t,      ##<< A vector containing the points in time where the solution is sought.
       ks=c(k.DPM=10,k.RPM=0.3,k.BIO=0.66,k.HUM=0.02,k.IOM=0),	##<< A vector of lenght 5 containing the values of the decomposition rates for the different pools
       C0=c(0,0,0,0,2.7),	##<< A vector of length 5 containing the initial amount of carbon for the 5 pools.
@@ -22,20 +23,20 @@ RothCModel<-structure(
       if(length(C0)!=5) stop("the vector with initial conditions must be of length = 5")
       
       if(length(In)==1){
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=5,ncol=1,c(In*(DR/(DR+1)),In*(1/(DR+1)),0,0,0))},
             t_start,
-            t_end,
-            function(t){matrix(nrow=5,ncol=1,c(In*(DR/(DR+1)),In*(1/(DR+1)),0,0,0))}
+            t_end
         )
       }
       if(class(In)=="data.frame"){
          x=In[,1]  
          y=In[,2]  
          inputFlux=splinefun(x,y)
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=5,ncol=1,c(inputFlux(t)*(DR/(DR+1)),inputFlux(t)*(1/(DR+1)),0,0,0))},
             min(x),
-            max(x),
-            function(t){matrix(nrow=5,ncol=1,c(inputFlux(t)*(DR/(DR+1)),inputFlux(t)*(1/(DR+1)),0,0,0))}
+            max(x)
           )
         }
 
@@ -56,10 +57,10 @@ RothCModel<-structure(
         Y=xi[,2]
         fX=splinefun(X,Y)
        }
-      Af=TimeMap.new(
+      Af=BoundLinDecompOp(
+            function(t){fX(t)*A},
             t_start,
-            t_end,
-            function(t){fX(t)*A}
+            t_end
       )
       Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solverfunc=solver,pass=pass)
      return(Mod)

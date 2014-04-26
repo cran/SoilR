@@ -6,10 +6,10 @@ GeneralNlModel=structure(function #Use this function to create objects of class 
 ### It is used by some more specialized wrapper functions, but can also be used directly. 
 
 (t,			##<< A vector containing the points in time where the solution is sought.
- TO,			##<< A \code{\link{TransferDecompositionOperator}} object describing the model decay rates for the n pools, connection and feedback coefficients. The number of pools n must be consistent with the number of initial values and input fluxes. 
- ivList,		##<< A numeric vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools. This is checked by the function \code{\link{correctnessOfNlModel}}.
+ TO,			##<< A object describing the model decay rates for the n pools, connection and feedback coefficients. The number of pools n must be consistent with the number of initial values and input fluxes. 
+ ivList,		##<< A numeric vector containing the initial amount of carbon for the n pools. The length of this vector is equal to the number of pools. 
  inputFluxes, ##<< A TimeMap object consisting of a vector valued function describing the inputs to the pools as funtions of time \code{\link{TimeMap.new}}.
- solverfunc=deSolve.lsoda.wrapper,		##<< The function used by to actually solve the ODE system. This can be \code{\link{SoilR.euler}} or \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface. 
+ solverfunc=deSolve.lsoda.wrapper,		##<< The function used by to actually solve the ODE system.  
  pass=FALSE  ##<< Forces the constructor to create the model even if it is invalid. If set to TRUE, does not enforce the requirements for a biologically meaningful model, e.g. does not check if negative values of respiration are calculated.
  )
 {
@@ -61,20 +61,21 @@ GeneralNlModel=structure(function #Use this function to create objects of class 
   #################################################################################
   # we check if we can reproduce the linear decomposition operator from the
   # nonlinear one
-  Tr=getTransferMatrix(Anl) #this is a function of C and t
-  
-          
-  #################################################################################
-  # build the two models (linear and nonlinear)
+#  Tr=getTransferMatrix(Anl) #this is a function of C and t
+#  
+#          
+#  #################################################################################
+#  # build the two models (linear and nonlinear)
 #  mod=GeneralModel( t, A,iv, inputrates, deSolve.lsoda.wrapper) 
-  modnl=GeneralNlModel( t, Anl, iv, inputrates, deSolve.lsoda.wrapper)
-
-   Ynonlin=getC(modnl) 
-  lt1=2
-  lt2=4
-    plot(t,Ynonlin[,1],type="l",lty=lt1,col=1,ylab="Concentrations",xlab="Time",ylim=c(min(Ynonlin),max(Ynonlin)))
-    lines(t,Ynonlin[,2],type="l",lty=lt2,col=2)
-    legend("topleft",c("Pool 1", "Pool 2"),lty=c(lt1,lt2),col=c(1,2))
+#  modnl=GeneralNlModel( t, Anl, iv, inputrates, deSolve.lsoda.wrapper)
+#
+#   Ynonlin=getC(modnl) 
+#  lt1=2
+#  lt2=4
+#    plot(t,Ynonlin[,1],type="l",lty=lt1,col=1,
+#      ylab="Concentrations",xlab="Time",ylim=c(min(Ynonlin),max(Ynonlin)))
+#    lines(t,Ynonlin[,2],type="l",lty=lt2,col=2)
+#    legend("topleft",c("Pool 1", "Pool 2"),lty=c(lt1,lt2),col=c(1,2))
 
 }       
 )

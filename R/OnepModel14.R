@@ -9,7 +9,7 @@ OnepModel14<-structure(
      F0_Delta14C,  ##<< A scalar containing the initial amount of the radiocarbon fraction in the pool in Delta_14C format.
      In,     ##<< A scalar or a data.frame object specifying the amount of litter inputs by time.
      xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-     FcAtm, ##<< A Data Frame object consisting of  a function describing the fraction of C_14 in per mille. The first column will be assumed to contain the times.
+     inputFc, ##<< A Data Frame object consisting of  a function describing the fraction of C_14 in per mille. The first column will be assumed to contain the times.
      lambda=-0.0001209681, ##<< Radioactive decay constant. By default lambda=-0.0001209681 y^-1 . This has the side effect that all your time related data are treated as if the time unit was year.
      lag=0, ##<< A (positive) scalar representing a time lag for radiocarbon to enter the system. 
      solver=deSolve.lsoda.wrapper, ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
@@ -20,23 +20,23 @@ OnepModel14<-structure(
     t_stop=max(t)
     if(length(k)!=1) stop("k must be a scalar (length == 1)")
     if(length(C0)!=1) stop("initial conditions must be of length = 1")
-    if(length(F0_Delta14C)!=1) stop("initial 13^C fraction must be of length = 1")
+    if(length(F0_Delta14C)!=1) stop("initial 14C fraction must be of length = 1")
     C0=c(C0)
     F0_Delta14C=c(F0_Delta14C)
     
-    if(length(In)==1) inputFluxes=new("TimeMap",
+    if(length(In)==1) inputFluxes=BoundInFlux(
+                                      function(t){matrix(nrow=1,ncol=1,In)},
                                       t_start,
-                                      t_stop,
-                                      function(t){matrix(nrow=1,ncol=1,In)}
+                                      t_stop
                                       )
     if(class(In)=="data.frame"){
       x=In[,1]  
       y=In[,2]  
       inputFlux=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
-      inputFluxes=new("TimeMap",
+      inputFluxes=BoundInFlux(
+                      function(t){matrix(nrow=1,ncol=1,inputFlux(t),0)},
                       t_start,
-                      t_stop,
-                      function(t){matrix(nrow=1,ncol=1,inputFlux(t),0)}
+                      t_stop
                       )   
     }
     
@@ -49,23 +49,23 @@ OnepModel14<-structure(
     
     A=-abs(matrix(k,1,1))
     
-    At=new(Class="DecompositionOperator",
-           t_start,
-           t_stop,
+    At=BoundLinDecompOp(
            function(t){
              fX(t)*A
-           }
+           },
+           t_start,
+           t_stop
            ) 
     
-    Fc=FcAtm.from.Dataframe(FcAtm,lag,format="Delta14C")
+    inputFc=BoundFc(inputFc,lag=lag,format="Delta14C")
     
     mod=GeneralModel_14(
       t,
       At,
       ivList=C0,
-      initialValF=SoilR.F0.new(F0_Delta14C,"Delta14C"),
+      initialValF=ConstFc(F0_Delta14C,"Delta14C"),
       inputFluxes=inputFluxes,
-      Fc,
+      inputFc,
       di=lambda,
       pass=pass
     )
@@ -79,7 +79,7 @@ OnepModel14<-structure(
     years=seq(1901,2009,by=0.5)
     LitterInput=700 
     
-    Ex=OnepModel14(t=years,k=1/10,C0=500, F0=0,In=LitterInput, FcAtm=C14Atm_NH)
+    Ex=OnepModel14(t=years,k=1/10,C0=500, F0=0,In=LitterInput, inputFc=C14Atm_NH)
     C14t=getF14(Ex)
     
     plot(C14Atm_NH,type="l",xlab="Year",ylab="Delta 14C (per mil)",xlim=c(1940,2010)) 

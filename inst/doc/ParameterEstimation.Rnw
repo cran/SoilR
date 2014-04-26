@@ -18,6 +18,9 @@
 \newcommand{\FME}{\texttt{FME}}
 \newcommand{\GeneralModel}{\texttt{GeneralModel}}
 \newcommand{\Model}{\texttt{Model}}
+\newcommand{\BoundInFlux}{\texttt{BoundInFlux}}
+\newcommand{\BoundLinDecompOp}{\texttt{BoundLinDecompOp}}
+\newcommand{\ConstLinDecompOp}{\texttt{ConstLinDecompOp}}
 \newcommand{\TimeMap}{\texttt{TimeMap}}
 \newcommand{\codestyle}[1]{{\texttt{#1}}}
 \newcommand{\figref}[1]{Fig: \ref{#1}}
@@ -61,7 +64,7 @@ BorealCO2=subset(eCO2, subset=Sample=="AK_T25", select=-Sample)
 names(BorealCO2)<-c("time","eCO2","eCO2sd")
 @
 
-We can plot the data with the command
+%We can plot the data with the command
 
 \begin{figure}
   \centering
@@ -228,13 +231,13 @@ t_start=min(time)
 t_end=max(time)
 @
 
-To create the vector of input fluxes we need to create a new object of class {\tt InputFlux}. For our particular model, input fluxes to the $C_1$ and $C_2$ pools are created by this command
+To create the vector of input fluxes we need to create a new object of class {\tt InFlux}. For our particular model, input fluxes to the $C_1$ and $C_2$ pools are created by this command
 
 <<>>=
-inputFluxes=new("InputFlux",
-                t_start,
-                t_end,
-                function(t0){matrix(nrow=3,ncol=1,c(270,150,0))}
+inputFluxes=BoundInFlux(
+	function(t0){matrix(nrow=3,ncol=1,c(270,150,0))},
+	t_start,
+	t_end
 )
 @
 assuming that pool 1 receives 270 gC m$^{2}$ yr$^{-1}$ and pool 2 150 gC m$^{2}$ yr$^{-1}$. 
@@ -248,18 +251,22 @@ We now write a function that creates a {\tt Model} object in \SoilR \, that take
 $\Delta^{14}$C value of the respired carbon
 
 <<echo=false,results=hide>>=
-Fc=FcAtm.from.Dataframe(C14Atm_NH,lag=0,format="Delta14C")
+Fc=BoundFc(C14Atm_NH,lag=0,format="Delta14C")
 Mod1<-function(ks,pass=TRUE){
-  At=new("DecompositionOperator",
-         t_start,
-         t_end,
-         function(t0){
+  At=ConstLinDecompOp(
            matrix(nrow=3,ncol=3,byrow=TRUE,c(ks[1],0,0,
                                              ks[4],ks[2],0,
                                              ks[5],0,ks[3]))
-         }
   ) 
-  mod=GeneralModel_14(time,At,C0,inputFluxes,initialValF=SoilR.F0.new(rep(0,3),"Delta14C"),Fc,pass=TRUE) 
+  mod=GeneralModel_14(
+	t=time,
+	A=At,
+	ivList=C0,
+	initialValF=ConstFc(rep(0,3),"Delta14C"),
+	inputFluxes=inputFluxes,
+	inputFc=Fc,
+	pass=TRUE
+  ) 
   R14t=getF14R(mod)
   return(data.frame(time=time,R14t=R14t))
 }
@@ -284,7 +291,7 @@ R14tCost <- function(pars){
 
 #Fit the model to the observed data given some initial value for the parameters
 Fit <- modFit(f=R14tCost,p=c(-0.5,-0.9,-0.1,0.1,0.1))
-
+#
 # Run an MCMC using the variance and covariance results from the previous optimization
 var0 <- Fit$var_ms_unweighted
 cov0 <- summary(Fit)$cov.scaled 

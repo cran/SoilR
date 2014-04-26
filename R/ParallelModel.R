@@ -8,7 +8,7 @@ ParallelModel=structure(function
  coeffs_tm,	##<< A TimeMap object consisting of a vector valued function containing the decay rates for the n pools as function of time and the time range where this function is valid. The length of the vector is equal to the number of pools.
  startvalues,	##<< A vector containing the initial amount of carbon for the n pools. 
  ##<<The length of this vector is equal to the number of pools and thus equal to the length of k. This is checked by the function.
- inputrates, ##<< A TimeMap object consisting of a vector valued function describing the inputs to the pools as funtions of time \code{\link{TimeMap.new}}
+ inputrates, ##<< An  object consisting of a vector valued function describing the inputs to the pools as funtions of time \code{\link{TimeMap.new}}
  solverfunc =deSolve.lsoda.wrapper,    ##<< The function used to actually solve the ODE system. This can be \code{\link{deSolve.lsoda.wrapper}} or any other user provided function with the same interface. 
   pass=FALSE  ##<< if TRUE forces the constructor to create the model even if it is invalid 
  ){
@@ -19,9 +19,10 @@ ParallelModel=structure(function
        print("The vectors startvalues and coeffs are not of the same length")
     }
     A=function(t){diag(x=coeffs(t))}
-    A_tm=coeffs_tm
-    A_tm@map=A
-    obj=new(Class="Model",times,A_tm,startvalues,inputrates,solverfunc,pass)
+    tstart=getTimeRange(coeffs_tm)[[1]]
+    tend=getTimeRange(coeffs_tm)[[2]]
+    A_tm=BoundLinDecompOp(A,tstart,tend)
+    obj=Model(times,A_tm,startvalues,inputrates,solverfunc,pass)
 ### a model object
 }
 ,ex=function(){
@@ -33,10 +34,10 @@ ParallelModel=structure(function
       k=TimeMap.new(t_start,t_end,function(times){c(-0.5,-0.2,-0.3)})
       c0=c(1, 2, 3)
       #constant inputrates
-      inputrates=TimeMap.new(
+      inputrates=BoundInFlux(
+          function(t){matrix(nrow=3,ncol=1,c(1,1,1))},
           t_start,
-          t_end,
-          function(t){matrix(nrow=3,ncol=1,c(1,1,1))}
+          t_end
       ) 
       mod=ParallelModel(t,k,c0,inputrates)
       Y=getC(mod)

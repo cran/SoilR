@@ -25,12 +25,12 @@ ICBMModel<-structure(
      A=diag(-ks)
      A[2,1]=ks[1]*h
      Ar=A*r
-     inputFluxes=TimeMap.new(
+     inputFluxes=BoundInFlux(
+        function(t){matrix(nrow=nrow(A),ncol=1,c(In,0))},
         t_start,
-        t_end,
-        function(t){matrix(nrow=nrow(A),ncol=1,c(In,0))}
+        t_end
      )
-     Af=TimeMap.new(t_start,t_end, function(t0){Ar})
+     Af=BoundLinDecompOp(map=function(t0){Ar},t_start,t_end)
      Mod=GeneralModel(t=t,A=Af,c0,inputFluxes,solver,pass)
      return(Mod)
  

@@ -4,6 +4,7 @@ ThreepParallelModel=structure(
       function #Implementation of a three pool model with parallel structure
         ### The function creates a model for three independent (parallel) pools. It is a wrapper for the more general function
         ### \code{\link{ParallelModel}} that can handle an arbitrary number of pools.
+      ##references<< Sierra, C.A., M. Mueller, S.E. Trumbore. 2012. Models of soil organic matter decomposition: the SoilR package version 1.0. Geoscientific Model Development 5, 1045-1060.
       (
        t,	##<< A vector containing the points in time where the solution is sought.
        ks,  ##<< A vector of length 3 containing the decomposition rates for the 3 pools. 
@@ -23,19 +24,19 @@ ThreepParallelModel=structure(
         if((gam1+gam2)^2 > 1) stop("The sum of the partitioning coefficients gam is outside the interval [0,1]")
         if(gam1 < 0 | gam2 < 0) stop("Partitioning coefficients gam must be positive")
         
-        if(length(In)==1) inputrates_tm=TimeMap.new(
+        if(length(In)==1) inputrates_tm=BoundInFlux(
+            function(t){matrix(nrow=3,ncol=1,c(gam1*In,gam2*In,(1-gam1-gam2)*In))},
             t_start,
-            t_end,
-            function(t){matrix(nrow=3,ncol=1,c(gam1*In,gam2*In,(1-gam1-gam2)*In))}
+            t_end
         )
         if(class(In)=="data.frame"){
          x=In[,1]  
          y=In[,2]  
          inputrate=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
-         inputrates_tm=TimeMap.new(
+         inputrates_tm=BoundInFlux(
+            function(t){matrix(nrow=3,ncol=1,c(gam1*inputrate(t),gam2*inputrate(t),(1-gam1-gam2)*inputrate(t)))},
             min(x),
-            max(x),
-            function(t){matrix(nrow=3,ncol=1,c(gam1*inputrate(t),gam2*inputrate(t),(1-gam1-gam2)*inputrate(t)))}
+            max(x)
          )
         }
 

@@ -3,6 +3,7 @@
 ThreepSeriesModel<-structure(
     function #Implementation of a three pool model with series structure
     ### This function creates a model for three pools connected in series. It is a wrapper for the more general function \code{\link{GeneralModel}}.
+    ##references<< Sierra, C.A., M. Mueller, S.E. Trumbore. 2012. Models of soil organic matter decomposition: the SoilR package version 1.0. Geoscientific Model Development 5, 1045-1060.
      (t,    	##<< A vector containing the points in time where the solution is sought.
       ks,	##<< A vector of lenght 3 containing the values of the decomposition rates for pools 1, 2, and 3.
       a21, ##<< A scalar with the value of the transfer rate from pool 1 to pool 2.
@@ -20,20 +21,20 @@ ThreepSeriesModel<-structure(
       if(length(C0)!=3) stop("the vector with initial conditions must be of length = 3")
       
       if(length(In)==1){
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=3,ncol=1,c(In,0,0))},
             t_start,
-            t_end,
-            function(t){matrix(nrow=3,ncol=1,c(In,0,0))}
+            t_end
         )
       }
       if(class(In)=="data.frame"){
          x=In[,1]  
          y=In[,2]  
          inputFlux=splinefun(x,y)
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=3,ncol=1,c(inputFlux(t),0,0))},
             min(x),
-            max(x),
-            function(t){matrix(nrow=3,ncol=1,c(inputFlux(t),0,0))}
+            max(x)
           )
         }
 
@@ -47,10 +48,10 @@ ThreepSeriesModel<-structure(
         Y=xi[,2]
         fX=splinefun(X,Y)
        }
-      Af=TimeMap.new(
+      Af=BoundLinDecompOp(
+            function(t){fX(t)*A},
             t_start,
-            t_end,
-            function(t){fX(t)*A}
+            t_end
       )
       Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,pass=pass)
      return(Mod)

@@ -3,6 +3,7 @@
 OnepModel<-structure(
     function #Implementation of a one pool model 
     ### This function creates a model for one pool. It is a wrapper for the more general function \code{\link{GeneralModel}}.
+    ##references<< Sierra, C.A., M. Mueller, S.E. Trumbore. 2012. Models of soil organic matter decomposition: the SoilR package version 1.0. Geoscientific Model Development 5, 1045-1060.
      (t,  		##<< A vector containing the points in time where the solution is sought.
       k,	##<< A scalar with the decomposition rate of the pool. 
       C0,	##<< A scalar containing the initial amount of carbon in the pool.
@@ -19,25 +20,21 @@ OnepModel<-structure(
       C0=c(C0)
       
       if(length(In)==1){
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=1,ncol=1,In)},
             t_start,
-            t_end,
-            function(t){matrix(nrow=1,ncol=1,In)}
+            t_end
         )
       }
       if(class(In)=="data.frame"){
-         print("blubberer")
-	 print(class(In))
          x=In[,1]  
-	 print(min(x))
          y=In[,2]  
          inputFlux=splinefun(x,y)
-          inputFluxes=TimeMap.new(
+          inputFluxes=BoundInFlux(
+            function(t){matrix(nrow=1,ncol=1,inputFlux(t))},
             min(x),
-            max(x),
-            function(t){matrix(nrow=1,ncol=1,inputFlux(t))}
+            max(x)
           )
-	  print(inputFluxes)
         }
       A=-1*abs(matrix(k,1,1))
       
@@ -47,10 +44,10 @@ OnepModel<-structure(
       Y=xi[,2]
       fX=splinefun(X,Y)
       }
-      Af=TimeMap.new(
+      Af=BoundLinDecompOp(
+        function(t){fX(t)*A},
         t_start,
-        t_end,
-        function(t){fX(t)*A}
+        t_end
       )
       Mod=GeneralModel(t=t,A=Af,ivList=C0,inputFluxes=inputFluxes,solver,pass)
      return(Mod)

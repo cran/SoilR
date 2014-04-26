@@ -45,13 +45,13 @@ test.check.pass=function(){
 	}
 	## No we call all the functions with the pass argument and store the names in a list that will we later check
 	## for completeness
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	l=list()
 	load("../../data/C14Atm_NH.rda")
 	load("../../data/HarvardForest14CO2.rda")
 	years=seq(1801,2010,by=0.5) # use a wront time interval intentionally
-	l=passCaller(call("GaudinskiModel14",t=years,ks=c(kr=1/3,koi=1/1.5,koeal=1/4,koeah=1/80,kA1=1/3,kA2=1/75,kM=1/110),FcAtm=C14Atm_NH),l)
-	###########################################################################################################
+	l=passCaller(call("GaudinskiModel14",t=years,ks=c(kr=1/3,koi=1/1.5,koeal=1/4,koeah=1/80,kA1=1/3,kA2=1/75,kM=1/110),inputFc=C14Atm_NH),l)
+	#-----------------------------------------------------------------------------------------
         t_start=0 
         t_end=10 
         tn=50
@@ -60,7 +60,7 @@ test.check.pass=function(){
 	## create an alternative time vector to provoke an exception 
 	t_fault=seq(t_start-10,t_end,timestep) 
         n=3
-        At=new("TimeMap",
+        At=new("BoundLinDecompOp",
         t_start,
         t_end,
         function(t0){
@@ -80,7 +80,7 @@ test.check.pass=function(){
           function(t0){matrix(nrow=n,ncol=1,c(0.0,0,0))}
         ) 
         l=passCaller(call("GeneralModel",t_fault,At,c0,inputFluxes),l)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
        	t_start=1960
         t_end=2010
         tn=220
@@ -88,7 +88,7 @@ test.check.pass=function(){
         t=seq(t_start,t_end,timestep) 
         t_fault=seq(t_start-10,t_end,timestep) 
         n=3
-        At=new(Class="DecompositionOperator",
+        At=new(Class="BoundLinDecompOp",
           t_start,
           t_end,
           function(t0){
@@ -101,7 +101,7 @@ test.check.pass=function(){
         ) 
          
         c0=c(100, 100, 100)
-        F0=SoilR.F0.new(c(0,10,10),"Delta14C")
+        F0=ConstFc(c(0,10,10),"Delta14C")
         #constant inputrate
         inputFluxes=new(
           "TimeMap",
@@ -115,13 +115,13 @@ test.check.pass=function(){
         # This means that all the other data provided are assumed to have the same value
         # This is especially true for the decay constants to be specified later
         load("../../data/C14Atm_NH.rda")
-        Fc=FcAtm.from.Dataframe(C14Atm_NH,format="Delta14C")
+        Fc=BoundFc(C14Atm_NH,format="Delta14C")
         # add the C14 decay to the matrix which is done by a diagonal matrix which does not vary over time
         # we assume a half life th=5730 years
         th=5730
         k=log(0.5)/th #note that k is negative and has the unit y^-1
-        l=passCaller(call("GeneralModel_14",t_fault,At,c0,F0,inputFluxes,Fc,k),l)
-	###########################################################################################################
+        l=passCaller(call("GeneralModel_14",t=t_fault,A=At,ivList=c0,initialValF=F0,inputFluxes=inputFluxes,inputFc=Fc,di=k),l)
+	#-----------------------------------------------------------------------------------------
         # create the operator for a two pool serial model
         # according to our new general definition
         # 
@@ -184,12 +184,12 @@ test.check.pass=function(){
         A=new("TransportDecompositionOperator",t_start,t_end,nr,alpha,f)
       	l=passCaller(call("GeneralNlModel",t_fault,A,c0,inputrates),l)
 	
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
         times=seq(0,20,by=0.1)
 	# to provoke an exeption we insert a negative decomposition rate
 	ks=c(k1=-0.8,k2=0.00605)
 	l=passCaller(call("ICBMModel",t=times, ks=ks,h=0.125, r=1,    c0=c(0.3,4.11),  In=0.19+0.095),l) #+N +Straw
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	t_start=0 
       	t_end=10 
       	tn=50
@@ -202,16 +202,16 @@ test.check.pass=function(){
       	k=0.8
       	C0=100
       	l=passCaller(call("OnepModel",t_fault,k,C0,In),l)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
     	years_fault=seq(1901,2019,by=0.5)
     	LitterInput=700 
     
-	l=passCaller(call("OnepModel14",t=years_fault,k=1/10,C0=500, F0=0,In=LitterInput, FcAtm=C14Atm_NH),l)
+	l=passCaller(call("OnepModel14",t=years_fault,k=1/10,C0=500, F0=0,In=LitterInput, inputFc=C14Atm_NH),l)
       
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	t_start=0 
       	t_end=10 
       	tn=50
@@ -226,13 +226,13 @@ test.check.pass=function(){
       	    function(t){matrix(nrow=3,ncol=1,c(1,1,1))}
       	) 
       	l=passCaller(call("ParallelModel",t,k,c0,inputrates),l)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	t=0:500 
 	In=data.frame(t,rep(1.7,length(t)))
 	t_faulty=0:600 
 	l=passCaller(call("RothCModel",t_faulty,In=In),l)
     
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	t_start=0 
       	t_end=10 
       	tn=50
@@ -248,7 +248,7 @@ test.check.pass=function(){
 
       	l=passCaller(call("ThreepFeedbackModel",t=t_fault,ks=ks,a21=0.5,a12=0.1,a32=0.2,a23=0.1,C0=C0,In=In,xi=TempEffect),l)
 
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
@@ -256,9 +256,9 @@ test.check.pass=function(){
     	LitterInput=700 
     
     l=passCaller(
-	call("ThreepFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1,a12=0.01,a32=0.005,a23=0.001,FcAtm=C14Atm_NH),
+	call("ThreepFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1,a12=0.01,a32=0.005,a23=0.001,inputFc=C14Atm_NH),
 	l)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	t_start=0 
       	t_end=10 
       	tn=50
@@ -268,15 +268,15 @@ test.check.pass=function(){
 	In=data.frame(t,rep(1.7,length(t)))
       	l=passCaller(call("ThreepParallelModel",t=t_fault,ks=c(k1=0.5,k2=0.2,k3=0.1),C0=c(c10=100, c20=150,c30=50),In=In,gam1=0.7,gam2=0.1,xi=0.5),l)
 
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	load("../../data/C14Atm_NH.rda")
 	years=seq(1901,2009,by=0.5)
 	years_fault=seq(1901,2019,by=0.5)
 	LitterInput=700 
     
-	l=passCaller(call("ThreepParallelModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, gam1=0.7, gam2=0.1, FcAtm=C14Atm_NH,lag=2),l)
+	l=passCaller(call("ThreepParallelModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, gam1=0.7, gam2=0.1, inputFc=C14Atm_NH,lag=2),l)
 
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
@@ -284,10 +284,10 @@ test.check.pass=function(){
     	LitterInput=700 
     
 	l=passCaller(
-		call("ThreepFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1,a12=0.01,a32=0.005,a23=0.001,FcAtm=C14Atm_NH),
+		call("ThreepFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1,a12=0.01,a32=0.005,a23=0.001,inputFc=C14Atm_NH),
 		l
 	)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 
 	t_start=0 
       	t_end=10 
@@ -299,16 +299,16 @@ test.check.pass=function(){
       	C0=c(C10=100,C20=150, C30=50)
 	In=data.frame(t,rep(50,length(t)))
 	l=passCaller(call("ThreepSeriesModel",t=t_fault,ks=ks,a21=0.5,a32=0.2,C0=C0,In=In,xi=fT.Q10(15)),l)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
 	years_fault=seq(1901,2019,by=0.5)
     	LitterInput=700 
     	l=passCaller(
-		call("ThreepSeriesModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1, a32=0.01,FcAtm=C14Atm_NH),
+		call("ThreepSeriesModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35, k3=1/100),C0=c(200,5000,500), F0_Delta14C=c(0,0,0),In=LitterInput, a21=0.1, a32=0.01,inputFc=C14Atm_NH),
 		l
 	)
-	###########################################################################################################
+	#-----------------------------------------------------------------------------------------
 	times=seq(0,20,by=0.1)
 	times_fault=seq(0,30,by=0.1) 
     	ks=c(k1=0.8,k2=0.00605)
@@ -325,25 +325,40 @@ test.check.pass=function(){
     	l=passCaller(call("TwopParallelModel",t=times_fault,ks=ks,C0=C0,In=InSin,gam=0.9, xi=(fT.Daycent1(15)*fW.Demeter(15))),l)
 	l=passCaller(call("TwopSeriesModel",t=times_fault,ks=ks,a21=0.2*ks[1],C0=C0,In=InSin, xi=(fT.Daycent1(15)*fW.Demeter(15))),l)
 	l=passCaller(call("TwopFeedbackModel",t=times_fault,ks=ks,a21=0.2*ks[1],a12=0.5*ks[2],C0=C0, In=InSin,xi=MoistEffect),l)
-	#############################################################################################################
+	#-----------------------------------------------------------------------------------------
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
 	years_fault=seq(1901,2019,by=0.5)
     	LitterInput=data.frame(years,rep(700,length(years)))
-	l=passCaller(call("TwopFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, a21=0.1,a12=0.01,FcAtm=C14Atm_NH),l)
-	############################################################################################################
+	l=passCaller(call("TwopFeedbackModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, a21=0.1,a12=0.01,inputFc=C14Atm_NH),l)
+	#-----------------------------------------------------------------------------------------
 	load("../../data/C14Atm_NH.rda")
       	years=seq(1901,2009,by=0.5)
 	years_fault=seq(1901,2019,by=0.5)
     	LitterInput=data.frame(years,rep(700,length(years)))
-	l=passCaller(call("TwopParallelModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, gam=0.7,FcAtm=C14Atm_NH,lag=2),l)
-	##############################################################################################################
+	l=passCaller(call("TwopParallelModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, gam=0.7,inputFc=C14Atm_NH,lag=2),l)
+	#-----------------------------------------------------------------------------------------
 	load("../../data/C14Atm_NH.rda")
     	years=seq(1901,2009,by=0.5)
 	years_fault=seq(1901,2019,by=0.5)
     	LitterInput=data.frame(years,rep(700,length(years)))
-    	l=passCaller(call("TwopSeriesModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, a21=0.1,FcAtm=C14Atm_NH),l)
-	############################################################################################################
+    	l=passCaller(call("TwopSeriesModel14",t=years_fault,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), F0_Delta14C=c(0,0),In=LitterInput, a21=0.1,inputFc=C14Atm_NH),l)
+	#-----------------------------------------------------------------------------------------
+      years=seq(0,50,0.1) 
+      years_fault=seq(0,60,0.1) 
+      C0=rep(100,7)
+    	xi=data.frame(years,rep(1,length(years)))
+    	l=passCaller(call("YassoModel",t=years_fault,C0=C0,xi=xi),l)
+  
+	#-----------------------------------------------------------------------------------------
+      years=seq(0,50,0.1) 
+      years_fault=seq(0,60,0.1) 
+      C0=rep(100,5)
+      In=0
+    	LitterInput=data.frame(years,rep(In,length(years)))
+    	l=passCaller(call("Yasso07Model",t=years_fault,C0=C0,In=LitterInput),l)
+  
+	#-----------------------------------------------------------------------------------------
 	print(setdiff(Xpass,l))
-	if (length((setdiff(Xpass,l)))!=0){stop("not all functions using the pass argument have been tested")}
+	if (length((setdiff(Xpass,l)))!=0){stop(paste("not all functions using the pass argument have been tested",setdiff(Xpass,l)))}
 }

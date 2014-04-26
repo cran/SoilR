@@ -1,15 +1,17 @@
 Package: SoilR
 Title: Models of Soil Organic Matter Decomposition
-Version: 1.0-7
-Date: 2013-09-31
-Author: Carlos A. Sierra <csierra@bgc-jena.mpg.de>, Markus Mueller <mamueller@bgc-jena.mpg.de>
+Version: 1.1-23
+Date: 2014-04-26
+Author: Carlos A. Sierra <csierra@bgc-jena.mpg.de>, Markus Mueller
+        <mamueller@bgc-jena.mpg.de>
 Maintainer: Markus Mueller <mamueller@bgc-jena.mpg.de>
-Description: This package contains functions for modeling Soil Organic Matter decomposition in terrestrial ecosystems.
+Description: This package contains functions for modeling Soil Organic
+        Matter decomposition in terrestrial ecosystems.
 License: GPL-3
-Depends: deSolve,methods
+Depends: deSolve,methods,parallel,RUnit
 Suggests: FME,lattice,MASS
 LazyData: TRUE
-Packaged: 2013-10-09 13:47:45 UTC; mm
+Packaged: 2014-04-30 15:18:15 UTC; mm
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-10-10 15:13:17
+Date/Publication: 2014-04-30 18:53:34

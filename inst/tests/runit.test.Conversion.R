@@ -10,7 +10,7 @@ test.Conversion=function(){
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
    th=5730
-   A=new("DecompositionOperator",t_start,Inf,function(t){matrix(
+   A=new("BoundLinDecompOp",t_start,Inf,function(t){matrix(
      nrow=1,
      ncol=1,
      c(
@@ -18,7 +18,7 @@ test.Conversion=function(){
      )
    )})
    c0s=c(1)
-   f0_Delta14C=SoilR.F0.new(1,format="Delta14C")
+   f0_Delta14C=ConstFc(1,format="Delta14C")
    f0_AFM=AbsoluteFractionModern(f0_Delta14C)
    inputrates=new("TimeMap",t_start,t_end,function(t){return(matrix(
      nrow=1,
@@ -28,29 +28,29 @@ test.Conversion=function(){
      )
    ))})
    f_D14C=function(t){0.5*t}
-   Fc_D14C=new("FcAtm",t_start,t_end,f_D14C,format="Delta14C")
+   Fc_D14C=BoundFc(f_D14C,t_start,t_end,format="Delta14C")
    Fc_AFM=AbsoluteFractionModern(Fc_D14C)
    k=log(0.5)/th
    
    mod_D14C=GeneralModel_14(
-    t,
-    A,
-    c0s,
-    f0_Delta14C,
-   inputrates,
-   Fc_D14C,
-   k,
-   deSolve.lsoda.wrapper
+    t 		  		=t,
+    A	    			=A,
+    ivList			=c0s,
+    initialValF	=f0_Delta14C,
+    inputFluxes	=inputrates,
+    inputFc			=Fc_D14C,
+    di					=k,
+    solverfunc	=deSolve.lsoda.wrapper
    )
    mod_AFM=GeneralModel_14(
-    t,
-    A,
-    c0s,
-    f0_AFM,
-   inputrates,
-   Fc_AFM,
-   k,
-   deSolve.lsoda.wrapper
+   t 		  		  =t,
+   A	    			=A,
+   ivList		  	=c0s,
+   initialValF	=f0_AFM,
+   inputFluxes	=inputrates,
+   inputFc			=Fc_AFM,
+   di				  	=k,
+   solverfunc	  =deSolve.lsoda.wrapper
    )
    C14_D14C=getC14(mod_D14C) 
    C14_AFM=getC14(mod_D14C) 

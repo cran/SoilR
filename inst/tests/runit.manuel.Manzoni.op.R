@@ -11,13 +11,16 @@ test.op=function(){
    print(tol)
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
-   A=new("DecompositionOperator",t_start,Inf,function(t){matrix(
-     nrow=1,
-     ncol=1,
-     c(
-        -k1
-     )
-   )})
+   A=new(
+      "ConstLinDecompOp",
+      matrix(
+          nrow=1,
+          ncol=1,
+        c(
+          -k1
+        )
+      )
+   )
    inputrates=new("TimeMap",t_start,t_end,function(t){return(matrix(
      nrow=1,
      ncol=1,

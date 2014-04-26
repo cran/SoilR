@@ -1,7 +1,7 @@
 #
 # vim:set ff=unix expandtab ts=2 sw=2:
 fT.Demeter<-structure(
-  function #effects of temperature on decomposition rates according to the DEMETER model
+  function #Effects of temperature on decomposition rates according to the DEMETER model
     ### Calculates the effects of temperature on decomposition rates according to the DEMETER model.
     ##references<< Foley, J. A. (1995), An equilibrium model of the terrestrial carbon budget, Tellus B, 47(3), 310-319.
 

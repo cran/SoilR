@@ -1,9 +1,6 @@
 #
 # vim:set ff=unix expandtab ts=2 sw=2:
 require(RUnit)
-test.GeneralModel_14=function(){
-  attr(GeneralModel_14,"ex")()
-}
 test.GaudinskiModel14=function(){
   attr(GaudinskiModel14,"ex")()
 }

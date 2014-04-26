@@ -3,7 +3,7 @@
 GaudinskiModel14<-structure(
   function #Implementation of a the six-pool C14 model proposed by Gaudinski et al. 2000
   ### This function creates a model as described in Gaudinski et al. 2000. 
-  ### It is a wrapper for the more general function \code{\link{GeneralModel_14}} that can handle an arbitrary number of pools.
+  ### It is a wrapper for the more general functions  \code{\link{GeneralModel_14}} that can handle an arbitrary number of pools.
   ##references<< Gaudinski JB, Trumbore SE, Davidson EA, Zheng S (2000) Soil carbon cycling in a temperate forest: radiocarbon-based estimates of residence times, sequestration rates and partitioning fluxes. Biogeochemistry 51: 33-69
   (t,      ##<< A vector containing the points in time where the solution is sought. It must be specified within the same period for which the Delta 14 C of the atmosphere is provided. The default period in the provided dataset \code{\link{C14Atm_NH}} is 1900-2010.
    ks=c(kr=1/1.5,koi=1/1.5,koeal=1/4,koeah=1/80,kA1=1/3,kA2=1/75,kM=1/110),	##<< A vector of length 7 containing the decomposition rates for the 6 soil pools plus the fine-root pool. 
@@ -12,7 +12,7 @@ GaudinskiModel14<-structure(
    LI=150,     ##<< A scalar or a data.frame object specifying the amount of litter inputs by time.
    RI=255,     ##<< A scalar or a data.frame object specifying the amount of root inputs by time.
    xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-   FcAtm,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
+   inputFc,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
    lambda=-0.0001209681, ##<< Radioactive decay constant. By default lambda=-0.0001209681 y^-1 . This has the side effect that all your time related data are treated as if the time unit was year.
    lag=0, ##<< A positive integer representing a time lag for radiocarbon to enter the system. 
    solver=deSolve.lsoda.wrapper, ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or  any other user provided function with the same interface.
@@ -24,10 +24,13 @@ GaudinskiModel14<-structure(
     if(length(ks)!=7) stop("ks must be of length = 7")
     if(length(C0)!=7) stop("the vector with initial conditions must be of length = 7")
     
-    if(length(LI)==1) inputFluxes=new("TimeMap",
+    if(length(LI)==1) inputFluxes=BoundInFlux(
+                                      function(t){
+                                        matrix(
+                                          nrow=7,ncol=1, c(RI,LI,0,0,0,0,0))
+                                      },
                                       t_start,
-                                      t_stop,
-                                      function(t){matrix(nrow=7,ncol=1,c(RI,LI,0,0,0,0,0))}
+                                      t_stop
                                       )
     if(class(LI)=="data.frame"){
       x1=LI[,1]  
@@ -36,11 +39,7 @@ GaudinskiModel14<-structure(
       y2=RI[,2]  
       LitterFlux=function(t0){as.numeric(spline(x1,y1,xout=t0)[2])}
       RootFlux=function(t0){as.numeric(spline(x2,y2,xout=t0)[2])}
-      inputFluxes=new("TimeMap",
-                      t_start,
-                      t_stop,
-                      function(t){matrix(nrow=7,ncol=1,c(RootFlux(t),LitterFlux(t),0,0,0,0,0))}
-                      )   
+      inputFluxes= BoundInFlux(map=function(t){matrix(nrow=7,ncol=1,c(RootFlux(t),LitterFlux(t),0,0,0,0,0))}, t_start, t_stop )   
     }
     
     if(length(xi)==1) fX=function(t){xi}
@@ -59,23 +58,23 @@ GaudinskiModel14<-structure(
     A[4,1]=ks[1]*(35/(35+190+30))
     A[5,1]=ks[1]*(30/(35+190+30))  
     
-    At=new(Class="DecompositionOperator",
+    At=BoundLinDecompOp(
+           map=function(t){ fX(t)*A },
            t_start,
-           t_stop,
-           function(t){
-             fX(t)*A
-           }
+           t_stop
            ) 
     
-    Fc=FcAtm.from.Dataframe(FcAtm,lag=lag,format="Delta14C")
+    Fc=BoundFc(inputFc,lag=lag,format="Delta14C")
     
-    mod=GeneralModel_14(t,
+    #mod=GeneralModel_14(t,
+    mod=Model_14(t,
       At,
       ivList=C0,
-      initialValF=SoilR.F0.new(F0_Delta14C,"Delta14C"),
+      initialValF=ConstFc(F0_Delta14C,"Delta14C"),
       inputFluxes=inputFluxes,
-      Fc,
-      di=lambda,
+      inputFc=Fc,
+      c14DecayRate=lambda,
+      #di=lambda,
       pass=pass
     )
     ### A Model Object that can be further queried 
@@ -89,7 +88,7 @@ GaudinskiModel14<-structure(
     Ex=GaudinskiModel14(
       t=years,
       ks=c(kr=1/3, koi=1/1.5, koeal=1/4, koeah=1/80, kA1=1/3, kA2=1/75, kM=1/110),
-      FcAtm=C14Atm_NH
+      inputFc=C14Atm_NH
     )
     R14m=getF14R(Ex)
     C14m=getF14C(Ex)
@@ -123,7 +122,7 @@ GaudinskiModel14<-structure(
     Ex=GaudinskiModel14(
       t=years,
       ks=c(kr=1/3,koi=1/1.5,koeal=1/4,koeah=1/80,kA1=1/3,kA2=1/75,kM=1/110),
-      FcAtm=C14Atm_NH,
+      inputFc=C14Atm_NH,
       pass=TRUE
    )
   }

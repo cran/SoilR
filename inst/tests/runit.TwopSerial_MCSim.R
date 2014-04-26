@@ -96,7 +96,7 @@ test.TwopSerial_MCSim=function(){
   tasklist[["Cstock_2"]] <- quote(nrow(particleSets[["particles_in_pool_2"]]))
 
   MCSim[["tasklist"]]<-tasklist
-  #plot(MCSim)
+  plot(MCSim)
   results=computeResults(MCSim)[["cr"]]
   # compare with the ode solutions
   Y=getC(mod) 

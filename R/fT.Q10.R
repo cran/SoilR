@@ -2,13 +2,14 @@
 # vim:set ff=unix expandtab ts=2 sw=2:
 fT.Q10<-structure(
   function #Effects of temperature on decomposition rates according to a Q10 function
-    ### Calculates the effects of temperature on decomposition rates according to a Q10 function.
+    ### Calculates the effects of temperature on decomposition rates according to the modified Van't Hoff function (Q10 function).
     (Temp,     ##<< A scalar or vector containing values of temperature for which the effects on decomposition rates are calculated.
-     a=1,      ##<< A scalar.
+     k_ref=1,      ##<< A scalar representing the value of the decomposition rate at a reference temperature vaule.
+     T_ref=10,  ##<< A scalar representing the reference temperature.
      Q10=2     ##<< A scalar. Temperature coefficient Q10.
      )
    {
-     a*Q10^((Temp-10)/10)
+     k_ref*Q10^((Temp-T_ref)/10)
       ### A scalar or a vector containing the effects of temperature on decomposition rates (unitless).
     }
     ,

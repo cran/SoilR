@@ -5,8 +5,8 @@ fT.Arrhenius<-structure(
     ### Calculates the effects of temperature on decomposition rates according to the Arrhenius equation.
     (Temp,     ##<< A scalar or vector containing values of temperature (in degrees Kelvin) for which the effects on decomposition rates are calculated.
      A=1000,  ##<< A scalar defining the pre-exponential factor.
-     Ea=75000,   ##<< A scalar defining the activation energy in units of J mol$^{-1}$.
-     Re=8.3144621   ##<< A scalar defining the universal gas contant in units of J K$^{-1}$ mol$^{-1}$.
+     Ea=75000,   ##<< A scalar defining the activation energy in units of J mol^-1.
+     Re=8.3144621   ##<< A scalar defining the universal gas contant in units of J K^-1 mol^-1.
      )
    {
       A*exp(-Ea/(Re*Temp))

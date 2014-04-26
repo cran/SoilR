@@ -15,7 +15,7 @@ ThreepFeedbackModel14<-structure(
    a32,  ##<< A scalar with the value of the transfer rate from pool 2 to pool 3.
    a23,  ##<< A scalar with the value of the transfer rate from pool 3 to pool 2.
    xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-   FcAtm,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
+   inputFc,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
    lambda=-0.0001209681, ##<< Radioactive decay constant. By default lambda=-0.0001209681 y^-1 . This has the side effect that all your time related data are treated as if the time unit was year.
    lag=0, ##<< A positive scalar representing a time lag for radiocarbon to enter the system. 
    solver=deSolve.lsoda.wrapper, ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
@@ -27,19 +27,19 @@ ThreepFeedbackModel14<-structure(
     if(length(ks)!=3) stop("ks must be of length = 2")
     if(length(C0)!=3) stop("the vector with initial conditions must be of length = 2")
     
-    if(length(In)==1) inputFluxes=new("TimeMap",
+    if(length(In)==1) inputFluxes=BoundInFlux(
+                                      function(t){matrix(nrow=3,ncol=1,c(In,0,0))},
                                       t_start,
-                                      t_stop,
-                                      function(t){matrix(nrow=3,ncol=1,c(In,0,0))}
+                                      t_stop
                                       )
     if(class(In)=="data.frame"){
       x=In[,1]  
       y=In[,2]  
       inputFlux=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
-      inputFluxes=new("TimeMap",
+      inputFluxes=BoundInFlux(
+                      function(t){matrix(nrow=3,ncol=1,c(inputFlux(t),0,0))},
                       t_start,
-                      t_stop,
-                      function(t){matrix(nrow=3,ncol=1,c(inputFlux(t),0,0))}
+                      t_stop
                       )   
     }
     
@@ -56,26 +56,30 @@ ThreepFeedbackModel14<-structure(
     A[3,2]=a32
     A[2,3]=a23
     
-    At=new(Class="DecompositionOperator",
-           t_start,
-           t_stop,
+    At=BoundLinDecompOp(
            function(t){
              fX(t)*A
-           }
+           },
+           t_start,
+           t_stop
            ) 
     
-    Fc=FcAtm.from.Dataframe(FcAtm,lag,format="Delta14C")
+    Fc=BoundFc(map=inputFc,lag=lag,format="Delta14C")
     
-    mod=GeneralModel_14(t,At,ivList=C0,initialValF=SoilR.F0.new(F0_Delta14C,"Delta14C"),inputFluxes=inputFluxes,Fc,di=lambda,solver,pass)
+    mod=GeneralModel_14(t=t,A=At,ivList=C0,initialValF=ConstFc(F0_Delta14C,"Delta14C"),inputFluxes=inputFluxes,inputFc=Fc,di=lambda,solverfunc=solver,pass=pass)
     ### A Model Object that can be further queried 
     ##seealso<<  \code{\link{GeneralModel_14}} \code{\link{ThreepSeriesModel14}}, \code{\link{ThreepParallelModel14}} 
   }
   ,
   ex=function(){
-    
+
     years=seq(1901,2009,by=0.5)
     LitterInput=100
     k1=1/2; k2=1/10; k3=1/50
+    a21=0.9*k1
+    a12=0.4*k2
+    a32=0.4*k2
+    a23=0.7*k3
     
     Feedback=ThreepFeedbackModel14(
       t=years,
@@ -83,11 +87,11 @@ ThreepFeedbackModel14<-structure(
       C0=c(100,500,1000),
       F0_Delta14C=c(0,0,0),
       In=LitterInput,
-      a21=0.2*k1,
-      a12=0.2*k2,
-      a32=0.1*k2,
-      a23=0.2*k3,
-      FcAtm=C14Atm_NH
+      a21=a21,
+      a12=a12,
+      a32=a32,
+      a23=a23,
+      inputFc=C14Atm_NH
     )
     F.R14m=getF14R(Feedback)
     F.C14m=getF14C(Feedback)
@@ -95,13 +99,13 @@ ThreepFeedbackModel14<-structure(
     
     Series=ThreepSeriesModel14(
       t=years,
-      ks=c(k1=1/2, k2=1/35, k3=1/100),
+      ks=c(k1=k1, k2=k2, k3=k3),
       C0=c(100,500,1000),
       F0_Delta14C=c(0,0,0),
       In=LitterInput,
-      a21=0.2*k1,
-      a32=0.1*k2,
-      FcAtm=C14Atm_NH
+      a21=a21,
+      a32=a32,
+      inputFc=C14Atm_NH
     )
     S.R14m=getF14R(Series)
     S.C14m=getF14C(Series)
@@ -109,13 +113,13 @@ ThreepFeedbackModel14<-structure(
     
     Parallel=ThreepParallelModel14(
       t=years,
-      ks=c(k1=1/2, k2=1/35, k3=1/100),
+      ks=c(k1=k1, k2=k2, k3=k3),
       C0=c(100,500,1000),
       F0_Delta14C=c(0,0,0),
       In=LitterInput,
       gam1=0.6,
       gam2=0.2,
-      FcAtm=C14Atm_NH,
+      inputFc=C14Atm_NH,
       lag=2
     )
     P.R14m=getF14R(Parallel)
@@ -163,7 +167,7 @@ ThreepFeedbackModel14<-structure(
     lines(years,S.R14m,col=2)
     legend("topright",c("Atmosphere","Bulk SOM", "Respired C"),
            lty=c(1,1,1), col=c(1,4,2),bty="n")
-
+    
     plot(C14Atm_NH,type="l",xlab="Year",
          ylab=expression(paste(Delta^14,"C ","(\u2030)")),xlim=c(1940,2010)) 
     lines(years, F.C14t[,1], col=4)
@@ -181,5 +185,6 @@ ThreepFeedbackModel14<-structure(
     
     
     par(mfrow=c(1,1))
+    
   }
   )

@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
 %\documentclass[article,nojss]{jss}
-%\VignetteIndexEntry{TimeMap GeneralModel}
+%\VignetteIndexEntry{GeneralModel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Add-on packages and fonts
 %\usepackage[utf8]{inputenc}
@@ -14,7 +14,11 @@
 \newcommand{\SoilR}{\texttt{SoilR}}
 \newcommand{\GeneralModel}{\texttt{GeneralModel}}
 \newcommand{\Model}{\texttt{Model}}
-\newcommand{\TimeMap}{\texttt{TimeMap}}
+\newcommand{\BoundInFlux}{\texttt{BoundInFlux}}
+\newcommand{\BoundLinDecompOp}{\texttt{BoundLinDecompOp}}
+\newcommand{\ConstLinDecompOp}{\texttt{ConstLinDecompOp}}
+%\newcommand{\TimeMap}{\texttt{TimeMap}}
+%\newcommand{\TimeMap}{\texttt{TimeMap}}
 \newcommand{\codestyle}[1]{{\texttt{#1}}}
 
 
@@ -102,29 +106,21 @@ To implement this model, first we load the package.
 <<>>=
 library("SoilR")
 @
-Now we create an object of class \TimeMap \ to
-represent the coefficient matrix $\mathbf{A}$ as a
-function of time.  In our simple example this will
-be just a constant function, but we are
-nethertheless forced to supply information about
-the time-domain where this function is valid. Why
-this requirement is sensible will be demonstrated
-later in the document where the time-domain data
-will be used to check automatically for an
-inconsistent model.  
+Now we create an object of class \ConstLinDecompOp\ to
+represent the coefficient matrix $\mathbf{A}$.
 <<>>=
 n=3;
 t_start=1;t_end=2
-At=new("DecompositionOperator",
-  t_start,
-  t_end,
+At=BoundLinDecompOp(
   function(t0){
         matrix(nrow=n,ncol=n,byrow=TRUE,
           c(-0.39,    0,    0, 
              0.1, -0.35,    0,   
              0,    1/3,   -0.33)
         )
-  }
+  },
+  t_start,
+  t_end
 ) 
 @ 
 Now we do the same thing for the inputrate as
@@ -132,10 +128,10 @@ a function of time. We also choose the simplest
 possible case, which is a constant function of time
 producing a value of 0.05 .  
 <<>>= 
-inputFluxes=new("TimeMap",
+inputFluxes=BoundInFlux(
+    function(t0){matrix(nrow=3,ncol=1,c(0.05,0,0))},
     t_start,
-    t_end,
-    function(t0){matrix(nrow=3,ncol=1,c(0.05,0,0))}
+    t_end
 )
 @
 Then we define the times where we want to
@@ -249,9 +245,8 @@ is very abstract and also very simple.
 Actually this means that there is much more
 abstraction than is necessary for this simple
 example.  This up to now unused abstraction
-can be represented by the use of an object of
-class \TimeMap.  The objects of class \TimeMap \ 
-are made of a function definition and the time
+can be represented by the use of objects
+made of a function definition and the time
 domain of this function.  Two questions arise.
 \begin{enumerate} 
     \item 
@@ -308,17 +303,17 @@ xi=function(t0){
     fT.Daycent1(Temp(t0))*as.numeric(fW.Daycent2(Moist(t0))["fRWC"])
 }
 @
-We define $A_0$ and combine it with $\xi$ to the complete the \TimeMap \ object.
+We define $A_0$ and combine it with $\xi$ to the complete the \BoundLinDecompOp object.
 <<<>>=
 A_0=matrix(nrow=n,ncol=n,byrow=TRUE,
   c(-0.2,    0,    0, 
      0.1, -0.7,    0,   
      0,    1/2,   -0.5)
 )
-A_t=new("DecompositionOperator",
+A_t=BoundLinDecompOp(
+  function(t0){xi(t0)*A_0},
   t_start,
-  t_end,
-  function(t0){xi(t0)*A_0}
+  t_end
   )
 @
 We define the input fluxes explicitly as:
@@ -335,10 +330,10 @@ inputFluxes=function(t0){
            )
     )
 }
-inputFluxes_tm=new("TimeMap",
+inputFluxes_tm=BoundInFlux(
+    inputFluxes,
     t_start,
-    t_end,
-    inputFluxes
+    t_end
 ) 
 @
 Since {\tt inputFluxes} is a matrix valued function we have to evaluate it more 
@@ -377,7 +372,7 @@ sometimes some of them will be given by observational
 data that have to be interpolated.  Of course you could
 just produce the interpolating  function and proceed as
 in the previous examples. There is a shortcut however.
-Objects of class \TimeMap \ can be produced directly from
+Objects of classes \BoundInFlux or \BoundLinDecompOp can be produced directly from
 {\tt dataframes } eliminating the need to specify the
 time range explicitly.
 There are some small example plain text files in the  \codestyle{inst/extdata}
@@ -388,11 +383,11 @@ we read the data from  plain text files here to emphasize the fact that
 in the application of \SoilR \ this data will usually be provided 
 by the user generally in some text based format.)
 We will read the data from these files in a \codestyle{dataframe} and 
-then create an object of class {\tt TimeMap} automatically
-using a function for this purpose.
-It will produce an interpolation of the data, and will also determine
+then create an object of the appropriate class automatically
+using specialized constructor functions for this purpose.
+They will produce an interpolation of the data, and will also determine
 $t_{start}$ and {\tt $t_{end}$} previously used in 
-the explicit creation of \TimeMap \ objects.
+the explicit creation of the objects.
 
 First we define some filenames and paths:
 <<echo=True,print=False>>=
@@ -419,7 +414,7 @@ df=data.frame("time"=t,"inputFlux"=exp(-((t-t_peak1)*40.0)^2)+exp(-((t-t_peak2)*
 
 # Additionally we create a second dataset spanning a smaller 
 # time range which we will use later to demonstrate 
-# the safety net provided by the use of TimeMap 
+# the safety net provided by the use of the classes.
 d=t_end-t_start
 ts2=t_start+d/4
 te2=t_end-d/4
@@ -435,10 +430,10 @@ df2=data.frame(t2,i2)
 #write.csv(df2,row.names=FALSE,p2)
 @
 We will read the first file and create an object 
-of class {\tt TimeMap} automatically.
+of class \BoundInFlux automatically.
 <<echo=true,print=False>>=
 dfr=read.csv(p)
-iTm=TimeMap.from.Dataframe(dfr)
+iTm=BoundInFlux(dfr)
 @
 We have the usual ingredients for a \Model \ object
 and can create it.  
@@ -453,7 +448,7 @@ containing a time series of an input flux with
 a smaller time range compared to the explicit time argument to \GeneralModel.
 <<echo=true,print=False>>=
 dfr2=read.csv(p2)
-iTm=TimeMap.from.Dataframe(dfr2)
+iTm=BoundInFlux(dfr2)
 @
 If we try to create a \Model \ from this (by removing the comment in the next example) we will get
 an error message. 
@@ -463,9 +458,9 @@ an error message.
 This is because the dataset we
 used does not contain data valid for the times we
 required in the first argument and also in the
-other objects of class \TimeMap \ that would be used
+other objects  that would be used
 to create the \Model.
-To see this we can inquire the \TimeMap \ objects for the time range:
+To see this we can interrogate the objects for the time range:
 <<echo=true,print=True>>=
 getTimeRange(iTm)
 min(t)
@@ -475,9 +470,9 @@ Note that the time range of {\tt iTm} \ is smaller than the range we required.
 If we only have data for this small range we only have to decrease also the
 timevector.  Actually the \Model \ allows different time ranges for all the
 components as long as the
-time argument specifies only times in the range that is covered by all \TimeMap \
+time argument specifies only times in the range that is covered by all 
 objects contributing.  In other words the requested times must be part of the
-intersection of the ranges of all \TimeMap \ objects present.
+intersection of the ranges of all objects present.
 This means that we could repair the situation very easily by just adjusting the t argument,
 and the model will no longer refuse to be built.
 <<echo=true,print=False>>=

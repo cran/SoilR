@@ -11,7 +11,7 @@ TwopParallelModel14<-structure(
      In,     ##<< A scalar or a data.frame object specifying the amount of litter inputs by time.
      gam,  ##<< A scalar representing the partitioning coefficient, i.e. the proportion from the total amount of inputs that goes to pool 1.
      xi=1,   ##<< A scalar or a data.frame specifying the external (environmental and/or edaphic) effects on decomposition rates. 
-     FcAtm,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
+     inputFc,##<< A Data Frame object containing values of atmospheric Delta14C per time. First column must be time values, second column must be Delta14C values in per mil.
      lambda=-0.0001209681, ##<< Radioactive decay constant. By default lambda=-0.0001209681 y^-1 . This has the side effect that all your time related data are treated as if the time unit was year.
      lag=0, ##<< A positive scalar representing a time lag for radiocarbon to enter the system. 
      solver=deSolve.lsoda.wrapper, ##<< A function that solves the system of ODEs. This can be \code{\link{euler}} or \code{\link{ode}} or any other user provided function with the same interface.
@@ -24,18 +24,16 @@ TwopParallelModel14<-structure(
       if(length(C0)!=2) stop("the vector with initial conditions must be of length = 2")
       if(gam > 1 | gam < 0) stop("The the partitioning coefficient gam is outside the interval [0,1]")
       
-      if(length(In)==1) inputrates=new("TimeMap",
+      if(length(In)==1) inputrates=BoundInFlux(
+        function(t){matrix(nrow=2,ncol=1,c(gam*In,(1-gam)*In))},
         t_start,
-        t_stop,
-        function(t){matrix(nrow=2,ncol=1,c(gam*In,(1-gam)*In))}
+        t_stop
       )
       if(class(In)=="data.frame"){
          x=In[,1]  
          y=In[,2]  
          inputrate=function(t0){as.numeric(spline(x,y,xout=t0)[2])}
-         inputrates=new("TimeMap",
-            min(x),
-            max(x),
+         inputrates=BoundInFlux(
             function(t){
                 matrix(nrow=2,ncol=1,
                     c(
@@ -43,7 +41,9 @@ TwopParallelModel14<-structure(
                         (1-gam)*inputrate(t)
                     )
                 )
-            }
+            },
+            min(x),
+            max(x)
          )   
         }
       
@@ -55,17 +55,17 @@ TwopParallelModel14<-structure(
       }
 
 
-      At=new(Class="DecompositionOperator",
-             t_start,
-             t_stop,
+      At=BoundLinDecompOp(
              function(t){
                fX(t)*diag(-abs(ks))
-             }
+             },
+             t_start,
+             t_stop
              ) 
       
-      Fc=FcAtm.from.Dataframe(FcAtm,lag,format="Delta14C")
+      Fc=BoundFc(inputFc,lag=lag,format="Delta14C")
       
-      mod=GeneralModel_14(t,At,ivList=C0,initialValF=SoilR.F0.new(F0_Delta14C,"Delta14C"),inputFluxes=inputrates,Fc,di=lambda,pass=pass)
+      mod=GeneralModel_14(t,At,ivList=C0,initialValF=ConstFc(F0_Delta14C,"Delta14C"),inputFluxes=inputrates,Fc,di=lambda,pass=pass)
       ### A Model Object that can be further queried 
       ##seealso<< \code{\link{TwopSeriesModel14}}, \code{\link{TwopFeedbackModel14}}  
     }
@@ -76,7 +76,7 @@ TwopParallelModel14<-structure(
       LitterInput=700 
 
       Ex=TwopParallelModel14(t=years,ks=c(k1=1/2.8, k2=1/35),C0=c(200,5000), 
-                             F0_Delta14C=c(0,0),In=LitterInput, gam=0.7,FcAtm=C14Atm_NH,lag=2)
+                             F0_Delta14C=c(0,0),In=LitterInput, gam=0.7,inputFc=C14Atm_NH,lag=2)
       R14m=getF14R(Ex)
       C14m=getF14C(Ex)
       C14t=getF14(Ex)

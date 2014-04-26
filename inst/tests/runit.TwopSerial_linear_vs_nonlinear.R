@@ -1,7 +1,7 @@
 #
 # vim:set ff=unix expandtab ts=2 sw=2:
 # This test usese the non linear model approach for a linear problem to show that the results are consistent
-test.ThreepSerial_linear_vs_nonlinear=function(){
+test.TwopSerial_linear_vs_nonlinear=function(){
   require(RUnit)
   t_start=0
   t_end=20
@@ -14,15 +14,17 @@ test.ThreepSerial_linear_vs_nonlinear=function(){
   k2=1/3
   a21=1/9
   nr=2
-  A=new("DecompositionOperator",t_start,Inf,function(t){matrix(
-    byrow=TRUE,                                                           
-    nrow=nr,
-    ncol=nr,
-    c(
-      -k1,   0,  
-      a21, -k2  
+  A=new("ConstLinDecompOp",
+    matrix(
+      byrow=TRUE,                                                           
+      nrow=nr,
+      ncol=nr,
+      c(
+        -k1,   0,  
+        a21, -k2  
+      )
     )
-  )})
+  )
   
   alpha=list()
   alpha[["1_to_2"]]=function(C,t){
