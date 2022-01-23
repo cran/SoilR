@@ -1,19 +1,20 @@
+#
+# vim:set ff=unix expandtab ts=4 sw=4:
 from functions import *
-# from sympy.interactive.printing import init_printing
-# init_printing(use_unicode=True, wrap_line=False, no_global=True)
-# from sympy.matrices import *
-# from sympy.matrices.matrices import exp_block
-# from sympy.matrices.matrices import jblock_exponential
-# from sympy import Symbol,exp,factorial,log
-# from sympy import latex
-# from sympy import oo
-# from sympy import integrate
-# import re
-# from sympy import simplify
-# from sympy import Basic, Symbol, Integer, C, S, Dummy, Rational, Add, Pow
-from sympy import *
+from sympy.interactive.printing import init_printing
+init_printing(use_unicode=True, wrap_line=False, no_global=True)
+from sympy.matrices import *
+from sympy import Symbol,exp,factorial,log
+from sympy import latex
+from sympy import oo
+from sympy import integrate
+import re
+from sympy import simplify
+from sympy import Basic, Symbol, Integer, C, S, Dummy, Rational, Add, Pow
+#from sympy import *
 import inspect
 import difflib
+    
 class Rexample(object):
     def __init__(self,name,matrix,iv,inputrates):
         self.shift="   "
@@ -23,7 +24,7 @@ class Rexample(object):
         self.inputrates=inputrates
         self.trunk="runit."+name
         #compute the solution
-	self.analyticCandResp()
+        self.analyticCandResp()
 
     def analyticCandResp(self):
         inputrates=self.inputrates
@@ -32,7 +33,7 @@ class Rexample(object):
         n=m.rows
         c_sym=zeros(n,1)
         c_sym_strs=[]
-        t= Symbol("t")
+        t=Symbol("t")
         tau= Symbol("tau")
         #t0= Symbol("t0")
         symbolprefix="c0"
@@ -41,7 +42,7 @@ class Rexample(object):
             c_sym_strs.append(s)
             c_sym[i,0]=Symbol(s)
         self.c_sym=c_sym
-        self.anls=(m*t).exp()*c_sym+integrate((m*tau).exp()*inputrates,(tau,0,t))
+        self.anls=(m*t).exp()*c_sym+((m*tau).exp()*inputrates).integrate((tau,0,t))
         testvec=ones(1,n)
         respcoeffs=-testvec*m
         print("respcoeff=\n",respcoeffs)
@@ -52,11 +53,11 @@ class Rexample(object):
 ####################################################################################################    
     def setUpVars(self):
         Text="\
-   t_start=0\n\
+   t_start=0.0\n\
    t_end=2\n\
    tn=100\n\
    tol=.02/tn\n\
-   print(tol)\n\
+   #print(tol)\n\
    timestep=(t_end-t_start)/tn\n\
    t=seq(t_start,t_end,timestep)\n\
    A=new(\"ConstLinDecompOp\","+rmatrixprint(self.matrix,self.shift)+")\n"
@@ -85,6 +86,7 @@ class Rexample(object):
 ####################################################################################################    
 
     def setUpModel(self):
+        print(self.c_sym_strs)
         Text="\
    mod=GeneralModel(\n\
     t,\n\

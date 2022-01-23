@@ -12,7 +12,7 @@ inputFluxes=TimeMap.new(
 # now it you only have the inputFluxes
 # you can ask it for which time interval it was specified
 
-print(getTimeRange(inputFluxes))
+#print(getTimeRange(inputFluxes))
 
 
 # Construct a less explicit example of a TimeMap  with an object 
@@ -29,5 +29,5 @@ At=new("BoundLinDecompOp",
         )
   }
 ) 
-print(getTimeRange(At))
+#print(getTimeRange(At))
 

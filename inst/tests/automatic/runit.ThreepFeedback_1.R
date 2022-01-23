@@ -1,11 +1,11 @@
-# This test function is automatically produced by the python script:/home/mm/SoilR/RPackages/SoilR/pkg/inst/tests/automatic/Rexample.py
+# This test function is automatically produced by the python script:/home/mm/SoilR-exp/pkg/inst/tests/automatic/Rexample.py
 test.ThreepFeedback_1=function(){
    require(RUnit)
-   t_start=0
+   t_start=0.0
    t_end=2
    tn=100
    tol=.02/tn
-   print(tol)
+   #print(tol)
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
    A=new("ConstLinDecompOp",matrix(
@@ -30,11 +30,11 @@ test.ThreepFeedback_1=function(){
    Y=matrix(ncol=3,nrow=length(t))
    Y[,1]=c01*(2*exp(-t)/5 + 3*exp(-t/6)/5) + c02*(-2*exp(-t)/5 + 2*exp(-t/6)/5) + 8 + 2*exp(-t)/5 - 42*exp(-t/6)/5
    Y[,2]=c01*(-3*exp(-t)/5 + 3*exp(-t/6)/5) + c02*(3*exp(-t)/5 + 2*exp(-t/6)/5) + 9 - 3*exp(-t)/5 - 42*exp(-t/6)/5
-   Y[,3]=c01*(-t*exp(-t)/5 - 6*exp(-t)/25 + 6*exp(-t/6)/25) + c02*(t*exp(-t)/5 - 4*exp(-t)/25 + 4*exp(-t/6)/25) + c03*exp(-t) - t*exp(-t)/5 + 6 - 66*exp(-t)/25 - 84*exp(-t/6)/25
+   Y[,3]=c01*(-t*exp(-t)/5 - 6*exp(-t)/25 + 6*exp(-t/6)/25) + c02*(t*exp(-t)/5 - 4*exp(-t)/25 + 4*exp(-t/6)/25) + c03*exp(-t) + (-125*t - 1650)*exp(-t)/625 + 6 - 84*exp(-t/6)/25
    R=matrix(ncol=3,nrow=length(t))
    R[,1]=0
    R[,2]=0
-   R[,3]=c01*(-t*exp(-t)/5 - 6*exp(-t)/25 + 6*exp(-t/6)/25) + c02*(t*exp(-t)/5 - 4*exp(-t)/25 + 4*exp(-t/6)/25) + c03*exp(-t) - t*exp(-t)/5 + 6 - 66*exp(-t)/25 - 84*exp(-t/6)/25
+   R[,3]=c01*(-t*exp(-t)/5 - 6*exp(-t)/25 + 6*exp(-t/6)/25) + c02*(t*exp(-t)/5 - 4*exp(-t)/25 + 4*exp(-t/6)/25) + c03*exp(-t) + (-125*t - 1650)*exp(-t)/625 + 6 - 84*exp(-t/6)/25
    mod=GeneralModel(
     t,
     A,

@@ -1,4 +1,5 @@
 from Rexample import *
+from sympy import symbols
 class C14example(Rexample):
     def __init__(self,name,matrix,iv,iF,inputrates,c14fraction):
         super(C14example,self).__init__(name,matrix,iv,inputrates)
@@ -16,19 +17,20 @@ class C14example(Rexample):
         mn=m+k*I
         t= Symbol("t")
         tau= Symbol("tau")
-        self.anls14=(mn*t).exp()*F0_AFM.multiply_elementwise(Matrix(self.c_sym_strs))+integrate((mn*tau).exp()*inputrates*AFM,(tau,0,t))
-	self.anlsF14=zeros(n,1)
-	# compute ration and convert to Delta14C format
+        self.anls14=(mn*t).exp()*F0_AFM.multiply_elementwise(Matrix(self.c_sym_strs))+((mn*tau).exp()*inputrates*AFM).integrate((tau,0,t))
+        self.anlsF14=zeros(n,1)
+        # compute ration and convert to Delta14C format
         for j in range(self.n):
             self.anlsF14[j]=(self.anls14[j]/self.anls[j]-1)*1000
 ####################################################################################
     def addanls14(self):
-	self.analyticCandResp()
+        self.analyticCandResp()
         AFM=self.c14fraction
-	F0=self.symbolicF0()
-	self.addanls14_fromAbsoluteFractionModern(AFM,F0)
-        
+        F0=self.symbolicF0
+        self.addanls14_fromAbsoluteFractionModern(AFM,F0)
+
 ####################################################################################
+    @property
     def symbolicF0(self):	
         n=self.n
         f_sym_strs=[]
@@ -42,10 +44,8 @@ class C14example(Rexample):
         #F0=zeros(n)
         #for i in range(n):
         #    F0[i,i]=f_syms[i]
-	F0=Matrix(f_syms)
-        
+        F0=Matrix(f_syms)
         return(F0)
-	    
 
 ####################################################################################
     def setUpVars(self):
@@ -70,7 +70,7 @@ class C14example(Rexample):
         for j in range(self.n):
            Text+=(self.shift+"Y14[,"+str(j+1)+"]="+str(self.anls14[j])+"\n")
         # add the F14 part
-	Text+="\
+        Text+="\
    F14=matrix(ncol="+str(self.n)+",nrow=length(t))\n"
 
         for j in range(self.n):
@@ -123,8 +123,8 @@ class C14example(Rexample):
            Text+=(self.shift+"lines(t,F14ode[,"+str(j)+"],type=\"l\",lty=lt2,col="+colstr+")\n")
            collist+=","+colstr
         collist+=")"
-        
-	Text+="\
+
+        Text+="\
    legend(\n\
    \"topright\",\n\
      c(\n"

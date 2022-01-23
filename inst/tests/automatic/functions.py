@@ -17,6 +17,7 @@ def rmatrixprint(m,shift):
     s+="\n"+sh1+")\n"+shift+")"
     return s
 def rlistprint(v,shift):
+    print(v)
     l=len(v)
     sh1=shift+" "
     sh2=sh1+"   "

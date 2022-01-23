@@ -11,7 +11,7 @@ test.TwopFeedback=function(){
    t_end=2
    tn=100
    tol=.02/tn
-   print(tol)
+   #print(tol)
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
    A=new("ConstLinDecompOp",matrix(
@@ -30,10 +30,10 @@ test.TwopFeedback=function(){
      )
    ))})
    Y=matrix(ncol=2,nrow=length(t))
-   Y[,1]=c1*(4*exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 4*(-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1)) + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 16*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7) + 1)*(-sqrt(7)/3 + 7/3)))
-   Y[,2]=c1*(-exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(-sqrt(7)/3 + 7/3)) + (-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))) + c2*(exp(t*(-3/20 - sqrt(7)/20))/(-sqrt(7)/3 + 7/3) + 4*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)))
+   Y[,1]=c1*(-4*(1/(-2*sqrt(7)/3 + 2/3) - 4/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)**2*(sqrt(7)/3 + 7/3)))*exp(t*(-3/20 - sqrt(7)/20))/(1 + sqrt(7)) + 4*exp(t*(-3/20 + sqrt(7)/20))/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3))) + c2*(-16*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3)) - 4*exp(t*(-3/20 + sqrt(7)/20))/((-sqrt(7) + 1)*(sqrt(7)/3 + 7/3)))
+   Y[,2]=c1*((1/(-2*sqrt(7)/3 + 2/3) - 4/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)**2*(sqrt(7)/3 + 7/3)))*exp(t*(-3/20 - sqrt(7)/20)) - exp(t*(-3/20 + sqrt(7)/20))/((-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3))) + c2*(4*exp(t*(-3/20 - sqrt(7)/20))/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3)) + exp(t*(-3/20 + sqrt(7)/20))/(sqrt(7)/3 + 7/3))
    R=matrix(ncol=2,nrow=length(t))
-   R[,1]=c1*(4*exp(t*(-3/20 - sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 4*(-4/((2/3 + 2*sqrt(7)/3)**2*(1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) + 1/(2/3 + 2*sqrt(7)/3))*exp(t*(-3/20 + sqrt(7)/20))/(-sqrt(7) + 1))/40 + c2*(-4*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7)/3 + 7/3)) - 16*exp(t*(-3/20 + sqrt(7)/20))/((2/3 + 2*sqrt(7)/3)*(1 + sqrt(7))*(-sqrt(7) + 1)*(-sqrt(7)/3 + 7/3)))/40
+   R[,1]=c1*(-4*(1/(-2*sqrt(7)/3 + 2/3) - 4/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)**2*(sqrt(7)/3 + 7/3)))*exp(t*(-3/20 - sqrt(7)/20))/(1 + sqrt(7)) + 4*exp(t*(-3/20 + sqrt(7)/20))/((-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3)))/40 + c2*(-16*exp(t*(-3/20 - sqrt(7)/20))/((1 + sqrt(7))*(-sqrt(7) + 1)*(-2*sqrt(7)/3 + 2/3)*(sqrt(7)/3 + 7/3)) - 4*exp(t*(-3/20 + sqrt(7)/20))/((-sqrt(7) + 1)*(sqrt(7)/3 + 7/3)))/40
    R[,2]=0
 meanTransitTime=(k1*(-r + 1) + k2)/(k1*k2*r)
    mod=GeneralModel(

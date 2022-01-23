@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 from Rexample import *
 #from C14example import *
 from C14exampleFromDelta14C import *
@@ -12,6 +12,16 @@ TwoPoolZeroInputRate=Matrix(2,1,[0,0])
 OnePoolZeroInputRate=Matrix(1,1,[0])
 ThreePoolConstantInputRate=Matrix(3,1,[1,2,3])
 FourPoolConstantInputRate=Matrix(4,1,[1,2,3,4])
+Rexample(\
+        "CarlosExample",
+        Matrix(2,2,
+            [
+                -Rational(1,20),             0, 
+                             0,-Rational(1,30)
+            ]
+        ),
+        [3,2],TwoPoolZeroInputRate
+    ).write2file()
 Rexample(\
         "TwopParallel_ZeroInput",
         Matrix(2,2,
@@ -78,19 +88,22 @@ Rexample(\
         [3,2,1],
         ThreePoolConstantInputRate
     ).write2file()
-Rexample(\
-        "FourpSerial_1",
-        Matrix(4,4,
-            [
-               -1, 0, 0, 0,
-                1,-2, 0, 0,  
-                0, 1,-2, 1,   
-                0, 1, 1,-1   
-            ]
-        ),
-        [3,2,1,0],
-        FourPoolConstantInputRate
-    ).write2file()
+#fixme:mm
+# The analytical solution yields nan for t=0
+# which leads to trouble afterwards in R plotting
+#Rexample(\
+#        "FourpSerial_1",
+#        Matrix(4,4,
+#            [
+#               -1, 0, 0, 0,
+#                1,-2, 0, 0,  
+#                0, 1,-2, 1,   
+#                0, 1, 1,-1   
+#            ]
+#        ),
+#        [3,2,1,0],
+#        FourPoolConstantInputRate
+#    ).write2file()
 C14example(\
         "OnePool_C14_ZeroDecay_Zero",
         Matrix(1,1,
@@ -153,7 +166,7 @@ C14exampleFromDelta14C(\
         [1],                #c0 =initial c value >>>not<<< c14
         [1],                #f0 =initial f value >>>not<<< f14atm
         Matrix(1,1,[0]),    #Inputrate
-        1.0/2               #c14fraction
+        1.0/2 #c14fraction
     ).write2file()
 C14exampleFromDelta14C(\
         "OnePool_C14_ZeroDecay_constantInputrate",
@@ -195,7 +208,7 @@ C14exampleFromDelta14C(\
         1.0/2 #c14fraction
     ).write2file()
 
-################################################################################
+#################################################################################
 #we follow the manzoni nomenclature here
 #r is the released fraction of the output of pool1 for r=1 all C is released
 # and the second pool recieves nothing
@@ -213,18 +226,19 @@ subslist=[
         (k2,Rational(1,5)),
         (f,1)]
 meanTransitTime=((1-r)*k1+k2)/(r*k1*k2)
-Manzoniexample(\
-        "TwopFeedback",
-        Matrix(2,2,
-            [
-                     -k1, f*k2, 
-                (1-r)*k1,  -k2
-            ]
-        ),
-        Matrix(2,1,[c1,c2]),
-        meanTransitTime,
-        subslist
-    ).write2file()
+# unfortunately the analytical solution yields na for t=0 which leads to subsequent problems with R plotting
+#Manzoniexample(\
+#        "TwopFeedback",
+#        Matrix(2,2,
+#            [
+#                     -k1, f*k2, 
+#                (1-r)*k1,  -k2
+#            ]
+#        ),
+#        Matrix(2,1,[c1,c2]),
+#        meanTransitTime,
+#        subslist
+#    ).write2file()
 ################################################################################
 c1,k1=symbols("c1,k1")
 subslist=[

@@ -1,11 +1,11 @@
-# This test function is automatically produced by the python script:/home/mm/SoilR/RPackages/SoilR/pkg/inst/tests/automatic/Rexample.py
+# This test function is automatically produced by the python script:/home/mm/SoilR-exp/pkg/inst/tests/automatic/Rexample.py
 test.ThreepSerial_2=function(){
    require(RUnit)
-   t_start=0
+   t_start=0.0
    t_end=2
    tn=100
    tol=.02/tn
-   print(tol)
+   #print(tol)
    timestep=(t_end-t_start)/tn
    t=seq(t_start,t_end,timestep)
    A=new("ConstLinDecompOp",matrix(
@@ -30,11 +30,11 @@ test.ThreepSerial_2=function(){
    Y=matrix(ncol=3,nrow=length(t))
    Y[,1]=c01*exp(-t) + 1 - exp(-t)
    Y[,2]=c01*(exp(-t) - exp(-2*t)) + c02*exp(-2*t) + 3/2 - exp(-t) - exp(-2*t)/2
-   Y[,3]=c01*(-t*exp(-2*t) + exp(-t) - exp(-2*t)) + c02*t*exp(-2*t) + c03*exp(-2*t) - t*exp(-2*t)/2 + 9/4 - exp(-t) - 5*exp(-2*t)/4
+   Y[,3]=c01*(-t*exp(-2*t) + exp(-t) - exp(-2*t)) + c02*t*exp(-2*t) + c03*exp(-2*t) + (-2*t - 5)*exp(-2*t)/4 + 9/4 - exp(-t)
    R=matrix(ncol=3,nrow=length(t))
    R[,1]=0
    R[,2]=c01*(exp(-t) - exp(-2*t)) + c02*exp(-2*t) + 3/2 - exp(-t) - exp(-2*t)/2
-   R[,3]=2*c01*(-t*exp(-2*t) + exp(-t) - exp(-2*t)) + 2*c02*t*exp(-2*t) + 2*c03*exp(-2*t) - t*exp(-2*t) + 9/2 - 2*exp(-t) - 5*exp(-2*t)/2
+   R[,3]=2*c01*(-t*exp(-2*t) + exp(-t) - exp(-2*t)) + 2*c02*t*exp(-2*t) + 2*c03*exp(-2*t) + (-2*t - 5)*exp(-2*t)/2 + 9/2 - 2*exp(-t)
    mod=GeneralModel(
     t,
     A,

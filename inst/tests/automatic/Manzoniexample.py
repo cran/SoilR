@@ -6,7 +6,8 @@ class Manzoniexample(Rexample):
     def __init__(self,name,matrix,c_sym,meanTransitTime,subslist):
         nr=matrix.rows 
         inputrates=zeros(nr,1)
-        iv=Matrix(map(lambda el:el.subs(subslist),c_sym))
+        f=lambda el:el.subs(subslist)
+        iv=Matrix([f(ci) for ci in c_sym])
         self.iv=iv/iv.norm()
         self.c_sym=c_sym
         self.subslist=subslist
@@ -22,12 +23,13 @@ class Manzoniexample(Rexample):
             tup=self.subslist[i]
             print(tup)
             Text+=(self.shift+str(tup[0])+"="+str(tup[1])+"\n")
+        # we start not at zero since some of the analytical solutions yield NaN for t=0
         Text+="\
-   t_start=0\n\
+   t_start=0.0\n\
    t_end=2\n\
    tn=100\n\
    tol=.02/tn\n\
-   print(tol)\n\
+   #print(tol)\n\
    timestep=(t_end-t_start)/tn\n\
    t=seq(t_start,t_end,timestep)\n\
    A=new(\"ConstLinDecompOp\","+rmatrixprint(self.matrix,self.shift)+")\n"
@@ -46,12 +48,14 @@ class Manzoniexample(Rexample):
         n=m.rows
         t= Symbol("t")
         tau= Symbol("tau")
-        self.anls=(m*t).exp()*c_sym+integrate((m*tau).exp()*inputrates,(tau,0,t))
+        self.anls=(m*t).exp()*c_sym+((m*tau).exp()*inputrates).integrate((tau,0,t))
+        print(self.anls)
+        print(self.anls.subs({t:0}))
         testvec=ones(1,n)
         respcoeffs=-testvec*m
         print("respcoeff=\n",respcoeffs)
         self.anlresp=(respcoeffs.transpose()).multiply_elementwise(self.anls)
-        self.c_sym_strs=map(str,c_sym)
+        self.c_sym_strs=[str(c_i) for c_i in c_sym]
         self.n=n
 ############################################################################
     def setUpModel(self):
