@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{Delta14C}
 \alias{Delta14C}
-\title{automatic title}
+\title{Conversion of radiocarbon values}
 \usage{
 Delta14C(F)
 }
@@ -10,11 +10,5 @@ Delta14C(F)
 \item{F}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{Delta14C,BoundFc-method}}
-        \item \code{\link{Delta14C,ConstFc-method}}
-      }
+Conversion of radiocarbon values
 }

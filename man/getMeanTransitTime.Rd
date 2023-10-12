@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getMeanTransitTime}
 \alias{getMeanTransitTime}
-\title{automatic title}
+\title{Mean transit time for SoilR objects}
 \usage{
 getMeanTransitTime(object, inputDistribution)
 }
@@ -12,10 +12,5 @@ getMeanTransitTime(object, inputDistribution)
 \item{inputDistribution}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getMeanTransitTime,ConstLinDecompOp-method}}
-      }
+Mean transit time for SoilR objects
 }

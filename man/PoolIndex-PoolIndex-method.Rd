@@ -7,9 +7,9 @@
 \S4method{PoolIndex}{PoolIndex}(id, poolNames)
 }
 \arguments{
-\item{id}{object of class:\code{PoolIndex}, no manual documentation}
+\item{id}{pool id}
 
-\item{poolNames}{no manual documentation}
+\item{poolNames}{names of pools}
 }
 \description{
 This is here to be able to call PoolIndex on a PoolIndex object without

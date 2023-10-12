@@ -56,7 +56,7 @@
 #' C14Atm_NH,
 #' type="l",
 #' xlab="Year",
-#' ylab=expression(paste(Delta^14,"C ","(\u2030)")),
+#' ylab=expression(paste(Delta^14,"C (per mil)")),
 #' xlim=c(1940,2010)
 #' ) 
 #' lines(years,C14m,col=4)
@@ -112,7 +112,7 @@ GaudinskiModel14<- function
                                       t_start,
                                       t_stop
                                       )
-    if(class(LI)=="data.frame"){
+    if(inherits(LI, "data.frame")){
       x1=LI[,1]  
       y1=LI[,2]  
       x2=RI[,1]  
@@ -122,7 +122,7 @@ GaudinskiModel14<- function
       inputFluxes= BoundInFluxes(map=function(t){matrix(nrow=7,ncol=1,c(RootFlux(t),LitterFlux(t),0,0,0,0,0))}, t_start, t_stop )   
     }
     if(length(xi)==1) fX=function(t){xi}
-    if(class(xi)=="data.frame"){
+    if(inherits(xi, "data.frame")){
       X=xi[,1]
       Y=xi[,2]
       fX=function(t){as.numeric(spline(X,Y,xout=t)[2])}

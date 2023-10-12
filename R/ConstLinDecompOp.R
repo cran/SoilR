@@ -37,13 +37,6 @@ from_integer_flux_lists_with_defaults=function(
 #' 
 #' @param .Object no manual documentation
 #' @param mat no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
 setMethod(
     f="initialize",
     signature="ConstLinDecompOp",
@@ -54,7 +47,9 @@ setMethod(
     }
 )
 
-#' Constructor 
+#' Constructor of object of ConstLinDecompOp class 
+#' 
+#' @param mat a compartmental matrix
 setMethod(
     "ConstLinDecompOp"
     ,signature=signature(
@@ -76,99 +71,99 @@ setMethod(
     }
 )
 
-#' Constructor 
-setMethod(
-    "ConstLinDecompOp"
-    ,signature=signature(
-        mat='missing'
-        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolIndex'
-        ,out_flux_rates='ConstantOutFluxRateList_by_PoolIndex'
-        ,numberOfPools='numeric'
-        ,poolNames='missing'
-    )
-    ,definition=function(
-         internal_flux_rates
-        ,out_flux_rates
-        ,numberOfPools
-    ){
-         from_integer_flux_lists_with_defaults(
-                internal_flux_rates=internal_flux_rates
-                ,out_flux_rates = out_flux_rates
-                ,numberOfPools = numberOfPools
-         )
-    }
-)
-
-#' Constructor 
-setMethod(
-    "ConstLinDecompOp"
-    ,signature=signature(
-        mat='missing'
-        ,internal_flux_rates='missing'
-        ,out_flux_rates='ConstantOutFluxRateList_by_PoolIndex'
-        ,numberOfPools='numeric'
-        ,poolNames='missing'
-    )
-    ,definition=function(
-         out_flux_rates
-        ,numberOfPools
-    ){
-         from_integer_flux_lists_with_defaults(
-                out_flux_rates = out_flux_rates
-                ,numberOfPools = numberOfPools
-         )
-    }
-)
-
-#' Constructor 
-setMethod(
-    "ConstLinDecompOp"
-    ,signature=signature(
-        mat='missing'
-        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolIndex'
-        ,out_flux_rates='missing'
-        ,numberOfPools='numeric'
-        ,poolNames='missing'
-    )
-    ,definition=function(
-         internal_flux_rates
-        ,numberOfPools
-    ){
-         from_integer_flux_lists_with_defaults(
-                internal_flux_rates=internal_flux_rates
-                ,numberOfPools = numberOfPools
-         )
-    }
-)
-
-#' alternative Constructor with pool names 
-setMethod(
-    'ConstLinDecompOp'
-    ,signature=signature(
-        mat='missing'
-        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolName'
-        ,out_flux_rates='ConstantOutFluxRateList_by_PoolName'
-        ,poolNames='character'
-        ,numberOfPools='missing'
-     )
-    ,definition=function(
-         internal_flux_rates
-        ,out_flux_rates
-        ,poolNames
-    ){
-        ConstLinDecompOp(
-            internal_flux_rates=by_PoolIndex(internal_flux_rates,poolNames)
-           , out_flux_rates=by_PoolIndex(out_flux_rates,poolNames)
-           ,numberOfPools=length(poolNames)
-        )
-
-    }
-)
+# #' Constructor 
+#setMethod(
+#    "ConstLinDecompOp"
+#    ,signature=signature(
+#        mat='missing'
+#        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolIndex'
+#        ,out_flux_rates='ConstantOutFluxRateList_by_PoolIndex'
+#        ,numberOfPools='numeric'
+#        ,poolNames='missing'
+#    )
+#    ,definition=function(
+#         internal_flux_rates
+#        ,out_flux_rates
+#        ,numberOfPools
+#    ){
+#         from_integer_flux_lists_with_defaults(
+#                internal_flux_rates=internal_flux_rates
+#                ,out_flux_rates = out_flux_rates
+#                ,numberOfPools = numberOfPools
+#         )
+#    }
+#)
+#
+# #' Constructor 
+#setMethod(
+#    "ConstLinDecompOp"
+#    ,signature=signature(
+#        mat='missing'
+#        ,internal_flux_rates='missing'
+#        ,out_flux_rates='ConstantOutFluxRateList_by_PoolIndex'
+#        ,numberOfPools='numeric'
+#        ,poolNames='missing'
+#    )
+#    ,definition=function(
+#         out_flux_rates
+#        ,numberOfPools
+#    ){
+#         from_integer_flux_lists_with_defaults(
+#                out_flux_rates = out_flux_rates
+#                ,numberOfPools = numberOfPools
+#         )
+#    }
+#)
+#
+# #' Constructor 
+#setMethod(
+#    "ConstLinDecompOp"
+#    ,signature=signature(
+#        mat='missing'
+#        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolIndex'
+#        ,out_flux_rates='missing'
+#        ,numberOfPools='numeric'
+#        ,poolNames='missing'
+#    )
+#    ,definition=function(
+#         internal_flux_rates
+#        ,numberOfPools
+#    ){
+#         from_integer_flux_lists_with_defaults(
+#                internal_flux_rates=internal_flux_rates
+#                ,numberOfPools = numberOfPools
+#         )
+#    }
+#)
+#
+##' alternative Constructor with pool names 
+#setMethod(
+#    'ConstLinDecompOp'
+#    ,signature=signature(
+#        mat='missing'
+#        ,internal_flux_rates='ConstantInternalFluxRateList_by_PoolName'
+#        ,out_flux_rates='ConstantOutFluxRateList_by_PoolName'
+#        ,poolNames='character'
+#        ,numberOfPools='missing'
+#     )
+#    ,definition=function(
+#         internal_flux_rates
+#        ,out_flux_rates
+#        ,poolNames
+#    ){
+#        ConstLinDecompOp(
+#            internal_flux_rates=by_PoolIndex(internal_flux_rates,poolNames)
+#           , out_flux_rates=by_PoolIndex(out_flux_rates,poolNames)
+#           ,numberOfPools=length(poolNames)
+#        )
+#
+#    }
+#)
 
 #' helper function 
 #' @keywords internal
 no_outflux_warning=function(){
-            warning('Compartmental system without out fluxes. For non zero inputs the 
+            warning('Compartmental system without output fluxes. For non zero inputs the 
                     material will accumulate in the system.')
 }
 
@@ -177,16 +172,9 @@ no_outflux_warning=function(){
 
 
 
-#' automatic title
+#' Function describing an object of class ConstLinDecompOp
 #' 
-#' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object object of class ConstLinDecompOp
 setMethod(
     f="getFunctionDefinition",
     signature="ConstLinDecompOp",
@@ -198,16 +186,9 @@ setMethod(
 
 
 
-#' automatic title
+#' Time range of a simulation described in an object of class ConstLinDecompOp 
 #' 
 #' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
 setMethod(
     f="getTimeRange",
     signature="ConstLinDecompOp",
@@ -220,17 +201,10 @@ setMethod(
 
 
 
-#' automatic title
+#' Mean transit time obtained through a numerical simulation. It produces an estimate with numerical errors. We recommend to use the function transitTime instead.
 #' 
-#' @param object no manual documentation
-#' @param inputDistribution no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecompOp object
+#' @param inputDistribution a distribution of input contents among pools
 setMethod(
   f= "getMeanTransitTime",
     signature= "ConstLinDecompOp",
@@ -267,18 +241,11 @@ setMethod(
 
 
 
-#' automatic title
+#' Transit time distribution obtained through a numerical simulation. It introduces numerical errors. We recommend to use the function transitTime instead
 #' 
-#' @param object no manual documentation
-#' @param inputDistribution no manual documentation
-#' @param times no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecompOp object
+#' @param inputDistribution an input distribution among pools
+#' @param times a variable with times to obtain the distribution
 setMethod(
    f= "getTransitTimeDistributionDensity",
       signature= "ConstLinDecompOp",
@@ -304,16 +271,9 @@ setMethod(
 
 
 
-#' automatic title
+#' Compartmental matrix function 
 #' 
-#' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecompOp object
 setMethod(
    f= "getCompartmentalMatrixFunc",
       signature(object="ConstLinDecompOp"),
@@ -324,16 +284,9 @@ setMethod(
 
 
 
-#' automatic title
+#' Constant compartmental matrix
 #' 
-#' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecompOp object
 setMethod(
    f= "getConstantCompartmentalMatrix",
       signature(object="ConstLinDecompOp"),
@@ -354,16 +307,9 @@ non_zero_rates=function(all_rates){
 
 
 
-#' automatic title
+#' Constant out flux rate list by pool index 
 #' 
-#' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecompOp object
 setMethod(
     f= "getConstantOutFluxRateList_by_PoolIndex",
         signature(object="ConstLinDecompOp"),
@@ -392,16 +338,9 @@ setMethod(
 
 
 
-#' automatic title
+#' Constant internal flux rate list by pool index
 #' 
-#' @param object no manual documentation
-#' @autocomment These comments were created by the auto_comment_roclet by
-#' inspection of the code.  You can use the "update_auto_comment_roclet" to
-#' automatically adapt them to changes in the source code. This will remove
-#' `@param` tags for parameters that are no longer present in the source code
-#' and add `@param` tags with a default description for yet undocumented
-#' parameters.  If you remove this `@autocomment` tag your comments will no
-#' longer be touched by the "update_autocomment_roclet".
+#' @param object a ConstLinDecomOp object
 setMethod(
     f= "getConstantInternalFluxRateList_by_PoolIndex",
         signature(object="ConstLinDecompOp"),

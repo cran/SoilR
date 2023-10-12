@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getOutputReceivers}
 \alias{getOutputReceivers}
-\title{automatic title}
+\title{Pools receiving outputs from other pools}
 \usage{
 getOutputReceivers(object, i)
 }
@@ -12,10 +12,5 @@ getOutputReceivers(object, i)
 \item{i}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getOutputReceivers,TransportDecompositionOperator,numeric-method}}
-      }
+Pools receiving outputs from other pools
 }

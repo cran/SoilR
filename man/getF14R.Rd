@@ -2,18 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getF14R}
 \alias{getF14R}
-\title{Generic that yields the ^{14}C fraction for the release flux of all pools and all times}
+\title{Generic that yields the 14C fraction for the release flux of all pools and all times}
 \usage{
 getF14R(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object of class Model14}
 }
 \description{
-Generic that yields the ^{14}C fraction for the release flux of all pools and all times
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getF14R,Model_14-method}}
-      }
+Generic that yields the 14C fraction for the release flux of all pools and all times
 }

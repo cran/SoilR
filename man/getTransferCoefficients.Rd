@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getTransferCoefficients}
 \alias{getTransferCoefficients}
-\title{automatic title}
+\title{Transfer coefficients}
 \usage{
 getTransferCoefficients(object, as.closures = F)
 
@@ -14,13 +14,7 @@ getTransferCoefficients(object, as.closures = F)
 \item{as.closures}{see method arguments}
 }
 \description{
-automatic title
+Transfer coefficients
 
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getTransferCoefficients,NlModel-method}}
-        \item \code{\link{getTransferCoefficients,TransportDecompositionOperator-method}}
-      }
+Transfer coefficients
 }

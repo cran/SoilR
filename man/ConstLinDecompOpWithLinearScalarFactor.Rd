@@ -13,21 +13,16 @@ ConstLinDecompOpWithLinearScalarFactor(
 )
 }
 \arguments{
-\item{mat}{see method arguments}
+\item{mat}{a square compartmental matrix}
 
-\item{internal_flux_rates}{see method arguments}
+\item{internal_flux_rates}{internal transfer rates among pools}
 
-\item{out_flux_rates}{see method arguments}
+\item{out_flux_rates}{rates out of pools}
 
-\item{numberOfPools}{see method arguments}
+\item{numberOfPools}{number of pools in the system}
 
-\item{xi}{see method arguments}
+\item{xi}{rate modifier for the entire matrix}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstLinDecompOpWithLinearScalarFactor,matrix,missing,missing,missing,ScalarTimeMap-method}}
-      }
 }

@@ -7,9 +7,9 @@
 \S4method{PoolName}{PoolIndex}(id, poolNames)
 }
 \arguments{
-\item{id}{object of class:\code{PoolIndex}, no manual documentation}
+\item{id}{pool id}
 
-\item{poolNames}{no manual documentation}
+\item{poolNames}{name of pools}
 }
 \description{
 convert to string like object

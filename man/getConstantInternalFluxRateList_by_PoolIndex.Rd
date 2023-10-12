@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getConstantInternalFluxRateList_by_PoolIndex}
 \alias{getConstantInternalFluxRateList_by_PoolIndex}
-\title{automatic title}
+\title{Constant internal flux rate list by pool index}
 \usage{
 getConstantInternalFluxRateList_by_PoolIndex(object)
 }
@@ -10,10 +10,5 @@ getConstantInternalFluxRateList_by_PoolIndex(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getConstantInternalFluxRateList_by_PoolIndex,ConstLinDecompOp-method}}
-      }
+Constant internal flux rate list by pool index
 }

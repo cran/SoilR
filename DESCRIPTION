@@ -1,11 +1,15 @@
 Package: SoilR
 Title: Models of Soil Organic Matter Decomposition
-Version: 1.2.105
-Date: 2022-01-21
+Version: 1.2.106
+Date: 2023-10-12
 Author: Carlos A. Sierra, Markus Mueller
 Maintainer: Carlos A. Sierra <csierra@bgc-jena.mpg.de>
 Description: Functions for modeling Soil Organic Matter decomposition
-        in terrestrial ecosystems with linear and nonlinear models.
+        in terrestrial ecosystems with linear and nonlinear systems of differential equations. 
+        The package implements
+        models according to the compartmental system representation described in 
+        Sierra and others (2012) <doi:10.5194/gmd-5-1045-2012> and Sierra and others (2014)
+        <doi:10.5194/gmd-7-1919-2014>.
 License: GPL-3
 Depends: R (>= 3.5.0), deSolve,methods
 Imports: igraph,assertthat,parallel,expm,sets,purrr
@@ -44,6 +48,7 @@ Collate: setGlobalVariables.R setOldClasses.R genericFunctions.R
         NonAutonomousLinearModel.R AWBmodel.R bacwaveModel.R
         bind.C14curves.R BoundFc.R CenturyModel.R ConstFc.R
         ConstLinDecompOp.R ConstLinDecompOpWithLinearScaleFactor.R
+        SymbolicModel_by_PoolName.R
         UnBoundNonLinDecompOp_by_PoolNames.R cycling.R euler.R
         example.2DBoundInFluxesFromFunction.R
         example.2DBoundLinDecompOpFromFunction.R
@@ -79,13 +84,12 @@ Collate: setGlobalVariables.R setOldClasses.R genericFunctions.R
         C14Atm_NH.R C14Atm.R Hua2013.R IntCal09.R IntCal13.R
         Graven2017.R IntCal20.R SHCal20.R incubation_experiment.R
         HarvardForest14CO2.R getTransferMatrix.R SoilR-package.R
-        IVP_maker.R ydot_maker.R WangThreePoolNonAutonomous_sym.R
-        SymbolicModel_by_PoolName.R ICBM_N.R linearScalarModel.R
+        IVP_maker.R ydot_maker.R ICBM_N.R linearScalarModel.R
         CenturyModel14.R pathEntropy.R entropyRatePerJump.R
-        entropyRatePerTime.R
-RoxygenNote: 7.1.1.9000
+        entropyRatePerTime.R Hua2021.R
+RoxygenNote: 7.2.3.9000
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2022-01-21 10:10:53 UTC; csierra
+Packaged: 2023-10-12 12:10:01 UTC; csierra
 Repository: CRAN
-Date/Publication: 2022-01-23 16:12:42 UTC
+Date/Publication: 2023-10-12 13:00:02 UTC

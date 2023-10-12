@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{Delta14C_from_AbsoluteFractionModern}
 \alias{Delta14C_from_AbsoluteFractionModern}
-\title{automatic title}
+\title{Conversion of radiocarbon values}
 \usage{
 Delta14C_from_AbsoluteFractionModern(AbsoluteFractionModern)
 }
@@ -10,11 +10,5 @@ Delta14C_from_AbsoluteFractionModern(AbsoluteFractionModern)
 \item{AbsoluteFractionModern}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{Delta14C_from_AbsoluteFractionModern,matrix-method}}
-        \item \code{\link{Delta14C_from_AbsoluteFractionModern,numeric-method}}
-      }
+Conversion of radiocarbon values
 }

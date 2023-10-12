@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{availableResidentSets}
 \alias{availableResidentSets}
-\title{automatic title}
+\title{Available resident sets}
 \usage{
 availableResidentSets(object)
 }
@@ -10,10 +10,5 @@ availableResidentSets(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{availableResidentSets,MCSim-method}}
-      }
+Available resident sets
 }

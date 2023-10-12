@@ -7,7 +7,7 @@
 \S4method{getSolution}{Model_by_PoolNames}(object, params)
 }
 \arguments{
-\item{object}{object of class:\code{Model_by_PoolNames}, A modelrun as produced by the constructors: 
+\item{object}{A modelrun as produced by the constructors: 
  \code{\link{Model}},
  \code{\link{Model_by_PoolNames}},
  \code{\link{Model_14}}
@@ -21,7 +21,7 @@ for the contents of the pool consisting of
  \item{ The times for which the solution of the IVP is evaluated.}
 }}
 
-\item{params}{no manual documentation}
+\item{params}{parameter values}
 }
 \value{
 A matrix with as many columns as there are pools 

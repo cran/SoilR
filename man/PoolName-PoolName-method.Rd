@@ -7,11 +7,12 @@
 \S4method{PoolName}{PoolName}(id, poolNames)
 }
 \arguments{
-\item{id}{object of class:\code{PoolName}, no manual documentation}
+\item{id}{pool id}
 
-\item{poolNames}{no manual documentation}
+\item{poolNames}{names of pools}
 }
 \description{
 This is here to be able to call PoolName on a PoolName object without
-having to test before if we have to.
+having to test before if we have to. 
+This makes the calling code easier to read.
 }

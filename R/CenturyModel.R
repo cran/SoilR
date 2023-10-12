@@ -81,7 +81,7 @@ CenturyModel<- function
     Fm=0.85-0.018*LN
     Fs=1-Fm
    
-    if(class(surfaceIn)=='numeric' && class(soilIn)=='numeric') {
+    if(inherits(surfaceIn, 'numeric') && inherits(soilIn, 'numeric')) {
       if(length(surfaceIn)==1 && length(soilIn)==1){
         inputFluxes=ConstantInFluxList_by_PoolIndex(
             list(
@@ -105,7 +105,7 @@ CenturyModel<- function
         )
       } 
     }
-    if(class(surfaceIn)=="data.frame" && class(soilIn)=='data.frame'){
+    if(inherits(surfaceIn, "data.frame") && inherits(soilIn, 'data.frame')){
         in_times_surface=surfaceIn[,1]
         in_times_soil=soilIn[,1]
         in_vals_surface =surfaceIn[,2]
@@ -158,19 +158,34 @@ CenturyModel<- function
 
     A=T%*%K
     
-    # whatever format xi is given in we convert it to a time map object
-    # (function,constant,data.frame,list considering also the xi_lag argument)
-    if(class(xi) == 'numeric' && length(xi)==1){
-      xi=ScalarTimeMap(data=xi,lag=xi_lag)
-    }
-    if(class(xi)=='data.frame') {
-     xi=ScalarTimeMap(map=xi, lag=xi_lag)
-    }
-    if(class(xi)=='function') {
-     xi=ScalarTimeMap(map=xi, lag=xi_lag)
-    }
-    #fX=getFunctionDefinition(xi)
-    At=ConstLinDecompOpWithLinearScalarFactor(mat=A,xi=xi)
+#    # whatever format xi is given in we convert it to a time map object
+#    # (function,constant,data.frame,list considering also the xi_lag argument)
+#    if(inherits(xi, 'numeric') && length(xi)==1){
+#      xi=ScalarTimeMap(data=xi,lag=xi_lag)
+#    }
+#    if(inherits(xi, 'data.frame')) {
+#     xi=ScalarTimeMap(map=xi, lag=xi_lag)
+#    }
+#    if(inherits(xi, 'function')) {
+#     xi=ScalarTimeMap(map=xi, lag=xi_lag)
+#    }
+#    #fX=getFunctionDefinition(xi)
+#    At=ConstLinDecompOpWithLinearScalarFactor(mat=A,xi=xi)
+
+# I had to disable the previous functionality above and return to the old functionality.
+# Tests have to be implemented to make sure the new functionality works and can compile documentation.
+      if(length(xi)==1) fX=function(t){xi}
+      if(inherits(xi, "data.frame")){
+        X=xi[,1]
+        Y=xi[,2]
+        fX=function(t){as.numeric(spline(X,Y,xout=t)[2])}
+       }
+      At=BoundLinDecompOp(
+        function(t){fX(t)*A},
+        t_start,
+        t_end
+      )
+
     
     # At the moment we still create an old style Matrix vector based model 
     # but with the ingredients provided in this more specific form we can later

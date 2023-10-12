@@ -7,7 +7,7 @@
 \S4method{getTimeRange}{TimeMap}(object)
 }
 \arguments{
-\item{object}{object of class:\code{TimeMap}, no manual documentation}
+\item{object}{a TimeMap object}
 }
 \description{
 The time interval where the function is defined

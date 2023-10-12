@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{UnBoundInFluxes}
 \alias{UnBoundInFluxes}
-\title{automatic title}
+\title{Unbound input fluxes}
 \usage{
 UnBoundInFluxes(map)
 }
@@ -10,10 +10,5 @@ UnBoundInFluxes(map)
 \item{map}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{UnBoundInFluxes,function-method}}
-      }
+Unbound input fluxes
 }

@@ -17,23 +17,23 @@ Model_by_PoolNames(
 )
 }
 \arguments{
-\item{smod}{see method arguments}
+\item{smod}{see methods}
 
-\item{times}{see method arguments}
+\item{times}{a vector of times}
 
-\item{mat}{see method arguments}
+\item{mat}{a compartmental matrix}
 
-\item{initialValues}{see method arguments}
+\item{initialValues}{a vector of initial values}
 
-\item{inputFluxes}{see method arguments}
+\item{inputFluxes}{a vector of input fluxes}
 
-\item{internal_fluxes}{see method arguments}
+\item{internal_fluxes}{flux rate among pools}
 
-\item{out_fluxes}{see method arguments}
+\item{out_fluxes}{flux rates out of pools}
 
-\item{timeSymbol}{see method arguments}
+\item{timeSymbol}{character symbol used to represent time}
 
-\item{solverfunc}{see method arguments}
+\item{solverfunc}{function used to solve system of ODEs}
 }
 \value{
 A possibly nonlinear Model(run) that contains information about the
@@ -42,10 +42,4 @@ representation for new code.
 }
 \description{
 Constructor for \code{\linkS4class{Model_by_PoolNames}}
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{Model_by_PoolNames,missing,numeric,UnBoundNonLinDecompOp_by_PoolNames,numeric,InFluxList_by_PoolName,missing,missing,missing,missing-method}}
-        \item \code{\link{Model_by_PoolNames,SymbolicModel_by_PoolNames,numeric,missing,numeric,missing,missing,missing,missing,missing-method}}
-      }
 }

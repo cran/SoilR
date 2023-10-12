@@ -13,25 +13,16 @@ ConstLinDecompOp(
 )
 }
 \arguments{
-\item{mat}{see method arguments}
+\item{mat}{a square compartmental matrix}
 
-\item{internal_flux_rates}{see method arguments}
+\item{internal_flux_rates}{rates of internal transfers among pools}
 
-\item{out_flux_rates}{see method arguments}
+\item{out_flux_rates}{rates of transfer out of poolss}
 
-\item{numberOfPools}{see method arguments}
+\item{numberOfPools}{total number of pools in the system}
 
-\item{poolNames}{see method arguments}
+\item{poolNames}{names of all pools}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstLinDecompOp,matrix,missing,missing,missing,missing-method}}
-        \item \code{\link{ConstLinDecompOp,missing,ConstantInternalFluxRateList_by_PoolIndex,ConstantOutFluxRateList_by_PoolIndex,numeric,missing-method}}
-        \item \code{\link{ConstLinDecompOp,missing,ConstantInternalFluxRateList_by_PoolIndex,missing,numeric,missing-method}}
-        \item \code{\link{ConstLinDecompOp,missing,ConstantInternalFluxRateList_by_PoolName,ConstantOutFluxRateList_by_PoolName,missing,character-method}}
-        \item \code{\link{ConstLinDecompOp,missing,missing,ConstantOutFluxRateList_by_PoolIndex,numeric,missing-method}}
-      }
 }

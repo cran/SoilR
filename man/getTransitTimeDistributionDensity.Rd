@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getTransitTimeDistributionDensity}
 \alias{getTransitTimeDistributionDensity}
-\title{automatic title}
+\title{Transit time distribution for SoilR objects}
 \usage{
 getTransitTimeDistributionDensity(object, inputDistribution, times)
 }
@@ -14,10 +14,5 @@ getTransitTimeDistributionDensity(object, inputDistribution, times)
 \item{times}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getTransitTimeDistributionDensity,ConstLinDecompOp-method}}
-      }
+Transit time distribution for SoilR objects
 }

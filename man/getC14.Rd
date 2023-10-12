@@ -2,18 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getC14}
 \alias{getC14}
-\title{Generic that yields the ^{14}C content for all pools and all times}
+\title{Generic that yields the 14C content for all pools and all times}
 \usage{
 getC14(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object}
 }
 \description{
-Generic that yields the ^{14}C content for all pools and all times
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getC14,Model_14-method}}
-      }
+Generic that yields the 14C content for all pools and all times
 }

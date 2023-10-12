@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{BoundFc}
 \alias{BoundFc}
-\title{automatic title}
+\title{Bound Fc object}
 \usage{
 BoundFc(format, ...)
 }
@@ -12,11 +12,5 @@ BoundFc(format, ...)
 \item{...}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{BoundFc,character-method}}
-        \item \code{\link{BoundFc,missing-method}}
-      }
+Bound Fc object
 }

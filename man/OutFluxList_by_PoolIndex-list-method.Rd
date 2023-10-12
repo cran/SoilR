@@ -7,7 +7,7 @@
 \S4method{OutFluxList_by_PoolIndex}{list}(object)
 }
 \arguments{
-\item{object}{object of class:\code{list}, no manual documentation}
+\item{object}{a list}
 }
 \description{
 after checking the elements

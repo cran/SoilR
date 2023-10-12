@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{add_plot}
 \alias{add_plot}
-\title{automatic title}
+\title{Add elements to plot}
 \usage{
 add_plot(x, ...)
 }
@@ -12,10 +12,5 @@ add_plot(x, ...)
 \item{...}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{add_plot,TimeMap-method}}
-      }
+Add elements to plot
 }

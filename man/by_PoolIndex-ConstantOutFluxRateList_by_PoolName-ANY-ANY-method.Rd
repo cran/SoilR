@@ -7,9 +7,9 @@
 \S4method{by_PoolIndex}{ConstantOutFluxRateList_by_PoolName,ANY,ANY}(obj, poolNames)
 }
 \arguments{
-\item{obj}{object of class:\code{ConstantOutFluxRateList_by_PoolName}, no manual documentation}
+\item{obj}{an object of class ConstantOutFluxRateList_by_PoolName}
 
-\item{poolNames}{no manual documentation}
+\item{poolNames}{names of the pools}
 }
 \description{
 convert to a list indexed by pool names

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getCumulativeC}
 \alias{getCumulativeC}
-\title{automatic title}
+\title{Cummulative pool contents}
 \usage{
 getCumulativeC(object)
 }
@@ -10,10 +10,5 @@ getCumulativeC(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getCumulativeC,NlModel-method}}
-      }
+Cummulative pool contents
 }

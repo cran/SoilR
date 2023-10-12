@@ -7,17 +7,8 @@
 GeneralDecompOp(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{A SoilR object}
 }
 \description{
 A generic factory for subclasses of GeneralDecompOp
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{GeneralDecompOp,DecompOp-method}}
-        \item \code{\link{GeneralDecompOp,function-method}}
-        \item \code{\link{GeneralDecompOp,list-method}}
-        \item \code{\link{GeneralDecompOp,matrix-method}}
-        \item \code{\link{GeneralDecompOp,TimeMap-method}}
-      }
 }

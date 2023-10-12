@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{PoolName}
 \alias{PoolName}
-\title{automatic title}
+\title{Pool name}
 \usage{
 PoolName(id, ...)
 }
@@ -12,12 +12,5 @@ PoolName(id, ...)
 \item{...}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{PoolName,character-method}}
-        \item \code{\link{PoolName,PoolIndex-method}}
-        \item \code{\link{PoolName,PoolName-method}}
-      }
+Pool name
 }

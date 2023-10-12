@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getDecompOp}
 \alias{getDecompOp}
-\title{automatic title}
+\title{Decomposition operator of a model}
 \usage{
 getDecompOp(object)
 }
@@ -10,11 +10,5 @@ getDecompOp(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getDecompOp,Model-method}}
-        \item \code{\link{getDecompOp,NlModel-method}}
-      }
+Decomposition operator of a model
 }

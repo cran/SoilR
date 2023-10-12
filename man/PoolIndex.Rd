@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{PoolIndex}
 \alias{PoolIndex}
-\title{automatic title}
+\title{Pool index}
 \usage{
 PoolIndex(id, ...)
 }
@@ -12,13 +12,5 @@ PoolIndex(id, ...)
 \item{...}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{PoolIndex,character-method}}
-        \item \code{\link{PoolIndex,numeric-method}}
-        \item \code{\link{PoolIndex,PoolIndex-method}}
-        \item \code{\link{PoolIndex,PoolName-method}}
-      }
+Pool index
 }

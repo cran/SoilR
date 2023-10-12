@@ -2,13 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{Delta14C_from_AbsoluteFractionModern,numeric-method}
 \alias{Delta14C_from_AbsoluteFractionModern,numeric-method}
-\title{automatic title}
+\title{Conversion of radiocarbon values}
 \usage{
 \S4method{Delta14C_from_AbsoluteFractionModern}{numeric}(AbsoluteFractionModern)
 }
 \arguments{
-\item{AbsoluteFractionModern}{object of class:\code{numeric}, no manual documentation}
+\item{AbsoluteFractionModern}{radiocarbon value in absolute fraction modern}
 }
 \description{
-automatic title
+Conversion of radiocarbon values
 }

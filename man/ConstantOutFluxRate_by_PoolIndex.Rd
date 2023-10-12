@@ -7,15 +7,10 @@
 ConstantOutFluxRate_by_PoolIndex(sourceIndex, rate_constant)
 }
 \arguments{
-\item{sourceIndex}{see method arguments}
+\item{sourceIndex}{index of the source pool}
 
-\item{rate_constant}{see method arguments}
+\item{rate_constant}{rate of output flux}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstantOutFluxRate_by_PoolIndex,numeric,numeric-method}}
-      }
 }

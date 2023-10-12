@@ -7,9 +7,9 @@
 getOutputFluxes(object, as.closures = F)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object}
 
-\item{as.closures}{see method arguments}
+\item{as.closures}{a logical variable. Default to FALSE}
 }
 \description{
 Generic Function to obtain the fluxes out of of the pools

@@ -7,9 +7,9 @@
 \S4method{PoolConnection_by_PoolName}{ANY,ANY,missing}(source, destination)
 }
 \arguments{
-\item{source}{no manual documentation}
+\item{source}{name of source pool}
 
-\item{destination}{no manual documentation}
+\item{destination}{name of destination pool}
 }
 \description{
 constructor from an ordered pair of PoolName objects

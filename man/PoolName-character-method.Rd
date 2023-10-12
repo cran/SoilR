@@ -7,7 +7,7 @@
 \S4method{PoolName}{character}(id)
 }
 \arguments{
-\item{id}{object of class:\code{character}, no manual documentation}
+\item{id}{pool id}
 }
 \description{
 construct from string with checks

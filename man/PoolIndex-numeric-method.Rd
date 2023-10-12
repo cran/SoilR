@@ -7,7 +7,7 @@
 \S4method{PoolIndex}{numeric}(id)
 }
 \arguments{
-\item{id}{object of class:\code{numeric}, no manual documentation}
+\item{id}{pool id}
 }
 \description{
 construct from number

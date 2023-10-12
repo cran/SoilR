@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{ConstInFluxes}
 \alias{ConstInFluxes}
-\title{automatic title}
+\title{Constant input fluxes}
 \usage{
 ConstInFluxes(map, numberOfPools)
 }
@@ -12,11 +12,5 @@ ConstInFluxes(map, numberOfPools)
 \item{numberOfPools}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstInFluxes,ConstantInFluxList_by_PoolIndex,numeric-method}}
-        \item \code{\link{ConstInFluxes,numeric,ANY-method}}
-      }
+Constant input fluxes
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getConstLinDecompOp}
 \alias{getConstLinDecompOp}
-\title{automatic title}
+\title{Constant linear decomposition operator}
 \usage{
 getConstLinDecompOp(object)
 }
@@ -10,10 +10,5 @@ getConstLinDecompOp(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getConstLinDecompOp,ConstLinDecompOpWithLinearScalarFactor-method}}
-      }
+Constant linear decomposition operator
 }

@@ -2,13 +2,13 @@
 % Please edit documentation in R/ConstLinDecompOp.R
 \name{getConstantOutFluxRateList_by_PoolIndex,ConstLinDecompOp-method}
 \alias{getConstantOutFluxRateList_by_PoolIndex,ConstLinDecompOp-method}
-\title{automatic title}
+\title{Constant out flux rate list by pool index}
 \usage{
 \S4method{getConstantOutFluxRateList_by_PoolIndex}{ConstLinDecompOp}(object)
 }
 \arguments{
-\item{object}{object of class:\code{ConstLinDecompOp}, no manual documentation}
+\item{object}{a ConstLinDecompOp object}
 }
 \description{
-automatic title
+Constant out flux rate list by pool index
 }

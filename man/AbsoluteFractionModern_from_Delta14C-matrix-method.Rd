@@ -2,13 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{AbsoluteFractionModern_from_Delta14C,matrix-method}
 \alias{AbsoluteFractionModern_from_Delta14C,matrix-method}
-\title{automatic title}
+\title{Conversion of radiocarbon values}
 \usage{
 \S4method{AbsoluteFractionModern_from_Delta14C}{matrix}(delta14C)
 }
 \arguments{
-\item{delta14C}{object of class:\code{matrix}, no manual documentation}
+\item{delta14C}{Matrix with radiocarbon values in Delta14C}
 }
 \description{
-automatic title
+Conversion of radiocarbon values
 }

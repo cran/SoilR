@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getLinearScaleFactor}
 \alias{getLinearScaleFactor}
-\title{automatic title}
+\title{Linear scale factor}
 \usage{
 getLinearScaleFactor(object)
 }
@@ -10,10 +10,5 @@ getLinearScaleFactor(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getLinearScaleFactor,ConstLinDecompOpWithLinearScalarFactor-method}}
-      }
+Linear scale factor
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getTransferMatrixFunc}
 \alias{getTransferMatrixFunc}
-\title{automatic title}
+\title{Transfer matrix function}
 \usage{
 getTransferMatrixFunc(object)
 }
@@ -10,10 +10,5 @@ getTransferMatrixFunc(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getTransferMatrixFunc,TransportDecompositionOperator-method}}
-      }
+Transfer matrix function
 }

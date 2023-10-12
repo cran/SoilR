@@ -2,15 +2,15 @@
 % Please edit documentation in R/BoundLinDecompOp.R
 \name{BoundLinDecompOp,ANY-method}
 \alias{BoundLinDecompOp,ANY-method}
-\title{automatic title}
+\title{Creates an object of class BoundLinDecompOp}
 \usage{
 \S4method{BoundLinDecompOp}{ANY}(map, ...)
 }
 \arguments{
-\item{map}{no manual documentation}
+\item{map}{An object of class different than UnBoundLinDecompOp}
 
-\item{...}{no manual documentation}
+\item{...}{Additional arguments to pass to TimeMap}
 }
 \description{
-automatic title
+Creates an object of class BoundLinDecompOp
 }

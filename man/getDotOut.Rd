@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getDotOut}
 \alias{getDotOut}
-\title{automatic title}
+\title{Dot out}
 \usage{
 getDotOut(object)
 }
@@ -10,10 +10,5 @@ getDotOut(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getDotOut,TransportDecompositionOperator-method}}
-      }
+Dot out
 }

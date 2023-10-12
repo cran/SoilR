@@ -12,20 +12,14 @@ ConstantInternalFluxRate_by_PoolIndex(
 )
 }
 \arguments{
-\item{sourceIndex}{see method arguments}
+\item{sourceIndex}{index of source pool}
 
-\item{destinationIndex}{see method arguments}
+\item{destinationIndex}{index of destination pool}
 
-\item{src_to_dest}{see method arguments}
+\item{src_to_dest}{flux rate}
 
-\item{rate_constant}{see method arguments}
+\item{rate_constant}{rate constant}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstantInternalFluxRate_by_PoolIndex,missing,missing,character,numeric-method}}
-        \item \code{\link{ConstantInternalFluxRate_by_PoolIndex,numeric,numeric,missing,numeric-method}}
-      }
 }

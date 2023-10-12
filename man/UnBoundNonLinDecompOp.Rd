@@ -15,27 +15,20 @@ UnBoundNonLinDecompOp(
 )
 }
 \arguments{
-\item{matFunc}{see method arguments}
+\item{matFunc}{function providing a compartmental matrix}
 
-\item{internal_fluxes}{see method arguments}
+\item{internal_fluxes}{fluxes among pools}
 
-\item{out_fluxes}{see method arguments}
+\item{out_fluxes}{fluxes out of the pools}
 
-\item{numberOfPools}{see method arguments}
+\item{numberOfPools}{number of pools in the system}
 
-\item{state_variable_names}{see method arguments}
+\item{state_variable_names}{names of the pools}
 
-\item{timeSymbol}{see method arguments}
+\item{timeSymbol}{character used to represent time}
 
-\item{operator}{see method arguments}
+\item{operator}{a SoilR operator}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{UnBoundNonLinDecompOp,function,missing,missing,missing,ANY,ANY,ANY-method}}
-        \item \code{\link{UnBoundNonLinDecompOp,missing,missing,missing,missing,character,character,UnBoundNonLinDecompOp_by_PoolNames-method}}
-        \item \code{\link{UnBoundNonLinDecompOp,missing,vector,vector,numeric,ANY,ANY,ANY-method}}
-      }
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getReleaseFlux14}
 \alias{getReleaseFlux14}
-\title{automatic title}
+\title{Generic that yields the 14C fraction in the release flux}
 \usage{
 getReleaseFlux14(object)
 }
@@ -10,10 +10,5 @@ getReleaseFlux14(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getReleaseFlux14,Model_14-method}}
-      }
+Generic that yields the 14C fraction in the release flux
 }

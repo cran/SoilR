@@ -2,20 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getTimes}
 \alias{getTimes}
-\title{automatic title}
+\title{Time vector of SoilR object}
 \usage{
 getTimes(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getTimes,Model-method}}
-        \item \code{\link{getTimes,Model_by_PoolNames-method}}
-        \item \code{\link{getTimes,NlModel-method}}
-      }
+Time vector of SoilR object
 }

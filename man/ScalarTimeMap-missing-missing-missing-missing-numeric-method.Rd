@@ -7,13 +7,13 @@
 \S4method{ScalarTimeMap}{missing,missing,missing,missing,numeric}(starttime = -Inf, endtime = +Inf, data, lag = 0)
 }
 \arguments{
-\item{starttime}{object of class:\code{missing}, no manual documentation}
+\item{starttime}{initial time of simulation}
 
-\item{endtime}{object of class:\code{missing}, no manual documentation}
+\item{endtime}{end time of simulation}
 
-\item{data}{object of class:\code{numeric}, no manual documentation}
+\item{data}{data}
 
-\item{lag}{no manual documentation}
+\item{lag}{a time lag}
 }
 \description{
 special case for a time map from a constant

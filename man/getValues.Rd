@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getValues}
 \alias{getValues}
-\title{automatic title}
+\title{Get values of SoilR object}
 \usage{
 getValues(object)
 }
@@ -10,10 +10,5 @@ getValues(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getValues,ConstFc-method}}
-      }
+Get values of SoilR object
 }

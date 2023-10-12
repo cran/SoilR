@@ -7,15 +7,10 @@
 OutFlux_by_PoolName(func, sourceName)
 }
 \arguments{
-\item{func}{see method arguments}
+\item{func}{function with output flux}
 
-\item{sourceName}{see method arguments}
+\item{sourceName}{name of the source pool}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{OutFlux_by_PoolName,function,character-method}}
-      }
 }

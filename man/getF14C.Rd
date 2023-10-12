@@ -2,18 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getF14C}
 \alias{getF14C}
-\title{Generic that yields the ^{14}C fraction for the cumulative content of all pools and all times}
+\title{Generic that yields the 14C fraction for the cumulative content of all pools and all times}
 \usage{
 getF14C(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object of class Model 14}
 }
 \description{
-Generic that yields the ^{14}C fraction for the cumulative content of all pools and all times
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getF14C,Model_14-method}}
-      }
+Generic that yields the 14C fraction for the cumulative content of all pools and all times
 }

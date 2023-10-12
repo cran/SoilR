@@ -7,9 +7,9 @@
 \S4method{by_PoolName}{ConstantOutFluxRate_by_PoolIndex}(obj, poolNames)
 }
 \arguments{
-\item{obj}{object of class:\code{ConstantOutFluxRate_by_PoolIndex}, no manual documentation}
+\item{obj}{an object of class ConstantOutFluxRate_by_PoolIndex}
 
-\item{poolNames}{no manual documentation}
+\item{poolNames}{names of pools}
 }
 \description{
 This method exists only for classes that do not contain functions of 

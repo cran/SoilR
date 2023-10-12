@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getAccumulatedRelease}
 \alias{getAccumulatedRelease}
-\title{automatic title}
+\title{Accumulated release flux out of the pools}
 \usage{
 getAccumulatedRelease(object)
 }
@@ -10,10 +10,5 @@ getAccumulatedRelease(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getAccumulatedRelease,Model-method}}
-      }
+Accumulated release flux out of the pools
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getFormat}
 \alias{getFormat}
-\title{automatic title}
+\title{Get format of SoilR object}
 \usage{
 getFormat(object)
 }
@@ -10,10 +10,5 @@ getFormat(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getFormat,Fc-method}}
-      }
+Get format of SoilR object
 }

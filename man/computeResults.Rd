@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{computeResults}
 \alias{computeResults}
-\title{automatic title}
+\title{Computes results}
 \usage{
 computeResults(object)
 }
@@ -10,10 +10,5 @@ computeResults(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{computeResults,MCSim-method}}
-      }
+Computes results
 }

@@ -7,19 +7,14 @@
 InternalFlux_by_PoolIndex(func, sourceIndex, destinationIndex, src_to_dest)
 }
 \arguments{
-\item{func}{see method arguments}
+\item{func}{function with flux rate}
 
-\item{sourceIndex}{see method arguments}
+\item{sourceIndex}{index of the source pool}
 
-\item{destinationIndex}{see method arguments}
+\item{destinationIndex}{index of the destination pool}
 
-\item{src_to_dest}{see method arguments}
+\item{src_to_dest}{source to destination}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{InternalFlux_by_PoolIndex,function,numeric,numeric,missing-method}}
-      }
 }

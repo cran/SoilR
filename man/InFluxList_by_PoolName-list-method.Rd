@@ -7,7 +7,7 @@
 \S4method{InFluxList_by_PoolName}{list}(object)
 }
 \arguments{
-\item{object}{object of class:\code{list}, no manual documentation}
+\item{object}{no documentation}
 }
 \description{
 after checking the elements

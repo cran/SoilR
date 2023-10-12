@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{availableParticleProperties}
 \alias{availableParticleProperties}
-\title{automatic title}
+\title{Available particle properties}
 \usage{
 availableParticleProperties(object)
 }
@@ -10,10 +10,5 @@ availableParticleProperties(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{availableParticleProperties,MCSim-method}}
-      }
+Available particle properties
 }

@@ -3,28 +3,7 @@
 \docType{class}
 \name{ConstFc-class}
 \alias{ConstFc-class}
-\title{S4 class representing a constant ^{14}C fraction}
+\title{S4 class representing a constant 14C fraction}
 \description{
-S4 class representing a constant ^{14}C fraction
-}
-\section{S4-methods}{
-  \subsection{S4-methods with class \code{ConstFc} in their signature:}{
-      \itemize{
-        \item \code{\link{AbsoluteFractionModern,ConstFc-method}}
-        \item \code{\link{Delta14C,ConstFc-method}}
-        \item \code{\link{getValues,ConstFc-method}}
-      }
-  }
-  \subsection{S4-methods with superclasses (in the package) of class \code{ConstFc} in their signature:}{
-    \subsection{superclass Fc}{
-      \itemize{
-        \item \code{\link{getFormat,Fc-method}}
-      }
-    }
-  }
-}
-\section{S4-superclasses (in the package)}{
-      \itemize{
-        \item \code{\linkS4class{Fc}}
-      }
+S4 class representing a constant 14C fraction
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getRightHandSideOfODE}
 \alias{getRightHandSideOfODE}
-\title{automatic title}
+\title{Right hand side of ODE of a SoilR model}
 \usage{
 getRightHandSideOfODE(object, timeSymbol, poolNames, numberOfPools)
 }
@@ -16,11 +16,5 @@ getRightHandSideOfODE(object, timeSymbol, poolNames, numberOfPools)
 \item{numberOfPools}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getRightHandSideOfODE,Model-method}}
-        \item \code{\link{getRightHandSideOfODE,Model_by_PoolNames-method}}
-      }
+Right hand side of ODE of a SoilR model
 }

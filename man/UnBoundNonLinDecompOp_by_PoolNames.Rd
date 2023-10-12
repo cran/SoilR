@@ -7,17 +7,12 @@
 UnBoundNonLinDecompOp_by_PoolNames(internal_fluxes, out_fluxes, timeSymbol)
 }
 \arguments{
-\item{internal_fluxes}{see method arguments}
+\item{internal_fluxes}{flux rates among pools}
 
-\item{out_fluxes}{see method arguments}
+\item{out_fluxes}{output flux rates from pools}
 
-\item{timeSymbol}{see method arguments}
+\item{timeSymbol}{character used to represent time}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{UnBoundNonLinDecompOp_by_PoolNames,InternalFluxList_by_PoolName,OutFluxList_by_PoolName,character-method}}
-      }
 }

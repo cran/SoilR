@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{AbsoluteFractionModern}
 \alias{AbsoluteFractionModern}
-\title{automatic title}
+\title{Conversion of radiocarbon values}
 \usage{
 AbsoluteFractionModern(F)
 }
@@ -10,11 +10,5 @@ AbsoluteFractionModern(F)
 \item{F}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{AbsoluteFractionModern,BoundFc-method}}
-        \item \code{\link{AbsoluteFractionModern,ConstFc-method}}
-      }
+Conversion of radiocarbon values
 }

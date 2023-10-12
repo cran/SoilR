@@ -12,20 +12,14 @@ ConstantInternalFluxRate_by_PoolName(
 )
 }
 \arguments{
-\item{sourceName}{see method arguments}
+\item{sourceName}{name of the source pool}
 
-\item{destinationName}{see method arguments}
+\item{destinationName}{name of the destination pool}
 
-\item{src_to_dest}{see method arguments}
+\item{src_to_dest}{flux rate}
 
-\item{rate_constant}{see method arguments}
+\item{rate_constant}{rate constant}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{ConstantInternalFluxRate_by_PoolName,character,character,missing,numeric-method}}
-        \item \code{\link{ConstantInternalFluxRate_by_PoolName,missing,missing,character,numeric-method}}
-      }
 }

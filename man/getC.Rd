@@ -21,7 +21,7 @@ for the contents of the pool consisting of
  \item{ The times for which the solution of the IVP is evaluated.}
 }}
 
-\item{as.closures}{see method arguments}
+\item{as.closures}{a logical variable. Default to FALSE}
 }
 \value{
 A matrix with m columns representing where m is the number of pools, and n rows where n is the number times 
@@ -31,11 +31,4 @@ as specified by the \code{times} of the model.
 This function computes the content of the pools as function of time.
 In the original (and most of the present) Models these are Carbon pools hence the name.
 Have a look at the methods for details.
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getC,Model-method}}
-        \item \code{\link{getC,Model_by_PoolNames-method}}
-        \item \code{\link{getC,NlModel-method}}
-      }
 }

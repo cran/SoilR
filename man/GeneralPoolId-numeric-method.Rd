@@ -7,7 +7,7 @@
 \S4method{GeneralPoolId}{numeric}(id)
 }
 \arguments{
-\item{id}{object of class:\code{numeric}, no manual documentation}
+\item{id}{a numerical id}
 }
 \description{
 the class returned depends on the method dispatched depending on the supplied arguments

@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getConstantOutFluxRateList_by_PoolIndex}
 \alias{getConstantOutFluxRateList_by_PoolIndex}
-\title{automatic title}
+\title{Constant out flux rate list by pool index}
 \usage{
 getConstantOutFluxRateList_by_PoolIndex(object)
 }
@@ -10,10 +10,5 @@ getConstantOutFluxRateList_by_PoolIndex(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getConstantOutFluxRateList_by_PoolIndex,ConstLinDecompOp-method}}
-      }
+Constant out flux rate list by pool index
 }

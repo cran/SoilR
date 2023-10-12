@@ -2,18 +2,13 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getInitialValues}
 \alias{getInitialValues}
-\title{automatic title}
+\title{Initial values of SoilR object}
 \usage{
 getInitialValues(object)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getInitialValues,NlModel-method}}
-      }
+Initial values of SoilR object
 }

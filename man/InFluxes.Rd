@@ -7,21 +7,10 @@
 InFluxes(object, numberOfPools)
 }
 \arguments{
-\item{object}{see method arguments}
+\item{object}{a SoilR object}
 
-\item{numberOfPools}{see method arguments}
+\item{numberOfPools}{number of pools in the model}
 }
 \description{
 A generic factory for subclasses of \linkS4class{InFluxes}
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{InFluxes,ConstantInFluxList_by_PoolIndex-method}}
-        \item \code{\link{InFluxes,function-method}}
-        \item \code{\link{InFluxes,InFluxes-method}}
-        \item \code{\link{InFluxes,list-method}}
-        \item \code{\link{InFluxes,numeric-method}}
-        \item \code{\link{InFluxes,StateIndependentInFluxList_by_PoolIndex-method}}
-        \item \code{\link{InFluxes,TimeMap-method}}
-      }
 }

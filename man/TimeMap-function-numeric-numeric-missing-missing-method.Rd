@@ -7,13 +7,13 @@
 \S4method{TimeMap}{`function`,numeric,numeric,missing,missing}(map, starttime, endtime, lag = 0)
 }
 \arguments{
-\item{map}{object of class:\code{function}, no manual documentation}
+\item{map}{a function}
 
-\item{starttime}{object of class:\code{numeric}, no manual documentation}
+\item{starttime}{start time of simulation}
 
-\item{endtime}{object of class:\code{numeric}, no manual documentation}
+\item{endtime}{end time of simulation}
 
-\item{lag}{no manual documentation}
+\item{lag}{a time lag}
 }
 \description{
 manual constructor for a function and an interval

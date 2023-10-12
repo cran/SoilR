@@ -7,15 +7,10 @@
 InFlux_by_PoolIndex(func, destinationIndex)
 }
 \arguments{
-\item{func}{see method arguments}
+\item{func}{function with influx}
 
-\item{destinationIndex}{see method arguments}
+\item{destinationIndex}{index of destination pool}
 }
 \description{
 Generic constructor for the class with the same name
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{InFlux_by_PoolIndex,function,numeric-method}}
-      }
 }

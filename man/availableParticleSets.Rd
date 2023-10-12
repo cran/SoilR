@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{availableParticleSets}
 \alias{availableParticleSets}
-\title{automatic title}
+\title{Available particle sets}
 \usage{
 availableParticleSets(object)
 }
@@ -10,10 +10,5 @@ availableParticleSets(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{availableParticleSets,MCSim-method}}
-      }
+Available particle sets
 }

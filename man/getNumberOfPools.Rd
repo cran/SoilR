@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getNumberOfPools}
 \alias{getNumberOfPools}
-\title{automatic title}
+\title{Number of pools in a model}
 \usage{
 getNumberOfPools(object)
 }
@@ -10,12 +10,5 @@ getNumberOfPools(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getNumberOfPools,MCSim-method}}
-        \item \code{\link{getNumberOfPools,NlModel-method}}
-        \item \code{\link{getNumberOfPools,TransportDecompositionOperator-method}}
-      }
+Number of pools in a model
 }

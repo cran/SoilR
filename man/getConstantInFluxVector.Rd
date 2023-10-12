@@ -2,7 +2,7 @@
 % Please edit documentation in R/genericFunctions.R
 \name{getConstantInFluxVector}
 \alias{getConstantInFluxVector}
-\title{automatic title}
+\title{Input flux vector}
 \usage{
 getConstantInFluxVector(object)
 }
@@ -10,10 +10,5 @@ getConstantInFluxVector(object)
 \item{object}{see method arguments}
 }
 \description{
-automatic title
-}
-\section{S4-methods}{
-      \itemize{
-        \item \code{\link{getConstantInFluxVector,ConstInFluxes-method}}
-      }
+Input flux vector
 }
