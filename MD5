@@ -1,4 +1,4 @@
-9672fdfcdff1f38bd9c66724e535877b *DESCRIPTION
+3b813ed5aa6924e39a810947fcb1fd90 *DESCRIPTION
 3f616f62af82a15bf3e5a10461ab43c9 *NAMESPACE
 79138a4c06565cc6109d8e0fabc1e376 *NEWS
 40e85c8d7edf1f1430cc94435944d8c7 *R/AWBmodel.R
@@ -30,14 +30,14 @@ a47b91749098a4fb83719b9fa56c98c8 *R/ConstantOutFluxRate_by_PoolName.R
 f3f20211a3e8f07067212b525866b52a *R/DecompositionOperator_deprecated_in_1.2.R
 e44259ae13facbf725a4233bbed5bf56 *R/Fc.R
 72f1fb5576ecc8f90fffac818fb695f6 *R/FcAtm_deprecated_in_1.2.R
-7f5f28575e8b63e6ee3d2d0c9ec219e2 *R/GaudinskiModel14.R
+9096a3e6fd7161d4e9561b7c8d409cf2 *R/GaudinskiModel14.R
 7a48e88b768bb32f15ba359d4d72df4f *R/GeneralModel.R
 9b518dd904ae0e083ed4d679c966e4fe *R/GeneralModel_14.R
 488290d0b05b1a1edb7fb033a8f3452b *R/GeneralNlModel.R
 d3f0182d39f5772de49487497a97c127 *R/Graven2017.R
 b69e4d1dcdca9cd263cb34c4a97a91b5 *R/HarvardForest14CO2.R
 1af0a37e12424d46491b9f06104f9c6b *R/HelperFunctions.R
-2bcb7111889338dbea28db4c426941de *R/Hua2013.R
+81a28ff3e4b3864332573803878fb2ba *R/Hua2013.R
 f0fda8e3750d4102046697dbe355a4ed *R/Hua2021.R
 ac0888dd27a693fdb38851876ed3ba43 *R/ICBMModel.R
 f0051c4cea2e0aaadef4cb7fff30e6aa *R/ICBM_N.R
@@ -88,7 +88,7 @@ ad0a16557068a246755b0f96332563e1 *R/SeriesLinearModel.R
 ead049ccae352f969aa3f78ebb5e49cf *R/StateIndependentInFluxList_by_PoolIndex.R
 dabfb13ab8eb2fcc8650a0019084b8c1 *R/SymbolicModel_by_PoolName.R
 6259257964b1832a72af02b32fd9d892 *R/ThreepFeedbackModel.R
-86bcca2c3723c64b5e2bf6f500327ff3 *R/ThreepFeedbackModel14.R
+5d4ca065b1508313c407a6078acc58e3 *R/ThreepFeedbackModel14.R
 a1fe6af24b191375d34509901b150ef5 *R/ThreepParallelModel.R
 192571d30bfbcd96c211192f8b42face *R/ThreepParallelModel14.R
 74b00071befa3464a153d53c4dd133c0 *R/ThreepSeriesModel.R
@@ -180,13 +180,13 @@ efaf7800237cc4153789f6071f5097da *R/spectralNorm.R
 8936a60b3d95f55080e6819c26a42440 *R/systemAge.R
 8982859bd33782591f96b63f62a24d34 *R/transitTime.R
 7cff44586daa274fb65ec895c75787f8 *R/tupelList.R
-a87c28d7a28db4b1612dfc5a10716bd1 *R/turnoverFit.R
+ddcc17cb4120b379ce16642330aa1f58 *R/turnoverFit.R
 1b8ec6a7f81244bf2c086cc5997ec000 *R/vecFuncMaker.R
 178b354f715b778bd2d3c945be798803 *R/warnings.R
 98689eb583f8cc256b75200cd46a0bd3 *R/ydot_maker.R
 08f108e5f8596a3f16a7d993f3de5865 *TODO
-0498681fe10c810a4e85c2b167eeb56d *build/SoilR.pdf
-90f2935d586e9c7980e0fa86cbdd7a57 *build/stage23.rdb
+b6999885e58832733ba35a17e8e81817 *build/SoilR.pdf
+f624b02e28d88fef77e3546f9d1d4bd1 *build/stage23.rdb
 5dda272fb65c5cddb0460036ff8fae16 *data/C14Atm.rda
 c0be8fcf4c31c23ce3c232ff799671da *data/C14Atm_NH.rda
 cf42c24bd72a65acea229d55ae27d6d9 *data/Graven2017.rda
@@ -452,7 +452,7 @@ a1949d3db4f7b7af51179a7e5047d6f0 *man/Delta14C-BoundFc-method.Rd
 86c838d330cee3b83b7c1dcf194eeec9 *man/Delta14C_from_AbsoluteFractionModern.Rd
 f5f71d66b1209ba1ffba1c5bc5c9182a *man/Fc-class.Rd
 0ffb0883d4400cffb9bd0b1e177847f8 *man/FcAtm.from.Dataframe.Rd
-b5138c4e63af5caf412406ac2a986b1b *man/GaudinskiModel14.Rd
+fffcf506f1ff57ef2b45723fc0ab5fc2 *man/GaudinskiModel14.Rd
 8f0360e0a32a9ebfa24b7761db1cd73b *man/GeneralDecompOp-DecompOp-method.Rd
 75d0125dd58e1458c515ca14e3dda677 *man/GeneralDecompOp-TimeMap-method.Rd
 35bc44542021d69e12be89b70c70e723 *man/GeneralDecompOp-function-method.Rd
@@ -467,7 +467,7 @@ a1586097892c8de72fed60041dd2dbb3 *man/GeneralPoolId-numeric-method.Rd
 7781005b0edabc47b7e465fed9951efb *man/GeneralPoolId.Rd
 2e9ba24a70f0620441faa79258e1b270 *man/Graven2017.Rd
 d9d853629a25b0c1045c20e626df9c42 *man/HarvardForest14CO2.Rd
-b008565dc5305c0ff27fa36382687a7c *man/Hua2013.Rd
+a7e3832c7c81702afc92b36ca36313b9 *man/Hua2013.Rd
 31bfa58dc0916c0adb4ce14fe9c256f8 *man/Hua2021.Rd
 a9ab64c4ad7ec0510fb48c3e61e55145 *man/ICBMModel.Rd
 4ae23010a13f9037e1eb32a7a27d80cd *man/ICBM_N.Rd
@@ -574,7 +574,7 @@ b4cac1391de5ea1daa0a884298c3a607 *man/StateIndependentInFluxList_by_PoolName.Rd
 25f75a18922fcd9e695d0781b4b1a2d2 *man/StateIndependentInFlux_by_PoolIndex-class.Rd
 4a2e67bddff862a042ed244ad38ff84f *man/SymbolicModel_by_PoolNames-class.Rd
 93a124ed1e97e59c639a9ed8a267b67d *man/ThreepFeedbackModel.Rd
-936722fbe46516df4d88060deee626f0 *man/ThreepFeedbackModel14.Rd
+78645f5fc84dec9cbe81cdedd03336d9 *man/ThreepFeedbackModel14.Rd
 263daa551dab50dc318da058cba996ed *man/ThreepParallelModel.Rd
 b61ff798dee295a788b1f3d8e7e04419 *man/ThreepParallelModel14.Rd
 b9e41e22ba5c4d7740337a72073df7fa *man/ThreepSeriesModel.Rd

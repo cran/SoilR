@@ -1,7 +1,7 @@
 Package: SoilR
 Title: Models of Soil Organic Matter Decomposition
-Version: 1.2.106
-Date: 2023-10-12
+Version: 1.2.107
+Date: 2023-10-13
 Author: Carlos A. Sierra, Markus Mueller
 Maintainer: Carlos A. Sierra <csierra@bgc-jena.mpg.de>
 Description: Functions for modeling Soil Organic Matter decomposition
@@ -90,6 +90,6 @@ Collate: setGlobalVariables.R setOldClasses.R genericFunctions.R
 RoxygenNote: 7.2.3.9000
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2023-10-12 12:10:01 UTC; csierra
+Packaged: 2023-10-13 11:23:22 UTC; csierra
 Repository: CRAN
-Date/Publication: 2023-10-12 13:00:02 UTC
+Date/Publication: 2023-10-13 12:40:06 UTC
